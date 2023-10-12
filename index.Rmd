@@ -298,9 +298,4 @@ Davies-Bouldin yöntemleri gibi Dunn da farklı küme sayıları önermiştir. D
 
 [8] Dunn, J. C. (1973). A fuzzy relative of ISODATA process and its use in detecting compact well-separated clusters.
 
-## k determination cheat sheet
-
-![k-determination-cheat-sheat](images/machinelearningwithfeo_kdetermination.png)
-
-\-\--
 

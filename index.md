@@ -8,7 +8,6 @@
   - [2.4. Calinski-Harabasz Yöntemi](#24-calinski-harabasz-yöntemi)
   - [2.5. Davies-Bouldin Yöntemi](#25-davies-bouldin-yöntemi)
   - [2.6. Dunn Endeksi](#26-dunn-endeksi)
-  - [k determination cheat sheet](#k-determination-cheat-sheet)
 
 # 1. Denetimsiz Öğrenme Nedir?
 
@@ -498,13 +497,3 @@ measure. IEEE transactions on pattern analysis and machine intelligence,
 
 \[8\] Dunn, J. C. (1973). A fuzzy relative of ISODATA process and its
 use in detecting compact well-separated clusters.
-
-## k determination cheat sheet
-
-<figure>
-<img src="images/machinelearningwithfeo_kdetermination.png"
-alt="k-determination-cheat-sheat" />
-<figcaption aria-hidden="true">k-determination-cheat-sheat</figcaption>
-</figure>
-
----
