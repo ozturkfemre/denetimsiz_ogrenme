@@ -10,19 +10,17 @@ output:
 
 Metinlerin, görüntülerin, sayıların ve daha fazlasının çılgınca bir araya geldiği sonsuz veri akışlarından oluşan bir denizde gezindiğinizi hayal edin. Dijital çağın bu zengin kaynağı derinlerde saklı gerçek bir değer taşır. Bunu yüzdeyden fark etmek çok mümkün değildir. Denetimli makine öğrenimi yaklaşımları makinenin eğitimi için etiketli verileri kullanır ve bu, hiç bilmediğiniz sonsuz veri akışına sahip o denizde bir harita ile gezinmeye benzer. Gideceğiniz yeri bilirsiniz ve rotanız açıkça işaretlenmiştir. Bu şekilde yol almak oldukça basittir, değil mi? Peki ya size herhangi bir açıklama verilmeden, işaret veya ipucu olmadan bu seyehati yapsaydınız? İşte bu noktada denetimsiz öğrenme devreye giriyor.
 
-Denetimsiz öğrenme, veri dünyasında saklı olan sırları keşfetme sanatıdır. Makinelerin ne arayacaklarını bilmeden verilerin derinliklerine dalmalarını sağlayan bir dizi teknik içerir. Etiketli örnekler tarafından yönlendirilmek yerine, denetimsiz öğrenme algoritmaları altta yatan yapıları, ilişkileri ve desenleri ortaya çıkarmak için veri okyanusunun derinliklerine dalar. Bu, bir makineye bir büyüteç vermek ve kendi kalıplarını ve bağlantılarını keşfetmesine izin vermek gibidir. 
+Denetimsiz öğrenme, veri dünyasında saklı olan sırları keşfetme sanatıdır. Makinelerin ne arayacaklarını bilmeden verilerin derinliklerine dalmalarını sağlayan bir dizi teknik içerir. Etiketli örnekler tarafından yönlendirilmek yerine, denetimsiz öğrenme algoritmaları altta yatan yapıları, ilişkileri ve desenleri ortaya çıkarmak için veri okyanusunun derinliklerine dalar. Bu, bir makineye bir büyüteç vermek ve kendi kalıplarını ve bağlantılarını keşfetmesine izin vermek gibidir.
 
 Denetimsiz öğrenmenin merkezinde iki ana konu bulunmaktadır: kümeleme ve boyut indirgeme. Kümeleme, bir veri setinde bulunan gözlemleri benzerliklerine göre gruplara ayırma işlemidir. Eve yeni bir kitaplık aldığınızı hayal edin. Önceden çalışma masanızın üzerine, evdeki sehpalara yığmanız gereken kitapları, şimdi, yeni aldığınız kitaplığa yerleştirebilirsiniz. Fakat kitapların her birinin hangi rafta olacağını ve hatta raftaki sıralamasını nasıl belirlerdiniz? Örneğim Asimov, Philip Dick ve Frank Herbert'in kitaplarına ek olarak James Joyce, Tolstoy ve Albert Camus gibi yazarlara ait kitaplarınız da var. Bu kitaplar arasındaki benzerlik nedir? Asimov ve Herbert gibi yazarlar bilim-kurgu temalı kitaplar kaleme aldıkları için bir benzerlikleri olduğunu söyleyebiliriz. Fakat diğer taraftan Joyce ve Camus gibi yazarları ise dünya klasikleri çatısı altında birleştirebiliriz. Yani temelde iki küme oluşturmuş oluruz; dünya klasikleri ve bilim-kurgu kitapları. Yani kitaplığımızda bulunan kitapları kümelemiş oluruz. Örneğini vermiş olduğum bu teknik, yani kümemele, pazarlamada müşteri segmentasyonundan sağlık hizmetlerinde hastalık alt tiplerinin belirlenmesine kadar çeşitli alanlarda son derece kullanışlıdır.
 
 Boyut indirgeme, özelliklerin veya boyutların sayısını azaltarak karmaşık verileri basitleştirmekle ilgilidir. Ayrıntılı bir resim düşünün; boyut indirgeme orijinalin özünü koruyan daha basit, soyut bir temsil oluşturmaya yardımcı olur. Unutulmamalıdır ki makinelerle yaptığımız her işlemin arka planda makineye bir maliyeti vardır. Tıpkı iş yerinde size verilen bir görev, ya da okulda yapmanız gereken bir ödev gibi. Bu tarz görevlerin yerine getirilmesi için vakit, emek ve belki çok daha fazlasını harcamanız gerekir. Ancak size verilen görev ne kadar basitse, yapacağınız harcamalar da aynı nicelikte azalacaktır. Boyut indirgeme de tam olarak bunu yapmaktadır. Boyutunu indirgediğimiz bir veri seti, makinenin daha az yorulmasına ve maliyetinin szalmasına olanak sağlayacaktır. Üstelik tek artısının bu olduğunu da söyleyemeyiz. Bu kitaba ulaşabilen bir çoğunuzun da bilebileceği gibi veri setlerinin görselleştirilmesi üç boyutla sınırlıdır. Üçüncü boyut, yani bir başka deyişle üç değişkenli, veri setleri dışında, daha fazla değişkene sahip veri setlerini görselleştirmek mümkün değildir. Fakat örneğin on beş değişkenli bir setinin boyutunu iki değişkene düşürürsek, sizin de tahmin edebileceğimiz gibi veri seti görselleştirilebilir bir hale gelecektir. Tüm bunlar hesaba katıldığında ise boyut indirgemenin bizi boyutu büyük bir lanetten kurtaran, tonton algoritma büyücüsü olduğunu söyleyebiliriz.
 
-Bu kitabın kalan kısmında çeşitli kümeleme algoritmalarıyla birlikte boyut indirgeme tekniklerinden Temel Bileşen Analizinin nasıl çalıştığını, adım adım nasıl hesaplandığını ve R'da nasıl uygulanacağını göreceğiz. Ayrıca kitabın en sonunda yer alan Alıştırma bölümüyle öğrendiklerinizi sınayabilir, hatta pekiştirebilirsiniz. Unutmayın ki makine öğrenmesi bir buz dağı ise öğretmek görünen, öğrenmek ise buz dağının görünmeyen kısmıdır. Eğer birçok veri seti ile öğrendiğiniz şeyleri tekrar tekrar denemezseniz aslında hiçbir şey öğrenmemiş olacaksınız. Tüm bunlar düşünüldüğünde umarım bu kitap sizin için faydalı olacaktır. 
-
+Bu kitabın kalan kısmında çeşitli kümeleme algoritmalarıyla birlikte boyut indirgeme tekniklerinden Temel Bileşen Analizinin nasıl çalıştığını, adım adım nasıl hesaplandığını ve R'da nasıl uygulanacağını göreceğiz. Ayrıca kitabın en sonunda yer alan Alıştırma bölümüyle öğrendiklerinizi sınayabilir, hatta pekiştirebilirsiniz. Unutmayın ki makine öğrenmesi bir buz dağı ise öğretmek görünen, öğrenmek ise buz dağının görünmeyen kısmıdır. Eğer birçok veri seti ile öğrendiğiniz şeyleri tekrar tekrar denemezseniz aslında hiçbir şey öğrenmemiş olacaksınız. Tüm bunlar düşünüldüğünde umarım bu kitap sizin için faydalı olacaktır.
 
 # 2. Optimum Küme Sayısının Seçilmesi
 
 Böyle bir başlıkla karşılaştığınızda küme sayısının belirlenmesinin neden önemli olduğunu merak edebilirsiniz. Bir önceki bölümdeki kitaplık örneğini hatırlayalım. Kitaplıkta yer alan kitapları iki kümeye(dünya klasikleri ve bilim-kurgu kitapları) ayırmıştık. Fakat iki küme olduğuna nasıl karar verdik? Gerçekten iki kümenin doğru küme sayısı olduğundan emin olabilir miyiz? Hatta çrnekte elimizde yalnızca altı kitap olduğu için bunu bir şekilde yapabildik. Ya elimizdeki kitap sayısı bir milyon olsaydı? Küme sayısını belirlemek bazı durumlarda mümkün olabilirken, bazen de bir o kadar mümkün olmayabilir. Bunu bir veri seti ile gözününzde canlandırmak faydalı olabilir. Örneğin aşağıdaki dağılım grafiğine baktığımızda küme sayısının üç olduğunu, gözlemlerin üç farklı nokta özelinde yoğunlaşması sebebiyle söyleyebiliriz.
-
 
 ![](https://cdn-images-1.medium.com/max/800/1*b218oEdOwrx8g24HC13B5w.png)
 
@@ -36,8 +34,6 @@ Bu gibi sorunlarla sürekli karşılaşıldığı için, küme sayısını belir
 
 Dirsek yöntemi, bir kümeleme analizinde en uygun küme sayısını belirlemek için kullanılan bir tekniktir. Arkasındaki fikir, bir dizi küme sayısı (k) için veri kümesi üzerinde k-ortalamalar kümelemesini çalıştırmak ve her k değeri için her noktanın en yakın merkeze olan karesel uzaklıklarının toplamını (KUT) hesaplamaktır. Dirsek noktası, KUT'nin k'ya karşı grafiğinde KUT'daki değişimin düzleşmeye başladığı noktadır, bu da daha fazla küme eklemenin modeli çok fazla iyileştirmediğini gösterir. [1], [2]
 
-
-
 Dirsek yöntemini aşağıdaki adımlarla hesaplanabilir:
 
 1.  Genellikle 1 ila 10 arasında seçilen ama analize göre değişebilecek aralıkta küme sayıları belirlenir.
@@ -48,10 +44,9 @@ Dirsek yöntemini aşağıdaki adımlarla hesaplanabilir:
 
 4.  KUT'un daha yavaş bir oranda azalmaya başladığı nokta dirsek noktasıdır ve buna karşılık gelen küme sayısı k için en uygun değerdir.
 
-Kuşkusuz, Dirsek yöntemi en yaygın kullanılan yöntemlerden biridir. Ancak, tecrübeyle sabit, her koşulda iyi sonuçlar verdiğini söylemek yanlış olacaktır. Hatta bazen yanıltıcı olduğu bile söylenebilir. Bu nedenle her kümeleme analizinde küme sayısını belirlemek için Dirsek Yönteminin kullanılması gerektiği; ancak tek başına bu yönteme güvenilmemesi gerektiğinin altı mutlaka çizilmelidir. 
+Kuşkusuz, Dirsek yöntemi en yaygın kullanılan yöntemlerden biridir. Ancak, tecrübeyle sabit, her koşulda iyi sonuçlar verdiğini söylemek yanlış olacaktır. Hatta bazen yanıltıcı olduğu bile söylenebilir. Bu nedenle her kümeleme analizinde küme sayısını belirlemek için Dirsek Yönteminin kullanılması gerektiği; ancak tek başına bu yönteme güvenilmemesi gerektiğinin altı mutlaka çizilmelidir.
 
 R'da `factoextra` paketi optimum küme sayısını belirleme yöntemleri için güzel grafik imkanları sunan güzel bir paket. Biz de bu pakette yer alan `fviz_nbclust` fonksiyonu ile Dirsek Grafiğini çizeceğiz.
-
 
 ```{r include=FALSE}
 library(readr)
@@ -88,8 +83,7 @@ fviz_nbclust(df, # veri seti
 
 Ortalama silhouette yöntemi, belirli bir gözlemin dahil olduğu kümeyi ne kadar iyi tanımlandığını ve diğer kümelerden ne kadar iyi ayrıldığını ölçen bir geçerlilik metriğidir [3] , [4]. Üç adımda hesaplanmaktadır.
 
-
-1. Küme sıkılığı hesaplanır: silhouette katsayısı hesaplanan gözlemin(aşağıdaki çizimde mor renkle vurgulanan gözlem) dahil olduğu kümenin diğer elemanlarına(mavi renkle vurgulanan diğer bütün gözlemler) uzaklıklarının toplamının toplam gözlem sayısına bölünmesi. Bu metriği a(i) olarak isimlendirebiliriz. (Uzaklık hesaplanırken genellikle Öklit uzaklık metriği tercih edilir.) 
+1.  Küme sıkılığı hesaplanır: silhouette katsayısı hesaplanan gözlemin(aşağıdaki çizimde mor renkle vurgulanan gözlem) dahil olduğu kümenin diğer elemanlarına(mavi renkle vurgulanan diğer bütün gözlemler) uzaklıklarının toplamının toplam gözlem sayısına bölünmesi. Bu metriği a(i) olarak isimlendirebiliriz. (Uzaklık hesaplanırken genellikle Öklit uzaklık metriği tercih edilir.)
 
     ![](https://cdn-images-1.medium.com/max/800/1*oPJ8x71lbkMomHRx4qm2Ug.png)
 
@@ -97,14 +91,13 @@ Ortalama silhouette yöntemi, belirli bir gözlemin dahil olduğu kümeyi ne kad
 
     ![](https://cdn-images-1.medium.com/max/800/1*h0Ues0gLRs2FD5TrOpmFGA.png)
 
-3.  Silhouette katsayısı hesaplanır: b(i) değerinin a(i) değerinden farkının alınıp; b(i) ve a(i) değerlerinden hangisi daha yüksek bir değere sahipse o değere bölünmesi ile silhouette katsayısı bulunur. 
+3.  Silhouette katsayısı hesaplanır: b(i) değerinin a(i) değerinden farkının alınıp; b(i) ve a(i) değerlerinden hangisi daha yüksek bir değere sahipse o değere bölünmesi ile silhouette katsayısı bulunur.
 
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*L2nNHjwqpS7ZOdXZEvTC2g.png)
 
 Yukarıdaki adımlarla veri setinde yer alan her bir gözlem için Silhouette değeri hesaplanır. Eğer her bir gözlemin Silhouette katsayısına bakarsak her bir gözlem için kümelemenin ne kadar başarılı olduğunu görebiliriz. -1 ile 1 arasında değer alan Silhouette katsayısında, bir değer 1'e ne kadar yakında kümeleme sonucunun o kadar başarılı olduğunu söyleyebiliriz. Fakat bizim buradaki önceliğimizin küme sayısı belirlemek olduğunu hatırlayalım. Tüm gözlemlerin silhouette değerlerini toplayıp veri setindeki gözlem sayısına bölersek kümeleme sonucunun Silhouette değerine ulaşmış oluruz. Fakat yine, bu bölümdeki önceliğimizle çelişen bir sonuç elde etmiş olduk. Küme sayısını belirlemek için belirli aralıkta(örneğin 2 ile 10 arasında) her bir sayıda küme için kümeleme yapılıp, her bir kümelemenin silhouette değerini hesaplayıp en yüksek değeri ararsak bu sefer Silhouette yöntemini küme sayısı belirlemek için kullanmış oluruz.
 
 Yine `fviz_nbclust` fonksiyonu optimum küme sayısına karar vermek için ortalama silhoutte grafiğini görmenin bir yoludur:
-
 
 ```{r}
 fviz_nbclust(df, # veri
@@ -114,11 +107,9 @@ fviz_nbclust(df, # veri
 
 Grafikten kolayca görülebileceği gibi, en yüksek silhouette değerine sahip kümeleme modeli 2 küme için kümelemedir. Dolayısıyla optimum küme sayısının iki olduğu sonucuna varılabilir. Ancak, y eksenindeki silhouette değerleri incelendiğinde, 2 küme sayısı en yüksek olmasına rağmen 3 küme sayısının silhouette değeri de oldukça yakındır. Bu nedenle kümeleme algoritmasının hem 2 hem de 3 küme için çalıştırılması ve sonuçların yorumlanması daha faydalı olacaktır. Tıpkı Dirsek Yönteminde olduğu gibi, Ortalama Silhouette yöntemine de tek başına güvenilmemelidir. Veri setini 2 ve 3 küme sayısı için kümeleyip; kümelerin genel yapısını analiz etmek her yöntemden daha güvenilir olacaktır.
 
-
 ## 2.3. Gap İstatistiği
 
 farklı k değerleri için gözlemlenen küme içi varyansı, verilerin boş bir referans dağılımı altında beklenen varyansla karşılaştırarak küme geçerliliğini ölçen bir metriktir ve altı farklı adımla hesaplanır. [5]
-
 
 1.  Genellikle 2 ila 10 arasında bir k değeri aralığı seçilir.
 
@@ -130,7 +121,7 @@ farklı k değerleri için gözlemlenen küme içi varyansı, verilerin boş bir
 
 5.  Her k değeri için ayrı ayrı Gap İstatistik değeri hesaplanır.
 
-6. Maksimum Gap İstatistiğine karşılık gelen k değeri optimum küme sayısıdır.
+6.  Maksimum Gap İstatistiğine karşılık gelen k değeri optimum küme sayısıdır.
 
 Tıpkı diğer yöntemlerde olduğu gibi `fviz_nbclust` fonksiyonu kullanarak Gap İstatistik methodunun çizgi grafiğini çizdirebiliriz:
 
@@ -147,7 +138,6 @@ Ortalama Siluet Yöntemi gibi Gap İstatistiği Yöntemi de optimum küme sayıs
 
 Varyans Oranı Kriteri olarak da bilinen Calinski-Harabasz, tıpkı diğer yöntemler gibi, küme geçerliliği ve küme sayı belirlemede kullanılır. Kümeler arası varyans ile küme içi varyansın bir oranı olarak da açıklanabilecek yöntem üç farklı adımda hesaplanır[6].
 
-
 1.  Her bir küme için, o kümede bulunan bütün gözlemlerin küme merkezine olan uzaklıklarının ortalaması hesaplanır. WCSS olarak da adlandırılabilir
 
     ![](https://cdn-images-1.medium.com/max/800/1*4WNGuodDuuGJE_rCGrQwLw.png)
@@ -158,10 +148,9 @@ Varyans Oranı Kriteri olarak da bilinen Calinski-Harabasz, tıpkı diğer yönt
 
 3.  Aşağıdaki formül kullanılarak her bir küme için Calinski-Harabasz katsayısı hesaplanır.
 
-(BCSS / WCSS) — (n-k) / (k-1)
+(BCSS / WCSS) --- (n-k) / (k-1)
 
-*burada k toplam küme sayısını, n ise veri setindeki toplam gözlem sayısını ifade eder.
-
+\*burada k toplam küme sayısını, n ise veri setindeki toplam gözlem sayısını ifade eder.
 
 Calinski-Harabasz indeksi 0 ile sonsuz arasında değerler alır ve daha yüksek bir değer daha iyi bir kümelemeye işaret eder. Calinski - Harabasz yöntemi için R'da daha önce bahsettiğim yöntemlerde olduğu gibi bir görselleştirme fonksiyonu bulunmamaktadır. Bu nedenle, `fpc` paketindeki `calinhara` fonksiyonunu kullanarak 2 ila 10 arasındaki kümeler için Calinski - Harabasz değerlerini hesaplayan ve görselleştiren bir fonksiyon yazalım.
 
@@ -196,8 +185,7 @@ Tıpkı diğer yöntemler gibi Calinski - Harabasz da 2 küme önermektedir.
 
 ## 2.5. Davies-Bouldin Yöntemi
 
-Davies-Bouldin kümeler arasındaki benzerliği ölçen bir küme geçerliliği ve küme sayısı belirleme metriğidir[7]. Üç ana adımda aşağıdaki gibi hesaplanır: 
-
+Davies-Bouldin kümeler arasındaki benzerliği ölçen bir küme geçerliliği ve küme sayısı belirleme metriğidir[7]. Üç ana adımda aşağıdaki gibi hesaplanır:
 
 1.  Her bir küme için, o kümede bulunan bütün gözlemlerin küme merkezine olan uzaklıklarının ortalaması hesaplanır.
 
@@ -207,12 +195,11 @@ Davies-Bouldin kümeler arasındaki benzerliği ölçen bir küme geçerliliği 
 
     ![](https://cdn-images-1.medium.com/max/800/1*HtFg6se9Yzdt8jE5zRnLmw.png)
 
-3.  Her bir kümenin kendisine en benzer olan, yani merkezler arasındaki mesafesi minimum olan değer bulunur. Bu iki kümenin birinci adımda hesaplanan değerlerinin toplamı bu iki kümenin merkezi arasındaki mesafeye bölünür. Böylelikle her bir küme için en benzer küme bulunmuş olur. Ardından bütün kümelerin bu değerleri toplanıp küme sayısına bölünerek o kümelemenin Davies-Bouldin katsayısı hesaplanmış olur. 
+3.  Her bir kümenin kendisine en benzer olan, yani merkezler arasındaki mesafesi minimum olan değer bulunur. Bu iki kümenin birinci adımda hesaplanan değerlerinin toplamı bu iki kümenin merkezi arasındaki mesafeye bölünür. Böylelikle her bir küme için en benzer küme bulunmuş olur. Ardından bütün kümelerin bu değerleri toplanıp küme sayısına bölünerek o kümelemenin Davies-Bouldin katsayısı hesaplanmış olur.
 
 Davies-Bouldin indeksi 0 ile sonsuz arasında değerler alır ve daha düşük bir değer daha iyi bir kümelemeye işaret eder. Bu değerin 0 olması herhangi iki küme arasında benzerlik olmadığını gösterirken; yüksek olması bazı kümeler arasında yüksek düzeyde benzerlik olduğunu gösterir.
 
 Tıpkı Calinski-Harabasz yönteminde olduğu gibi Davies-Bouldin yöntemi için de R'da bir görselleştirme fonksiyonu bulunmamaktadır. Bu nedenle, `NbClust` paketindeki `NbClust` fonksiyonunu kullanarak 2 ila 10 arasındaki kümeler için Davies Bouldin değerini hesaplayan ve görselleştiren bir fonksiyon yazalım.
-
 
 ```{r}
 library(NbClust)
@@ -240,8 +227,7 @@ Diğer yöntemlerden farklı olarak Davies-Bouldin'in küme sayısı için öner
 
 Dunn indeksi, bir kümeleme analizindekikümelerin kompaktlığının ve ayrımının bir ölçüsüdür [8] ve aşağıdaki üç adımla hesaplanır:
 
-
-1. İki farklı kümeye ait olan gözlemlerin birbiri arasındaki farklar hesaplanarak farklı kümelerde olup birbirine en yakın olan gözlem hesaplanır. Buna minimum ayrışma adı verilir.
+1.  İki farklı kümeye ait olan gözlemlerin birbiri arasındaki farklar hesaplanarak farklı kümelerde olup birbirine en yakın olan gözlem hesaplanır. Buna minimum ayrışma adı verilir.
 
     ![](https://cdn-images-1.medium.com/max/800/1*EHsIVbk6_82UuuxrKn602Q.png)
 
@@ -298,4 +284,123 @@ Davies-Bouldin yöntemleri gibi Dunn da farklı küme sayıları önermiştir. D
 
 [8] Dunn, J. C. (1973). A fuzzy relative of ISODATA process and its use in detecting compact well-separated clusters.
 
+# 3. k-ortalamalar
 
+Herhangi bir kümeleme analizi sonrasında ortaya çıkacak kümeler genellikle birden çok gözlem içerir. Çoklu sayıdaki bu gözlemlerin birleşimi kümeleri oluşturur. Kümeleme algoritmalarının bu kümeleri algılayabilmesi için kümelerin temsil edilmesi gerekmektedir. Genellikle her bir kümeyi temsil eden noktaya küme merkezi(centroid) deriz. k-ortalamalar kümeleme algoritması, küme merkezini o kümede yer alan bütün gözlemlerin ortalaması olarak kabul eder. Bu işlemi yaparken de ana prensibi küme içi varyansı en aza indirgemeyi hedefler [1], [2]. Birçok k-ortalamalar çeşidi olmakla birlikte Python ve R gibi programlama dillerindeki k-ortalamalar fonksiyonlarında da varsayılan olarak yer alan Hartigan-Wong algoritması en yaygın olarak tercih edilen ve bu bölümde de anlatılan k-ortalamalar çeşididir. Aşağıda adım adım, illüstrasyonlarla k-ortalamaların nasıl hesaplandığını görebilirsiniz. İlk illüstrasyonda, veri setinde kullanacağımız örnek veri setinin nasıl göründüğüne bakalım:
+
+![](https://miro.medium.com/v2/resize:fit:720/0*pJDM6rCwC9L5JipM)
+
+**Adım 1**
+
+Küme sayısına karar verilir. İkinci bölüm tamamen bu konuya ayrıldığı için, eğer o bölümü atladıysanız tekrar dönebilirsiniz.
+
+**Adım 2**
+
+Veri setinden küme sayısı yani k kadar rastgele gözlem küme merkezi olarak seçilir. Bu aşama aşağıdaki gibi illüstre edilebilir.
+
+![](https://miro.medium.com/v2/resize:fit:720/0*CSgBnWMfH9x0nF-m)
+
+**Adım 3**
+
+Her gözlemi kendisine en yakın olan kümeye atanır. Her bir gözlemi aşağıdaki gibi atamaya başlayacağız.
+
+![](https://miro.medium.com/v2/resize:fit:720/0*sdznnu0uK86FnD9P)
+
+Tüm bu adım sonucunda aşağıdaki gibi bir atanma olacak:
+
+![](https://miro.medium.com/v2/resize:fit:720/0*Necb5b0iV-aWdofa)
+
+**Adım 4**
+
+Üçüncü adımda her bir gözlemin atanması gerçekleştikten sonra oluşan kümelerde yer alan gözlemlerin ortalaması alınır. Bu ortalama değerler yeni kümelerin merkezlerini aşağıdaki gibi oluşturur.
+
+![](https://miro.medium.com/v2/resize:fit:720/0*N_2eU_8ZhPeeaL-F)
+
+**Adım 5**
+
+Küme atamaları artık değişmeyene veya maksimum iterasyon sayısına ulaşana kadar 3. ve 4. adımları tekrarlanır. Bu iterasyonların sonunda kümelememiz aşağıdaki gibi görünecektir:
+
+![](https://miro.medium.com/v2/resize:fit:720/0*6G4K1Pq9PgTCPfaH)
+
+## 3.1. Kümelemede Veri Önişleme
+
+Genel olarak, denetimsiz öğrenmede bir küme analizi için veri hazırlığı aşağıdaki gibi olmalıdır:
+
+-   Veri setindeki eksik değerler kaldırılmalı veya doldurulmalıdır.
+
+-   Veri setindeki uç değerler eğer çıkarılması gerekiyorsa(!) çıkarılmalıdır.
+
+-   Kümeleme algoritmalarındaki ana hesaplama uzaklık hesaplamasıdır. Uzaklık hesaplamaları ise farklı ölçeklerden etkilenebilmektedir. Bu ölçek farklılıklarından olumsuz olarak etkilenmemek için veri seti standartlaştırılmalıdır[4].
+
+-   Temel bileşen analizi, verileri altta yatan kümeleri daha iyi ayıran yeni bir koordinat sistemine dönüştürerek bir kümeleme algoritmasının performansını artırmaya yardımcı olabilir. Bu, özellikle karmaşık yapılara sahip veri kümeleri için daha doğru ve anlamlı sonuçlara yol açabilir. [5]
+
+-   Temel bileşen analizi, yüksek boyutlu bir veri setindeki değişken sayısını azaltmak için kullanılabilir ve bu da bir kümeleme algoritmasının performansını artırmaya yardımcı olabilir. Boyutu azaltan temel bileşen analizi ayrıca gürültüyü azaltmaya ve verilerdeki çoklu doğrusallığı ortadan kaldırmaya yardımcı olabilir, böylece bir kümeleme analizinin sonuçlarını yorumlamak daha kolay hale gelebilir[6].
+
+## 3.2. R'da k-ortalamalar Uygulaması
+
+R'da k-ortalamalar kümeleme algoritmasını birçok paket ve fonksiyon ile yapabilirsiniz. Bu kitap özelinde size iki farklı paket ve iki farklı fonksiyon( `stats` paketindeki `kmeans` fonksiyonu ve `factoextra` paketindeki `eclust` fonksiyonu) ile nasıl yapacağınızı anlatacağım. `eclust` fonksiyonu ile bu kitapta anlatılan diğer kümeleme algoritmalarını da uygulayabilirsiniz.
+
+İkinci bölümde olduğu gibi, bu bölümde de [Breast Cancer Wisconsin]([https://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+(diagnostic))](https://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+(diagnostic))) veri setini kullanacağım. Veri seti iyi veya kötü huylu olarak etiketlenmiş tümor hücrelerinin çeşitli bilgilerini içermektedir. 569 gözlem ve 32 değişken bulunmaktadır. Ancak, bazı değişkenler diğer değişkenlerin ortalamasıdır. Bu nedenle, bu değişkenler veri setinden çıkarılmıştır. Ayrıca, ID ve etiket bilgisi ile ilgili değişkenler de çıkarılmıştır. Değişken çiftleri arasındaki yüksek korelasyon ve yüksek boyut göz önüne alındığında, veri setine temel bileşen analizi uygulanmış, bu bölümün konusu olmadığı için bu adım dahil edilmemiştir. Son bölümde bu adımların da nasıl yapıldığı işlenecektir.
+
+İkinci bölümde yine aynı veri setini kullanarak küme sayısı belirlemeye çalışmış, yöntemlerin çoğunluğunun küme sayısı olarak 2'yi önerdiğini görmüştük. Bu sebeple k-ortalamalar ve diğer kümeleme algoritmalarını işlerken küme sayısı iki olarak kabul edilmiştir.
+
+İlk önce `stats` paketinde yer alan `kmeans` fonksiyonu ile kümelemeyi yapabiliriz. Ancak kümeleme sonuçlarını yorumlayabilmek için sonucu bir nesneye kaydedip `print` fonksiyonu ile bu nesnenin çıktısını yazdırmamız gerekmektedir. Tüm bu işlemlerin uygulanması için aşağıdaki kodları yazmamız gerekmektedir:
+
+\
+```{r}
+km_data <- kmeans(df, # kümelenecek veri seti
+                  2, # k, küme sayısı
+                  nstart=25 # beşinci adımdaki iterasyon sayısı
+                  ) 
+print(km_data) # sonuçların çıktısı
+```
+
+Çıktıyı incelediğimizde, ilk olarak her bir küme için kaç eleman olduğunu görünür. Birinci kümede 398 gözlem, ikinci kümede ise 171 gözlem olduğu görülmektedir. Bunun dengesiz olduğunu söylemek mümkündür. Daha sonra küme ortalamaları bölümü karşımıza çıkıyor. Bu bölümde her kümenin merkezlerinin aldığı değerleri görüyoruz. Kümeleme vektörü bölümünde ise veri setinde yer alan her bir gözlemin hangi kümeye atandığını görürüz. Her kümeleme algoritması küme isimlerini 1,2,3 gibi sıralayarak atar. Bu kümeleme analizinde iki kümemiz olduğu için kümeleri 1 ve 2 olarak isimlendirdi. Son bölümde ise her küme için küme içi kareler toplamı değerleri gösterilir. Bu değerlerin birbirine yakın olmasını isteriz. Ayrıca kümeler arası kareler toplamının, toplam karelar tplamına bölünmesiyle kümelemenin açıklayıcı gücünü elde ederiz. Mümkün olduğunca yüksek olması istenmektedir. Son bölümde ise `km_data` olarak isimlendirdiğimiz nesneyi kullanarak kümeleme sonucumuz ile hangi bilgilere erişebileceğimiz görülmektedir. `$` işaretini nesne isminin sonuna ekleyerek bu bilgilere ulaşabiliriz. Örneğin `km_data$cluster` girdisiyle her bir gözlemin hangi kümeye atandığına dair bilgiyi içeren bir vektöre ulaşmış oluruz.
+
+Elbette bu çıktı üzerinde daha detaylı bir yorum yapmak oldukça mümkün; ancak tek seçeneğimiz bu değil. Kümeleme sonucunu `factoextra` paketindeki `fviz_cluster` fonksiyonu ile görselleştirebiliriz. `factoextra` paketi tüm görselleştirmeler için `ggplot2` paketini kullandığından, `ggplot2` fonksiyonu ile çizdiğiniz grafiklerde yapabileceğiniz değişikliklerin aynısını `fviz_cluster` grafiklerinde de uygulayabilirsiniz.
+
+```{r}
+library(factoextra)
+fviz_cluster(km_data,# clustering result 
+             data = pcadata, # data 
+             ellipse.type = "convex", 
+             star.plot = TRUE, 
+             repel = F, 
+             ggtheme = theme_minimal()
+) 
+```
+
+
+Bu grafik ise aşağıdaki maddelerle yorumlanabilir:
+
+- Ayrışma sadece PC1 boyutunda gözlemlenmiştir.
+
+- Küme 2'nin varyansu küme 1'den daha fazladır. Bunun nedeni kümelerin gözlem sayıları arasındaki fark olabilir.
+
+- Kümeler arasında gözle görülür bir örtüşme yok.
+
+Verileri `factoextra` paketinden `eclust` fonksiyonu ile de kümelemek mümkündür.
+
+```{r}
+k2m_data <- factoextra::eclust(df, # veri seti
+                               "kmeans", # kümeleme algoritması
+                               k = 2, # küme sayısı
+                               nstart = 25, # iterasyon sayısı
+                               graph = F # küme grafiğinin çizilip çizilmeyeceği
+                               )
+k2m_data # çıktı
+
+```
+***References for Chapter***
+
+[1] Hartigan, John A., Manchek A. Wong. Algorithm AS 136: A k-means clustering algorithm. Journal of royal statistical society. series c (applied statistics) 28., 100--108, 1979
+
+[2] Kassambara, Alboukadel. Practical guide to cluster analysis in R: Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+[3] James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An introduction to statistical learning (Vol. 112, p. 18). New York: springer.
+
+[4] Kassambara, Alboukadel. Practical guide to cluster analysis in R: Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+[5] Ben-Hur, Asa, and Isabelle Guyon. Detecting stable clusters using principal component analysis. Functional genomics. Humana press, 159--182, 2003.
+
+[6] Ding, Chris, and Xiaofeng He. K-means clustering via principal component analysis. Proceedings of twenty-first international conference on Machine learning. 2004.

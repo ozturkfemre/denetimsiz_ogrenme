@@ -8,6 +8,10 @@
   - [2.4. Calinski-Harabasz Yöntemi](#24-calinski-harabasz-yöntemi)
   - [2.5. Davies-Bouldin Yöntemi](#25-davies-bouldin-yöntemi)
   - [2.6. Dunn Endeksi](#26-dunn-endeksi)
+- [3. k-ortalamalar](#3-k-ortalamalar)
+  - [3.1. Kümelemede Veri Önişleme](#31-kümelemede-veri-önişleme)
+  - [3.2. R’da k-ortalamalar
+    Uygulaması](#32-rda-k-ortalamalar-uygulaması)
 
 # 1. Denetimsiz Öğrenme Nedir?
 
@@ -497,3 +501,288 @@ measure. IEEE transactions on pattern analysis and machine intelligence,
 
 \[8\] Dunn, J. C. (1973). A fuzzy relative of ISODATA process and its
 use in detecting compact well-separated clusters.
+
+# 3. k-ortalamalar
+
+Herhangi bir kümeleme analizi sonrasında ortaya çıkacak kümeler
+genellikle birden çok gözlem içerir. Çoklu sayıdaki bu gözlemlerin
+birleşimi kümeleri oluşturur. Kümeleme algoritmalarının bu kümeleri
+algılayabilmesi için kümelerin temsil edilmesi gerekmektedir. Genellikle
+her bir kümeyi temsil eden noktaya küme merkezi(centroid) deriz.
+k-ortalamalar kümeleme algoritması, küme merkezini o kümede yer alan
+bütün gözlemlerin ortalaması olarak kabul eder. Bu işlemi yaparken de
+ana prensibi küme içi varyansı en aza indirgemeyi hedefler \[1\], \[2\].
+Birçok k-ortalamalar çeşidi olmakla birlikte Python ve R gibi
+programlama dillerindeki k-ortalamalar fonksiyonlarında da varsayılan
+olarak yer alan Hartigan-Wong algoritması en yaygın olarak tercih edilen
+ve bu bölümde de anlatılan k-ortalamalar çeşididir. Aşağıda adım adım,
+illüstrasyonlarla k-ortalamaların nasıl hesaplandığını görebilirsiniz.
+İlk illüstrasyonda, veri setinde kullanacağımız örnek veri setinin nasıl
+göründüğüne bakalım:
+
+![](https://miro.medium.com/v2/resize:fit:720/0*pJDM6rCwC9L5JipM)
+
+**Adım 1**
+
+Küme sayısına karar verilir. İkinci bölüm tamamen bu konuya ayrıldığı
+için, eğer o bölümü atladıysanız tekrar dönebilirsiniz.
+
+**Adım 2**
+
+Veri setinden küme sayısı yani k kadar rastgele gözlem küme merkezi
+olarak seçilir. Bu aşama aşağıdaki gibi illüstre edilebilir.
+
+![](https://miro.medium.com/v2/resize:fit:720/0*CSgBnWMfH9x0nF-m)
+
+**Adım 3**
+
+Her gözlemi kendisine en yakın olan kümeye atanır. Her bir gözlemi
+aşağıdaki gibi atamaya başlayacağız.
+
+![](https://miro.medium.com/v2/resize:fit:720/0*sdznnu0uK86FnD9P)
+
+Tüm bu adım sonucunda aşağıdaki gibi bir atanma olacak:
+
+![](https://miro.medium.com/v2/resize:fit:720/0*Necb5b0iV-aWdofa)
+
+**Adım 4**
+
+Üçüncü adımda her bir gözlemin atanması gerçekleştikten sonra oluşan
+kümelerde yer alan gözlemlerin ortalaması alınır. Bu ortalama değerler
+yeni kümelerin merkezlerini aşağıdaki gibi oluşturur.
+
+![](https://miro.medium.com/v2/resize:fit:720/0*N_2eU_8ZhPeeaL-F)
+
+**Adım 5**
+
+Küme atamaları artık değişmeyene veya maksimum iterasyon sayısına
+ulaşana kadar 3. ve 4. adımları tekrarlanır. Bu iterasyonların sonunda
+kümelememiz aşağıdaki gibi görünecektir:
+
+![](https://miro.medium.com/v2/resize:fit:720/0*6G4K1Pq9PgTCPfaH)
+
+## 3.1. Kümelemede Veri Önişleme
+
+Genel olarak, denetimsiz öğrenmede bir küme analizi için veri hazırlığı
+aşağıdaki gibi olmalıdır:
+
+- Veri setindeki eksik değerler kaldırılmalı veya doldurulmalıdır.
+
+- Veri setindeki uç değerler eğer çıkarılması gerekiyorsa(!)
+  çıkarılmalıdır.
+
+- Kümeleme algoritmalarındaki ana hesaplama uzaklık hesaplamasıdır.
+  Uzaklık hesaplamaları ise farklı ölçeklerden etkilenebilmektedir. Bu
+  ölçek farklılıklarından olumsuz olarak etkilenmemek için veri seti
+  standartlaştırılmalıdır\[4\].
+
+- Temel bileşen analizi, verileri altta yatan kümeleri daha iyi ayıran
+  yeni bir koordinat sistemine dönüştürerek bir kümeleme algoritmasının
+  performansını artırmaya yardımcı olabilir. Bu, özellikle karmaşık
+  yapılara sahip veri kümeleri için daha doğru ve anlamlı sonuçlara yol
+  açabilir. \[5\]
+
+- Temel bileşen analizi, yüksek boyutlu bir veri setindeki değişken
+  sayısını azaltmak için kullanılabilir ve bu da bir kümeleme
+  algoritmasının performansını artırmaya yardımcı olabilir. Boyutu
+  azaltan temel bileşen analizi ayrıca gürültüyü azaltmaya ve
+  verilerdeki çoklu doğrusallığı ortadan kaldırmaya yardımcı olabilir,
+  böylece bir kümeleme analizinin sonuçlarını yorumlamak daha kolay hale
+  gelebilir\[6\].
+
+## 3.2. R’da k-ortalamalar Uygulaması
+
+R’da k-ortalamalar kümeleme algoritmasını birçok paket ve fonksiyon ile
+yapabilirsiniz. Bu kitap özelinde size iki farklı paket ve iki farklı
+fonksiyon( `stats` paketindeki `kmeans` fonksiyonu ve `factoextra`
+paketindeki `eclust` fonksiyonu) ile nasıl yapacağınızı anlatacağım.
+`eclust` fonksiyonu ile bu kitapta anlatılan diğer kümeleme
+algoritmalarını da uygulayabilirsiniz.
+
+İkinci bölümde olduğu gibi, bu bölümde de [Breast Cancer
+Wisconsin](%5Bhttps://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+(diagnostic))\](<https://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+(diagnostic)>))
+veri setini kullanacağım. Veri seti iyi veya kötü huylu olarak
+etiketlenmiş tümor hücrelerinin çeşitli bilgilerini içermektedir. 569
+gözlem ve 32 değişken bulunmaktadır. Ancak, bazı değişkenler diğer
+değişkenlerin ortalamasıdır. Bu nedenle, bu değişkenler veri setinden
+çıkarılmıştır. Ayrıca, ID ve etiket bilgisi ile ilgili değişkenler de
+çıkarılmıştır. Değişken çiftleri arasındaki yüksek korelasyon ve yüksek
+boyut göz önüne alındığında, veri setine temel bileşen analizi
+uygulanmış, bu bölümün konusu olmadığı için bu adım dahil edilmemiştir.
+Son bölümde bu adımların da nasıl yapıldığı işlenecektir.
+
+İkinci bölümde yine aynı veri setini kullanarak küme sayısı belirlemeye
+çalışmış, yöntemlerin çoğunluğunun küme sayısı olarak 2’yi önerdiğini
+görmüştük. Bu sebeple k-ortalamalar ve diğer kümeleme algoritmalarını
+işlerken küme sayısı iki olarak kabul edilmiştir.
+
+İlk önce `stats` paketinde yer alan `kmeans` fonksiyonu ile kümelemeyi
+yapabiliriz. Ancak kümeleme sonuçlarını yorumlayabilmek için sonucu bir
+nesneye kaydedip `print` fonksiyonu ile bu nesnenin çıktısını
+yazdırmamız gerekmektedir. Tüm bu işlemlerin uygulanması için aşağıdaki
+kodları yazmamız gerekmektedir:
+
+  
+
+``` r
+km_data <- kmeans(df, # kümelenecek veri seti
+                  2, # k, küme sayısı
+                  nstart=25 # beşinci adımdaki iterasyon sayısı
+                  ) 
+print(km_data) # sonuçların çıktısı
+```
+
+    ## K-means clustering with 2 clusters of sizes 171, 398
+    ## 
+    ## Cluster means:
+    ##         PC1         PC2
+    ## 1 -3.001746  0.07482399
+    ## 2  1.289695 -0.03214799
+    ## 
+    ## Clustering vector:
+    ##   [1] 1 1 1 1 1 1 1 1 1 1 2 1 1 2 1 1 2 1 1 2 2 2 1 1 1 1 1 1 1 1 1 2 1 1 1 1 2
+    ##  [38] 2 2 2 2 2 1 2 2 1 2 2 2 2 2 2 2 1 2 2 1 1 2 2 2 2 1 2 2 1 2 2 2 2 1 2 1 2
+    ##  [75] 2 2 2 1 1 2 2 2 1 1 2 1 2 1 2 1 2 2 2 2 1 1 2 2 2 2 2 2 2 2 2 1 2 2 1 2 2
+    ## [112] 2 1 2 2 2 2 1 1 2 2 1 1 2 2 2 2 1 1 1 2 1 1 2 1 2 2 2 1 2 2 2 2 2 2 2 1 2
+    ## [149] 2 2 2 2 1 2 2 2 1 2 2 2 2 1 1 2 1 2 2 2 1 2 2 2 1 2 2 2 2 1 2 2 1 1 2 2 2
+    ## [186] 2 2 2 2 2 1 2 2 2 1 2 1 1 1 2 2 1 1 1 2 2 2 2 2 2 1 2 1 1 1 2 2 2 1 1 2 2
+    ## [223] 2 1 2 2 2 2 2 1 1 2 2 1 2 2 1 1 2 1 2 2 2 2 1 2 2 2 2 2 1 2 1 1 1 2 1 1 1
+    ## [260] 1 1 2 1 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 2 1 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [297] 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 1 2 1 2 2 2 2 1 1 1 2 2
+    ## [334] 2 2 1 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2 1 1 2 1 1
+    ## [371] 1 2 1 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 2 1 2 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2
+    ## [408] 2 1 2 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 2 2 2 2 2 2 1 2 2
+    ## [445] 1 2 1 2 2 1 2 1 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 1 2
+    ## [482] 2 2 2 2 2 2 1 2 2 2 2 1 2 2 2 2 2 1 1 2 1 2 1 1 2 2 2 2 1 2 2 1 2 2 2 1 1
+    ## [519] 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [556] 2 2 2 2 2 2 2 1 1 1 1 2 1 2
+    ## 
+    ## Within cluster sum of squares by cluster:
+    ## [1] 1216.540 1121.768
+    ##  (between_SS / total_SS =  48.5 %)
+    ## 
+    ## Available components:
+    ## 
+    ## [1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+    ## [6] "betweenss"    "size"         "iter"         "ifault"
+
+Çıktıyı incelediğimizde, ilk olarak her bir küme için kaç eleman
+olduğunu görünür. Birinci kümede 398 gözlem, ikinci kümede ise 171
+gözlem olduğu görülmektedir. Bunun dengesiz olduğunu söylemek mümkündür.
+Daha sonra küme ortalamaları bölümü karşımıza çıkıyor. Bu bölümde her
+kümenin merkezlerinin aldığı değerleri görüyoruz. Kümeleme vektörü
+bölümünde ise veri setinde yer alan her bir gözlemin hangi kümeye
+atandığını görürüz. Her kümeleme algoritması küme isimlerini 1,2,3 gibi
+sıralayarak atar. Bu kümeleme analizinde iki kümemiz olduğu için
+kümeleri 1 ve 2 olarak isimlendirdi. Son bölümde ise her küme için küme
+içi kareler toplamı değerleri gösterilir. Bu değerlerin birbirine yakın
+olmasını isteriz. Ayrıca kümeler arası kareler toplamının, toplam
+karelar tplamına bölünmesiyle kümelemenin açıklayıcı gücünü elde ederiz.
+Mümkün olduğunca yüksek olması istenmektedir. Son bölümde ise `km_data`
+olarak isimlendirdiğimiz nesneyi kullanarak kümeleme sonucumuz ile hangi
+bilgilere erişebileceğimiz görülmektedir. `$` işaretini nesne isminin
+sonuna ekleyerek bu bilgilere ulaşabiliriz. Örneğin `km_data$cluster`
+girdisiyle her bir gözlemin hangi kümeye atandığına dair bilgiyi içeren
+bir vektöre ulaşmış oluruz.
+
+Elbette bu çıktı üzerinde daha detaylı bir yorum yapmak oldukça mümkün;
+ancak tek seçeneğimiz bu değil. Kümeleme sonucunu `factoextra`
+paketindeki `fviz_cluster` fonksiyonu ile görselleştirebiliriz.
+`factoextra` paketi tüm görselleştirmeler için `ggplot2` paketini
+kullandığından, `ggplot2` fonksiyonu ile çizdiğiniz grafiklerde
+yapabileceğiniz değişikliklerin aynısını `fviz_cluster` grafiklerinde de
+uygulayabilirsiniz.
+
+``` r
+library(factoextra)
+fviz_cluster(km_data,# clustering result 
+             data = pcadata, # data 
+             ellipse.type = "convex", 
+             star.plot = TRUE, 
+             repel = F, 
+             ggtheme = theme_minimal()
+) 
+```
+
+![](index_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+Bu grafik ise aşağıdaki maddelerle yorumlanabilir:
+
+- Ayrışma sadece PC1 boyutunda gözlemlenmiştir.
+
+- Küme 2’nin varyansu küme 1’den daha fazladır. Bunun nedeni kümelerin
+  gözlem sayıları arasındaki fark olabilir.
+
+- Kümeler arasında gözle görülür bir örtüşme yok.
+
+Verileri `factoextra` paketinden `eclust` fonksiyonu ile de kümelemek
+mümkündür.
+
+``` r
+k2m_data <- factoextra::eclust(df, # veri seti
+                               "kmeans", # kümeleme algoritması
+                               k = 2, # küme sayısı
+                               nstart = 25, # iterasyon sayısı
+                               graph = F # küme grafiğinin çizilip çizilmeyeceği
+                               )
+k2m_data # çıktı
+```
+
+    ## K-means clustering with 2 clusters of sizes 171, 398
+    ## 
+    ## Cluster means:
+    ##         PC1         PC2
+    ## 1 -3.001746  0.07482399
+    ## 2  1.289695 -0.03214799
+    ## 
+    ## Clustering vector:
+    ##   [1] 1 1 1 1 1 1 1 1 1 1 2 1 1 2 1 1 2 1 1 2 2 2 1 1 1 1 1 1 1 1 1 2 1 1 1 1 2
+    ##  [38] 2 2 2 2 2 1 2 2 1 2 2 2 2 2 2 2 1 2 2 1 1 2 2 2 2 1 2 2 1 2 2 2 2 1 2 1 2
+    ##  [75] 2 2 2 1 1 2 2 2 1 1 2 1 2 1 2 1 2 2 2 2 1 1 2 2 2 2 2 2 2 2 2 1 2 2 1 2 2
+    ## [112] 2 1 2 2 2 2 1 1 2 2 1 1 2 2 2 2 1 1 1 2 1 1 2 1 2 2 2 1 2 2 2 2 2 2 2 1 2
+    ## [149] 2 2 2 2 1 2 2 2 1 2 2 2 2 1 1 2 1 2 2 2 1 2 2 2 1 2 2 2 2 1 2 2 1 1 2 2 2
+    ## [186] 2 2 2 2 2 1 2 2 2 1 2 1 1 1 2 2 1 1 1 2 2 2 2 2 2 1 2 1 1 1 2 2 2 1 1 2 2
+    ## [223] 2 1 2 2 2 2 2 1 1 2 2 1 2 2 1 1 2 1 2 2 2 2 1 2 2 2 2 2 1 2 1 1 1 2 1 1 1
+    ## [260] 1 1 2 1 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 2 1 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [297] 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 1 2 1 2 2 2 2 1 1 1 2 2
+    ## [334] 2 2 1 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2 1 1 2 1 1
+    ## [371] 1 2 1 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 2 1 2 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2
+    ## [408] 2 1 2 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 2 2 2 2 2 2 1 2 2
+    ## [445] 1 2 1 2 2 1 2 1 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 1 2
+    ## [482] 2 2 2 2 2 2 1 2 2 2 2 1 2 2 2 2 2 1 1 2 1 2 1 1 2 2 2 2 1 2 2 1 2 2 2 1 1
+    ## [519] 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [556] 2 2 2 2 2 2 2 1 1 1 1 2 1 2
+    ## 
+    ## Within cluster sum of squares by cluster:
+    ## [1] 1216.540 1121.768
+    ##  (between_SS / total_SS =  48.5 %)
+    ## 
+    ## Available components:
+    ## 
+    ##  [1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+    ##  [6] "betweenss"    "size"         "iter"         "ifault"       "silinfo"     
+    ## [11] "nbclust"      "data"
+
+***References for Chapter***
+
+\[1\] Hartigan, John A., Manchek A. Wong. Algorithm AS 136: A k-means
+clustering algorithm. Journal of royal statistical society. series c
+(applied statistics) 28., 100–108, 1979
+
+\[2\] Kassambara, Alboukadel. Practical guide to cluster analysis in R:
+Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+\[3\] James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An
+introduction to statistical learning (Vol. 112, p. 18). New York:
+springer.
+
+\[4\] Kassambara, Alboukadel. Practical guide to cluster analysis in R:
+Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+\[5\] Ben-Hur, Asa, and Isabelle Guyon. Detecting stable clusters using
+principal component analysis. Functional genomics. Humana press,
+159–182, 2003.
+
+\[6\] Ding, Chris, and Xiaofeng He. K-means clustering via principal
+component analysis. Proceedings of twenty-first international conference
+on Machine learning. 2004.
