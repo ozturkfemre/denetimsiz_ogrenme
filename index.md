@@ -12,6 +12,15 @@
   - [3.1. Kümelemede Veri Önişleme](#31-kümelemede-veri-önişleme)
   - [3.2. R’da k-ortalamalar
     Uygulaması](#32-rda-k-ortalamalar-uygulaması)
+- [4. k-medoidler](#4-k-medoidler)
+  - [4.1. R’da k-medoidler](#41-rda-k-medoidler)
+- [5. Hiyerarşik Kümeleme](#5-hiyerarşik-kümeleme)
+  - [5.2. Kojenetik Mesafe](#52-kojenetik-mesafe)
+    - [5.2.1. R’de Kojenetik Mesafe](#521-rde-kojenetik-mesafe)
+  - [5.3. R’da Ward’ın Minimum Varyans
+    Bağlantısı](#53-rda-wardın-minimum-varyans-bağlantısı)
+  - [5.4. R’da Ortalama Bağlantı
+    Yöntemi](#54-rda-ortalama-bağlantı-yöntemi)
 
 # 1. Denetimsiz Öğrenme Nedir?
 
@@ -515,7 +524,9 @@ ana prensibi küme içi varyansı en aza indirgemeyi hedefler \[1\], \[2\].
 Birçok k-ortalamalar çeşidi olmakla birlikte Python ve R gibi
 programlama dillerindeki k-ortalamalar fonksiyonlarında da varsayılan
 olarak yer alan Hartigan-Wong algoritması en yaygın olarak tercih edilen
-ve bu bölümde de anlatılan k-ortalamalar çeşididir. Aşağıda adım adım,
+ve bu bölümde de anlatılan k-ortalamalar çeşididir. k-ortalamalar
+kümeleme algoritması, bir sonraki bölümde açıklanacak olan k-medoidler
+gibi bölümlemeye dayalı bir kümeleme algoritmasıdır. Aşağıda adım adım,
 illüstrasyonlarla k-ortalamaların nasıl hesaplandığını görebilirsiniz.
 İlk illüstrasyonda, veri setinde kullanacağımız örnek veri setinin nasıl
 göründüğüne bakalım:
@@ -786,3 +797,457 @@ principal component analysis. Functional genomics. Humana press,
 \[6\] Ding, Chris, and Xiaofeng He. K-means clustering via principal
 component analysis. Proceedings of twenty-first international conference
 on Machine learning. 2004.
+
+# 4. k-medoidler
+
+k-medoidler kümeleme algoritması, k-ortalamalar kümeleme algoritmasına
+oldukça benzeyen, tıpkı onun gibi bölümlemeye dayalı bir algoritmadır.
+Bir önceki bölümden de hatırlayabileceğiniz gibi, k-ortalamalar kümeleme
+algoritmasında kümelerin her biri elemanlarının ortalamalarıyla temsil
+edilmekteydi. k-medoids algoritmasında ise her küme elemanlarından
+biriyle temsil edilir. Bir başka deyişle her küme merkezinde
+elemanlarından biri yer alacak şekilde oluşturulur. Medoidler etrafında
+bölümleme(Partitioning Around Medoids) olarak da isimlendirilen
+k-medoidler kümeleme algoritmasının iterasyonlar sürecindeki ana amacı
+medoidler ile diğer gözlemler arasındaki uzaklığı mümkün olduğunca
+minimize etmektir \[1\], \[2\].
+
+k-medoidler algoritması k-ortalamalar ile oldukça benzer olması
+sebebiyle k-ortalamalarda kullanılan illüstrasyonları kullanacağım.
+Fakat bu noktada dördüncü adıma dikkat edilmesi gerekmektedir. Lütfen,
+aşağıdaki adımları incelerken dördüncü adımda yazılanlara dikkat edin.
+
+**Adım 1**
+
+Küme sayısı belirlenir.
+
+**Adım 2**
+
+Veri setinden küme sayısı yani k kadar rastgele gözlem küme merkezi
+olarak seçilir. Bu adım aşağıdaki gibi illüstre edilebilir.
+
+![](https://miro.medium.com/v2/resize:fit:720/0*CSgBnWMfH9x0nF-m)
+
+**Adım 3**
+
+Her gözlemi kendisine en yakın olan küme merkezine ait kümeye atanır.
+Her bir gözlemi aşağıdaki gibi atamaya başlayacağız.
+
+![](https://miro.medium.com/v2/resize:fit:720/0*Necb5b0iV-aWdofa)
+
+**Adım 4**
+
+Bu adım k-ortalamar ile k-medoidler algoritmalarının birbirinden
+ayrıştığı adımdır. k-ortalamalarda merkez ortalamalar olurken
+k-medoidlerde merkez o kümede yer alan bütün gözlemlere en yakın olan
+bir gözlem olarak seçilir. Aşağıdaki illüstrasyon da yeni seçilen yıldız
+imleçli noktalardan koyu renkli noktanın başka bir gözlem olduğunu
+varsayın:
+
+![](https://miro.medium.com/v2/resize:fit:720/0*N_2eU_8ZhPeeaL-F)
+
+**Adım 5**
+
+Küme atamaları artık değişmeyene veya maksimum iterasyon sayısına
+ulaşana kadar 3. ve 4. adımları tekrarlanır. Bu iterasyonların sonunda
+kümelememiz aşağıdaki gibi görünecektir:
+
+![](https://miro.medium.com/v2/resize:fit:720/0*6G4K1Pq9PgTCPfaH)
+
+## 4.1. R’da k-medoidler
+
+R’da k-medoidler algoritmasını uygulamak için birçok paket ve fonksiyon
+mevcuttur. Bu kitap özelinde `cluster` paketinde yer alan `pam`
+fonksiyonunu kullanacağız. Tıpkı k-ortalamalar fonksiyonunda olduğu
+gibi, kümeleme sonuçlarını yorumlayabilmek için sonucu bir nesneye
+kaydedip print fonksiyonu ile bu nesnenin çıktısını yazdırmamız
+gerekmektedir. Tüm bu işlemlerin uygulanması için aşağıdaki kodları
+yazmamız gerekmektedir:
+
+``` r
+library(cluster)
+pam_data <- pam(df,2)
+print(pam_data)
+```
+
+    ## Medoids:
+    ##       ID       PC1        PC2
+    ## [1,] 499 -2.357211 0.30131315
+    ## [2,] 269  1.358672 0.03762238
+    ## Clustering vector:
+    ##   [1] 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 2 1 1 2 2 2 1 1 1 1 1 1 1 1 1 2 1 1 1 1 2
+    ##  [38] 2 2 2 2 2 1 2 2 1 2 1 2 2 2 2 2 1 2 2 1 1 2 2 2 2 1 2 2 1 2 2 2 2 1 2 1 2
+    ##  [75] 2 1 2 1 1 2 2 1 1 1 2 1 2 1 2 1 2 1 2 2 1 1 2 2 2 2 2 2 2 2 2 1 2 2 1 2 2
+    ## [112] 2 1 2 2 2 2 1 1 1 2 1 1 2 2 2 2 1 1 1 2 1 1 2 1 2 2 2 1 2 2 1 2 2 2 2 1 2
+    ## [149] 2 2 2 2 1 2 2 2 1 2 2 2 2 1 1 2 1 2 2 1 1 2 2 2 1 2 2 2 2 1 2 2 1 1 2 2 2
+    ## [186] 2 1 2 2 2 1 2 2 2 1 2 1 1 1 1 2 1 1 1 2 2 2 1 2 2 1 2 1 1 1 1 2 2 1 1 2 2
+    ## [223] 2 1 2 2 2 2 2 1 1 2 2 1 2 2 1 1 2 1 2 2 2 2 1 2 2 2 2 2 1 2 1 1 1 2 1 1 1
+    ## [260] 1 1 2 1 2 1 1 2 2 2 2 2 2 1 2 1 2 2 1 2 2 1 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2
+    ## [297] 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 1 2 1 2 2 2 2 1 1 1 2 2
+    ## [334] 2 2 1 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 1 1 1 2 2 2 2 2 2 2 2 2 2 2 1 1 2 1 1
+    ## [371] 1 2 1 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 2 1 2 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2
+    ## [408] 2 1 2 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 2 2 2 2 2 2 1 2 2
+    ## [445] 1 2 1 2 2 1 2 1 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 1 2
+    ## [482] 2 2 2 1 2 2 1 2 2 2 2 1 2 2 2 2 2 1 1 2 1 2 1 1 2 2 2 2 1 2 2 1 2 2 2 1 1
+    ## [519] 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 1 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [556] 2 2 2 2 2 2 2 1 1 1 1 1 1 2
+    ## Objective function:
+    ##    build     swap 
+    ## 1.806580 1.700399 
+    ## 
+    ## Available components:
+    ##  [1] "medoids"    "id.med"     "clustering" "objective"  "isolation" 
+    ##  [6] "clusinfo"   "silinfo"    "diss"       "call"       "data"
+
+`print` fonksiyonu ile elde edilen çıktıyı inceleyecek olursak; ilk
+başta hem PC1 hem de PC2 boyutları için her bir kümenin medoid bilgisine
+erişebiliriz. İlk kümenin merkezinin veri setindeki 499. indekse sahip
+gözlem olduğunu, ikinci kümenin ise 269. indekse sahip olan gözlem
+olduğunu fark ederiz.. Ardından, her bir gözlemin hangi kümeye atandığı
+bilgisini içeren kümeleme vektörünü görüyoruz. Son olarak da amaç
+fonksiyonunu görüyoruz. “Build” k-medianlar hesaplamasındaki birinci
+adımı, “Swap” ise üçüncü adımı temsil etmektedir.
+
+Tıpkı k-ortalamalarda olduğu gibi, `factoextra` paketinde yer alan
+`fviz_cluster` fonksiyonu ile kümeleme grafiğini aşağıdaki gibi
+çizdirebiliriz:
+
+``` r
+library(factoextra)
+fviz_cluster(pam_data,# clustering result
+             data = df, # data
+             ellipse.type = "convex", # type of the clusters' appearence
+             repel = F, 
+             ggtheme = theme_classic()
+)
+```
+
+![](index_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+***References for Chapter***
+
+\[1\] Kaufman, L., & Rousseeuw, P. (1987). Clustering by means of
+medoids. Statistical Data Analysis Based on the L1-Norm and Related
+Methods, Y. Dodge Ed.
+
+\[2\] Kaufman, L., & Rousseeuw, P. J. (2009). Finding groups in data: an
+introduction to cluster analysis. John Wiley & Sons
+
+# 5. Hiyerarşik Kümeleme
+
+Hiyerarşik Kümeleme, nesnelerin dendrogram adı verilen, kümelerin ağaç
+benzeri bir yapıda organize edildiği bir algoritmadır. İki ana
+hiyerarşik kümeleme türü vardır: Birleştirici (Agglomerative) ve
+Ayrıştırıcı (Divisive). \[1\], \[2\], \[3\] Ayırıcı Hiyerarşik
+Kümelememe veri setini tek bir küme olarak olarak kabul ettikten sonra
+benzerliklerine göre yinelemeli olarak daha küçük kümeler halinde
+ayrıştırırken, Birleştirici Hiyerarşik Kümeleme her bir gözlemi bir küme
+olarak kabul ettikten sonra benzerliklerine göre yinelemeli olarak daha
+büyük kümeler halinde birleştirmektedir. Bu noktada önemli olan kısım bu
+birleştirmelerin/ayrıştırmaların nasıl yapıldığıdır. Bunun için çeşitli
+bağlantı yöntemleri geliştirilmiştir. Aşağıda bu bağlantı yöntemlerinin
+isimlerini ve bağlantı işlemlerinin nasıl yapıldığını görebilirsiniz:
+
+Tek bağlantı: En yakın komşu yöntemi olarak da bilinen bu yöntem,
+birleştirilen/ayrıştırılan iki kümenin en yakın noktaları arasındaki
+mesafeyi hesaplar\[4\]. Aşağıdaki illüstrasyon bunu açıklamak için
+faydalı olabilir:
+
+![](images/ScreenShot%20Tool%20-20231013135226.png)
+
+Tam bağlantı: En uzak komşu yöntemi olarak da bilinen bu yöntem,
+birleştirilen/ayrıştırılan iki kümenin en uzak noktaları arasındaki
+mesafeyi hesaplar\[5\].
+
+![](images/ScreenShot%20Tool%20-20231013135433.png)
+
+Ortalama bağlantı: Bu yöntem, birleştirilen iki kümedeki tüm nokta
+çiftleri arasındaki ortalama mesafeyi hesaplar. \[6\]
+
+![](images/ScreenShot%20Tool%20-20231013135623.png)
+
+Ward’ın Minimum Varyans bağlantısı: Bu yöntem, aynı küme içindeki
+noktalar arasındaki uzaklıkların varyansını en aza indirir. Her bir küme
+içindeki karesel uzaklıkların toplamında en küçük artışa neden olan
+kümeleri birleştirir \[7\].
+
+Her yöntemin kendine has güçlü ve zayıf yönleri olduğundan, bağlantı
+yönteminin seçimi ortaya çıkan kümeler üzerinde önemli bir etkiye sahip
+olabilir. Bu nedenle, veriler ve ele alınan spesifik problem için hangi
+bağlantı yönteminin en uygun olduğunu dikkatlice değerlendirmek
+önemlidir. Tıpkı küme sayısı belirleme methodlarında olduğu gibi; birden
+çok bağlantıyı kullanarak kümeleme yaptıktan sonra sonuçları analiz
+etmek çok daha faydalı olacaktır. Bu kitaptaki R uygulamarında yalnızca
+Ward’ın Minimum Varyans Yöntemi ile Ortalama bağlantı yöntemi olmak
+üzere iki metrik kullanılmıştır.
+
+## 5.2. Kojenetik Mesafe
+
+Daha önceki bölümlerde uzaklık metrikleri uygulamalarında genellikle
+Öklit metriğinin kullanıldığından bahsetmiştik. Hiyerarşik kümeleme
+özelinde uzaklık metriğine karar vermek Kojenetik mesafe ile de karar
+verebiliriz. Kojenetik mesafe, kümeleme algoritması tarafından üretilen
+dendrogramdaki iki gözlem arasındaki benzerliği değerlendirmek için
+hiyerarşik kümelemede kullanılan bir ölçüdür. Orijinal veri uzayında,
+dendrogramda aynı kümede ilk kez birleştikleri seviyede iki gözlem
+arasındaki mesafe olarak tanımlanır\[8\]. Kojenetik mesafe ile veri
+uzayındaki gözlemler arasındaki orijinal mesafe arasındaki yüksek
+korelasyon, kümeleme çözümünün verinin yapısını iyi koruduğunu gösterir.
+
+### 5.2.1. R’de Kojenetik Mesafe
+
+`stats` paketindeki cophenetic fonksiyonu R’da kojenetik mesafetyi
+hesaplamamıza olanak sağlamaktadır. Ancak ik önce, karşılaştıracağımız
+iki uzaklık metriğinin(bu uygulama özelinde Öklid ve Manhattan) uzaklık
+matrislerini hesaplamamız gerekmektedir. Bunun için yine `stats`
+paketinde yer alan `dist` fonksiyonunu kullanacağız.
+
+  
+
+``` r
+dist_euc <- dist(df, method="euclidean") # veri, uzaklık metriği
+dist_man <- dist(df, method="manhattan") # veri, uzaklık metriği
+```
+
+Ardından veri setimizi her iki uzaklık metriği ile hiyerarşik kümeleme
+algoritmasını uygulamamız gerekmektedir. Bu bölümde özelinde Ward
+bağlantıyı kullanalım:
+
+``` r
+hc_e <- hclust(d=dist_euc, method="ward.D2")
+hc_m <- hclust(d=dist_man, method="ward.D2")
+```
+
+Son olarak, her iki kümeleme için de kojenetik mesafeyi hesaplamamız ve
+mesafe metriği ile kojenetik mesafe arasındaki korelasyon katsayısını
+kontrol etmemiz gerekir.
+
+``` r
+# öklid için
+coph_e <- cophenetic(hc_e)
+cor(dist_euc,coph_e)
+```
+
+    ## [1] 0.6711685
+
+``` r
+# manhattan için
+coph_m <- cophenetic(hc_m)
+cor(dist_man,coph_m)
+```
+
+    ## [1] 0.6018289
+
+Genel olarak, daha yüksek bir korelasyon katsayısı, dendrogramın
+orijinal veri noktaları arasındaki ikili mesafelerin daha doğru bir
+temsili olduğunu gösterir. Kofenetik korelasyon katsayısı 0 ile 1
+arasında değişebilir ve 1 değeri dendrogram ile ikili mesafeler arasında
+mükemmel bir uyum olduğunu gösterir.
+
+Bu durumda, Cophenetic ve mesafe matrisi arasındaki korelasyon
+incelendiğinde, Öklid mesafesi ile hiyerarşik kümelemenin daha iyi
+sonuçlar verdiği söylenebilir. Bu yüzden analize Öklid uzaklık metriği
+ile devam edeceğiz.
+
+## 5.3. R’da Ward’ın Minimum Varyans Bağlantısı
+
+Hiyerarşik kümelemede küme sayısını belirlemek için, tıpkı k-ortalamalar
+ve k-medoidlerde yaptığımız gibi, en uygun küme sayısını belirleme
+yöntemlerini kullanabiliriz. Bu konuyu Bölüm 2’de ele aldığımız için bu
+bölümde değinilmeyecektir. Ancak, tüm yöntemlerin en uygun küme sayısı
+olarak 2’yi önerdiğini hatırlatmak faydalı olabilir.
+
+Hiyerarşik kümeleme için küme sayısını belirlemekte kullanılabilecek bir
+başka yol da dendogramı kontrol ederek nereden kesileceğine karar
+vermektir. Ancak ben kişisel olarak bu yöntemi “açık uçlu” buluyorum.
+Yine de kodları ve dendogramı sizlerle paylaşacağım.
+
+Hiyerarşik kümelemeden oluşturduğunuz nesne ile hiyerarşik kümelemenin
+dendogramını `stats` paketinden `hclust` fonksiyonu ile görselleştirmek
+için `factoextra` paketindeki `fviz_dend` fonksiyonunu
+kullanabilirsiniz.
+
+``` r
+hc_e <- hclust(d=dist_euc, method="ward.D2")
+fviz_dend(hc_e,cex=.5) 
+```
+
+![](index_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+Oldukça karışık görünmesiyle birlikte, dendogramı kesmek için en iyi
+yükseklik değerinin 35-40 aralığında olduğu söylenebilir. Bu aynı
+zamanda 2 kümeyi ifade eder. Veri kümesini 2 küme ile hiyerarşik olarak
+kümeleyelim. Bunu yapmak için `stats` paketindeki `cutree` fonksiyonu
+kullanılabiliriz.
+
+``` r
+grupward2 <- cutree(hc_e, k = 2)
+table(grupward2) # her kümedeki eleman sayısını verir
+```
+
+    ## grupward2
+    ##   1   2 
+    ## 180 389
+
+``` r
+grupward2 # kümeleme vektörünün çıktısı
+```
+
+    ##   [1] 1 1 1 1 1 1 1 1 1 1 2 2 1 2 1 1 2 1 1 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2
+    ##  [38] 2 2 2 2 1 1 1 2 1 2 1 2 2 2 2 2 1 2 2 1 1 2 2 2 2 1 2 1 1 2 2 1 2 1 2 1 2
+    ##  [75] 2 2 1 1 1 2 2 1 1 1 2 1 2 1 2 1 2 2 2 2 1 1 2 2 2 2 2 2 2 2 2 1 2 2 1 2 2
+    ## [112] 2 1 2 2 2 2 1 1 2 2 1 1 2 2 2 2 2 1 1 2 2 2 2 1 2 2 2 1 2 2 2 2 2 2 2 1 2
+    ## [149] 2 2 2 2 1 2 2 2 1 2 2 2 2 1 1 2 1 2 2 2 1 2 2 2 1 2 2 2 2 1 2 2 1 1 2 2 2
+    ## [186] 2 2 2 2 2 1 2 2 1 1 2 1 2 1 2 2 2 1 1 2 2 2 2 1 2 1 2 1 1 2 1 2 2 1 1 2 2
+    ## [223] 2 2 2 2 2 2 2 1 1 2 2 1 2 2 1 1 2 1 2 2 2 2 1 2 2 2 2 2 1 2 1 1 1 2 1 1 1
+    ## [260] 1 1 2 1 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 2 1 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [297] 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 2 2 1 2 1 2 2 2 2 1 1 2 2 2
+    ## [334] 2 2 1 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 1 1 2 2 2 1 2 2 2 2 2 2 2 2 1 1 2 1 1
+    ## [371] 1 2 1 1 2 2 1 2 2 1 2 2 2 2 2 2 2 2 2 1 2 2 1 1 2 2 2 2 2 2 1 2 2 2 2 2 2
+    ## [408] 2 1 2 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 2 2 2 2 2 2 2 2 2
+    ## [445] 1 2 1 2 2 1 2 1 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 1 1 2 2 2 2 2 2 2 2 2 1 2
+    ## [482] 2 2 2 2 1 2 1 2 2 2 2 1 2 2 2 2 2 1 1 2 1 2 1 1 1 2 2 2 1 2 2 1 2 2 2 1 1
+    ## [519] 1 2 2 1 2 2 2 2 2 2 1 2 2 2 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [556] 2 2 2 2 2 2 2 1 1 1 1 2 1 2
+
+Küme atamaları sonrası dendogramı görmek için `factoextra` paketinde yer
+alan `fviz_dend` fonksiyonunu kullanabiliriz.
+
+``` r
+fviz_dend(hc_e, # kümeleme sonucu
+          k = 2, # küme sayısı
+          cex = 0.5, 
+          color_labels_by_k = TRUE, 
+          rect = TRUE )
+```
+
+![](index_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+Tıpkı diğer kümeleme yöntemlerinde olduğu gibi küme grafiğini
+`fviz_cluster` fonksiyonu ile çizebiliriz:
+
+``` r
+fviz_cluster(list(data = pcadata, cluster = grupward2),
+             ellipse.type = "convex", 
+             repel = F, 
+             show.clust.cent = FALSE, ggtheme = theme_minimal())
+```
+
+![](index_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+Küme grafiği incelendiğinde örtüşme olduğunu gözlemleyebiliriz.
+Ayrışmanın sadece PC1 boyutunda gerçekleştiği görülebilir. Kırmızı ile
+gösterilen ilk kümedeki varyans yüksek iken, yeşil ile gösterilen ikinci
+kümedeki varyans düşüktür.
+
+## 5.4. R’da Ortalama Bağlantı Yöntemi
+
+Kojenetik uzaklık Ward’ın Minimum Varyans Yönteminde ele alındığı için
+bu bölümde sizlerle paylaşılmayacaktır. Ancak Öklid uzaklığının yine
+daha iyi sonuçlar verdiğini belirtmek gerekir. Yine `stats` paketindeki
+`hclust` fonksiyonu ile hiyerarşik kümelemeden oluşturduğunuz nesne ile
+hiyerarşik kümelemenin dendogramını görselleştirmek için `factoextra`
+paketindeki `fviz_dend` fonksiyonunu kullanabilirsiniz.
+
+``` r
+hc_e2 <- hclust(d=dist_euc, method="average")
+fviz_dend(hc_e2,cex=.5) 
+```
+
+![](index_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+
+Dendogramı ilk bakışımızda bile Ward’ın sonucunda oldukça ayrıştığı fark
+edilmektedir. Kümelerin Ward’a göre oldukça dengesiz olduğu
+görülmektedir. Bu durum küme analizi için sorun yaratabilir. Bununla
+birlikte, bağlantı yönteminin veri setine büyük ölçüde bağlı olduğunu
+göstermek için faydalı bir örnektir. Veriler için en iyi bağlantı
+yöntemine karar vermek çok önemlidir. Bağlantıya karar vermenin bir
+yolu, aykırı değerlerin olup olmadığını görmek için veri setinin
+tanımlayıcı istatistiklerini kontrol etmektir. Başka bir yol da hangi
+dendogramın iyi göründüğünü görmek için tüm bağlantı yöntemlerini
+denemektir.
+
+Tıpkı diğer yöntemlerde olduğu gibi iki küme sayısı ile devam edelim:
+
+``` r
+grupav2 <- cutree(hc_e2, k = 2)
+grupav2
+```
+
+    ##   [1] 1 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2
+    ##  [38] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ##  [75] 2 2 2 2 1 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2
+    ## [112] 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [149] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 2 2 2
+    ## [186] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2
+    ## [223] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1
+    ## [260] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [297] 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2
+    ## [334] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [371] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 1 2 2 2 2 2 2
+    ## [408] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [445] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [482] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [519] 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [556] 2 2 2 2 2 2 2 2 1 2 2 2 1 2
+
+``` r
+table(grupav2)
+```
+
+    ## grupav2
+    ##   1   2 
+    ##  23 546
+
+Çıktıdan da görebileceğimiz gibi, kümeler oldukça dengesiz -ki bunu
+dendogramdan da kolaylıkla tahmin etmiştik. Küme atamalarıyla dendogramı
+renklendirmek bu bağlantı yöntemi için de geçerli:
+
+``` r
+fviz_dend(hc_e2, k = 2, 
+          cex = 0.5, 
+          color_labels_by_k = TRUE, 
+          rect = TRUE )
+```
+
+![](index_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+Küme grafiğine bakalım:
+
+``` r
+fviz_cluster(list(data = pcadata, cluster = grupav2),
+             ellipse.type = "convex", 
+             repel = F, 
+             show.clust.cent = FALSE, ggtheme = theme_minimal())
+```
+
+![](index_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+
+***References for Chapter***
+
+\[1\] Ward Jr, J. H. (1963). Hierarchical grouping to optimize an
+objective function. Journal of the American statistical association,
+58(301), 236–244.
+
+\[2\] Roux, M. (2015). A comparative study of divisive hierarchical
+clustering algorithms. arXiv preprint arXiv:1506.08977.
+
+\[3\] Kassambara, Alboukadel. Practical guide to cluster analysis in R:
+Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+\[4\] Kassambara, Alboukadel. Practical guide to cluster analysis in R:
+Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+\[5\] Kassambara, Alboukadel. Practical guide to cluster analysis in R:
+Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+\[6\] Kassambara, Alboukadel. Practical guide to cluster analysis in R:
+Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+\[7\] Ward Jr, J. H. (1963). Hierarchical grouping to optimize an
+objective function. Journal of the American statistical association,
+58(301), 236–244.
+
+\[8\] Triayudi, A., & Fitri, I. (2018). Comparison of parameter-free
+agglomerative hierarchical clustering methods. ICIC Express Letters,
+12(10), 973–980.
