@@ -23,6 +23,18 @@
     Yöntemi](#54-rda-ortalama-bağlantı-yöntemi)
 - [6. Yoğunluk Bazlı Kümeleme](#6-yoğunluk-bazlı-kümeleme)
   - [6.1. R’da Yoğunluk Bazlı Kümeleme](#61-rda-yoğunluk-bazlı-kümeleme)
+- [7. Küme Geçerliliği](#7-küme-geçerliliği)
+  - [7.1. Connectivity](#71-connectivity)
+    - [7.1.1. R’da Connectivity](#711-rda-connectivity)
+  - [7.2. Düzeltilmiş Rand Indeksi](#72-düzeltilmiş-rand-indeksi)
+    - [7.2.1. R’da Düzeltilmiş Rand
+      Indeksi](#721-rda-düzeltilmiş-rand-indeksi)
+  - [7.3. Meila’s Variation of
+    Information](#73-meilas-variation-of-information)
+    - [7.3.1. R’da Meila’s Variation of
+      Information](#731-rda-meilas-variation-of-information)
+  - [7.4. R’da Küme Geçerliği İçin
+    Silhouette](#74-rda-küme-geçerliği-i̇çin-silhouette)
 
 # 1. Denetimsiz Öğrenme Nedir?
 
@@ -1402,3 +1414,116 @@ spatial clustering of application with noise. Data Mining TNM033, 33,
 11–30.
 
 \[3\] <https://ml-explained.com/blog/dbscan-explained>
+
+# 7. Küme Geçerliliği
+
+Şimdiye kadar dört farklı kümeleme algoritmasının nasıl çalıştığını,
+arkalarında yatan ana fikirleri ve R programlama dili ile bu
+algoritmaların nasıl uygulandığını gördük. Peki kümeleme analizi
+kümelemenin yapılmasıyla sonlanan, yüzeysel bir analiz olabilir mi?
+Kaggle, Github ve benzeri birçok platforma bakarsanız, evet. Çoğu
+analizde küme geçerlili metriklerinin değerlendirildiğini görmek oldukça
+zor. Ancak bu oldukça sorunlu bir durum. Bu tıpkı R^2 bakılmayan bir
+regresyon analizi, hatta daha da ötesi varsayımların kontrol edilmediği
+bir regresyon analizi yapmak kadar vahim bir durumdur. Bu sebeple küme
+geçerliliği oldukça önemlidir.
+
+Küme geçerliliği metrikleri kabaca iki kategoriye(Dahili Küme
+Geçerliliği ve Harici Küme Geçerliliği) ayrılır. Dahili küme
+geçerliliği, bir kümenin kendi içinde ne kadar homojen olduğunu ölçer.
+Dahili küme doğrulama ölçütleri kümeleme algoritmasının kendisiyle
+ilgili olduğu için küme sayısına, küme boyutuna, gözlem sayısına ve veri
+boyutuna(değişken sayısı) göre değişebilir. Dahili Küme geçerliliği
+metriklerinden bazılarını(Silhouette, Calinski-Harabasz, Davies-Bouldin,
+Dunn) zaten ikinci bölümde görmüştük. Bu sebeple onların nasıl çalıştığı
+ile ile detaylı bir açıklama burada tekrar yapılmayacak. Fakat bir başka
+dahili küme geçerliliği metiriği olan Connectivity’nin nasıl çalıştığına
+bakacağız.
+
+Harici küme geçerliliği, kümeleme sonuçlarının harici verilerle
+karşılaştırılmasıyla ölçülür. Aynısı bir sınıflandırma probleminde de
+sınıflandırma sonuçlarının gerçek sınıflarla karşılaştırılmasıyla
+yapılmaktadır. Bu sebeple harici küme geçerliliği metriklerinin
+uygulanabilmesi için etiketlere yine ihtiyaç duyarız. Birçok harici küme
+geçerlili metriği olmakla birlikte bu kitapta Düzeltilmiş Rand Indeksi
+ve Meila’s Variation of Information metriklerini inceleyeceğiz.
+
+Tüm analizlerde yine aynı veri seti kullanılacaktır.
+
+## 7.1. Connectivity
+
+Connectivity kümedeki her bir gözlem ile o gözlemin dahil olduğu küme
+içindeki diğer tüm gözlemler arasındaki uzaklıkların ortalaması alınarak
+hesaplanır. Kümenin bir bütün olarak ne kadar homojen olduğunu ve
+kümeleme yönteminin başarısını belirlemek için kullanılır. Düşük
+Connectivity değeri, bir kümenin homojen olduğunu ve iyi bir kümeleme
+sonucu verdiğini gösterir\[1\].
+
+### 7.1.1. R’da Connectivity
+
+Connectivity `clValid` paketinde yer alan `connectivity` fonksiyonu ile
+kolaylıkla hesaplanabilir. Fonksiyonun girdileri küme vektörü, veri
+seti, komşu sayısı(deneysel olarak değiştirilebilir) ve uzaklık
+metriğidir:
+
+``` r
+library(clValid)
+k2m_data <- kmeans(df, 2, nstart = 25)
+
+
+connectivity(distance = NULL, k2m_data$cluster, Data = df, neighbSize = 20,
+             method = "euclidean")
+```
+
+    ## [1] 64.96498
+
+## 7.2. Düzeltilmiş Rand Indeksi
+
+Düzeltilmiş Rand endeksi (DRI), iki farklı küme bilgisini karşılaştıran
+bir geçerlilik metriğidir. Her iki kümeleme çözümünde de doğru
+sınıflandırılmış gözlemlerin oranını ölçen Rand endeksinin değiştirilmiş
+bir versiyonudur. Düzeltilmiş Rand endeksi -1 ile 1 arasında değişir ve
+1’e ne kadar yakınsa o kadar başarılı bir sonucu işaret eder.
+
+### 7.2.1. R’da Düzeltilmiş Rand Indeksi
+
+`fpc` paketinde yer alan `cluster.stats` fonksiyonu ile Düzeltilmiş Rand
+Indeksi kolaylıkla hesaplanabilir. Daha önceden de bahsedildiği gibi R,
+kümeleme sonucu oluşan kümeleri sırasıyla 1,2,3 olarak
+isimlendirmektedir. Veri setindeki etiket(bu kitapta örnek olarak
+kullanılan veri setinde M ve B şeklinde iki etiket vardır) ne olursa
+olsun, o etiketin de aynı şekilde dönüştürülmesi gerekmektedir.
+Aşağıdaki kod çerçevesinde ilk satırda bu dönüşüm yapılmıştır. Ayrıca
+`cluster.stats` fonksiyonu birçok değer hesaplayan bir fonksiyondur.
+Özellikle Düzeltilmiş Rand indeksine ulaşmak istiyorsak “\$” işareti ile
+`corrected.rand` ifadesini eklememiz gerekmektedir.
+
+``` r
+diagnosis <- ifelse(wdbc$Diagnosis == "M",1,2 )# it is necessary to make labels numerical
+cluster.stats(d = dist(df),diagnosis, k2m_data$cluster)$corrected.rand
+```
+
+    ## [1] 0.6465881
+
+## 7.3. Meila’s Variation of Information
+
+İki kümeleme çözümü arasındaki benzerliğin bir kümelemeden diğerine
+geçerken kazanılan veya kaybedilen bilgi miktarı ile ölçülebileceği
+fikrine dayanan Meila’s Variation of Information(MVI) metriği, her bir
+kümeleme çözümünün entropisini karşılaştırır ve n gözlem sayısı olmak
+üzere 0 ile log(n) arasında değerler alır. Daha düşük bir MVI değeri,
+iki kümeleme çözümünün daha az benzediğini gösterir. ,
+
+### 7.3.1. R’da Meila’s Variation of Information
+
+Tıpkı Düzeltilmiş Rand Indeksi gibi, MVI da aynı `cluster.stats`
+fonksiyonu ile hesaplanmaktadır. Düzeltilmiş Rand Indeksi için geçerli
+olan her şey, MVI hesaplanmasında da geçerlidir.
+
+``` r
+cluster.stats(d = dist(df),diagnosis, k2m_data$cluster)$vi
+```
+
+    ## [1] 0.5687046
+
+## 7.4. R’da Küme Geçerliği İçin Silhouette
