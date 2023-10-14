@@ -21,6 +21,8 @@
     Bağlantısı](#53-rda-wardın-minimum-varyans-bağlantısı)
   - [5.4. R’da Ortalama Bağlantı
     Yöntemi](#54-rda-ortalama-bağlantı-yöntemi)
+- [6. Yoğunluk Bazlı Kümeleme](#6-yoğunluk-bazlı-kümeleme)
+  - [6.1. R’da Yoğunluk Bazlı Kümeleme](#61-rda-yoğunluk-bazlı-kümeleme)
 
 # 1. Denetimsiz Öğrenme Nedir?
 
@@ -1251,3 +1253,152 @@ objective function. Journal of the American statistical association,
 \[8\] Triayudi, A., & Fitri, I. (2018). Comparison of parameter-free
 agglomerative hierarchical clustering methods. ICIC Express Letters,
 12(10), 973–980.
+
+# 6. Yoğunluk Bazlı Kümeleme
+
+Güzel bir hava, iş/okul yok, arkadaşlarınızla/ailenizle birlikte
+arabanızı yeşillik alana doğru sürmüşsünüz. Güzel havayı ciğerlerinize
+doğru çekerken hafif açlığınızın olduğunu hissediyorsunuz. Ev yapımı
+çilek reçeli ve yer fıstığı ezmesini ekmekle birlikte çantanızdan
+çıkarıyorsunuz. Ancak maalesef reçelin bir kısmı yere dökülüyor.
+Karşılaşabileceğiniz olası durumlar ne olurdu? Büyük ihtimalle bir
+karınca sürüsü seçele doğru yol yapar, hatta reçelin döküldüğü noktadaki
+karınca sayısında bir yoğunluk olurdu.Yoğunluk tabanlı kümeleme, belirli
+bir yarı çaplı daire içerisinde birbirine daha yakın olan karıncaları
+bir araya getirip henüz reçele ulaşamayan, reçele doğru yaklaşmakta olan
+yani daha seyrek olan karıcaları ise ayıran bir kümeleme algoritmasıdır.
+Yoğunluk tabanlı kümelemenin arkasındaki ana fikir, özellik uzayında
+veri noktalarının yoğun olduğu bölgeleri belirlemek ve ardından bu
+bölgelere dayalı kümeler çıkarmaktır\[1\]. Yoğunluk bazlı kümeleme,
+kümeleri diğer yoğun bölgelerden daha düşük nokta yoğunluğuna sahip
+bölgelerle ayrılan yoğun nokta bölgeleri olarak tanımlars\[2\]. Diğer
+bütün kümeleme algoritmalarıyla arasındaki fark, diğer bütün
+algoritmalar bütün gözlemleri bir kümeye atarken yoğunluk bazlı
+kümelemede bazı gözlemler bir kümeye atanmayabilir.
+
+Yoğunluk tabanlı kümelemenin bu kitapta anlatılan diğer algoritmalardan
+bir diğer farkı ise, küme sayısının önceden belirlenmesine gerek
+olmamasıdır. Ancak MinPts ve eps değerlerinin belirlenmesi
+gerekmektedir. *eps* parametresi bir gözlem etrafında dolaşacak olan
+çemberin yarıçapını tanımlar. Buna gözlemin epsilon komşuluğu da denir.
+MinPts parametresi “eps” yarıçapı içindeki minimum komşu sayısıdır. Yani
+çemberin içine kaç gözlem alınacağının belirlenmesidir. Bu değerleri
+belirlemek için KNN distplot kullanılabilir. Uygulama kısmında KNN
+distplot’la bu değerlere nasıl karar verildiğini göreceğiz.
+
+Yoğunluk bazlı kümeleme algoritması sonucunda gözlemler kümelenir veya
+kümelenmezken üç farklı gözlem türü (çekirdek noktaları, sınır noktaları
+ve gürültü noktaları) oluşur. Çekirdek nokta, epsilon komşuluğu içinde
+en az MinPts olan noktadır. Başka bir deyişle, bir çekirdek noktanın bir
+kümenin parçası olarak kabul edilmesi için yeterli sayıda yakın komşusu
+vardır. Sınır noktası, çekirdek nokta olmayan ancak bir çekirdek
+noktanın epsilon komşuluğu içinde yer alan bir noktadır. Sınır noktaları
+bir kümenin parçası olarak kabul edilebilir, ancak kümeye çekirdek
+noktalar kadar güçlü bir şekilde bağlı değildirler. Gürültü noktası,
+epsilon komşuluğu içinde herhangi bir çekirdek noktası bulunmayan bir
+noktadır. Gürültü noktaları genellikle aykırı değerler olarak kabul
+edilir ve herhangi bir kümenin parçası değildir. Tam olarak da gürültü
+noktaları oluşumuyla Yoğunluk Bazlı Kümeleme diğer kümeleme
+algoritmalarından ayrılır.
+
+Aşağıdaki adımlar Yoğunluk Bazlı Kümelemenin anlaşılması için daha
+faydalı olabilir:
+
+1.  MinPts ve epsilon değerleri belirlenir.
+2.  Sınır noktaları tanımlanır.
+3.  Bir çekirdek noktadan başlayarak epsilon komşuluğu içindeki tüm
+    gözlemler bulunur ve aynı kümeye atanır. Bu işlem her bir çekirdek
+    nokta için tekrarlar ve kümedeki başka bir gözlemle epsilon mesafesi
+    içinde oldukları sürece aynı kümeye gözlem eklenmeye devam edilir.
+4.  Algoritma, tanımlanan kümelerin çıktısını verir.
+
+Tüm bu işlemler aşağıdaki küçük animasyon\[3\] gibi gerçekleşir:
+
+![](https://cdn-images-1.medium.com/max/800/1*GxaDEsIpj-xbElZVPZH0Hg.gif)
+
+Özetlemek gerekirse, Yoğunluk Bazlı Kümeleme algoritması özellikle
+farklı yoğunlaşmış veri setleri için oldukça faydalıdır. Hiyerarşik ve
+bölümlemeye dayalı(k-ortalamalar, k-medoidler) gibi algoritmalar
+kümeleri yalnızca eliptik şekilde kümelerken, Yoğunluk Bazlı Kümelemenin
+böyle bir kısıtlamasının olmaması bir artı olarak dikkat çeker. Ancak
+diğer kümeleme algoritmalarına kıyasla boyutu yüksek verilerde de daha
+başarısız olduğu söylenebilir.
+
+## 6.1. R’da Yoğunluk Bazlı Kümeleme
+
+Diğer kümeleme algoritmaları gibi, Yoğunluk Bazlı Kümeleme de R
+aracılığıyla oldukça basit bir şekilde yapılabilir. `fpc` paketinde yer
+alan `dbscan` fonksiyonu ile rahatlıkla bu işlemi yapabiliriz. Ancak
+daha önce de söylediğim gibi, MinPts ve eps değerlerinin önceden
+belirlenmesi gerekmektedir. Bu nedenle, ilk adım olarak bu parametrelere
+karar vermek için bir kNN distplot çizeceğiz.
+
+``` r
+library(fpc)
+library(dbscan)
+kNNdistplot(df, # veri seti 
+            k = 10 # minpts
+            )
+abline(h = 1, lty = 2) # yatay çizgi
+abline(h = 0.6, lty = 2)# yatay çizgi 2
+```
+
+![](index_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+
+kNNdisplot analiz edilirken, tıpkı Dirsek Yönteminde olduğu gibi,
+doğrunun “dirsek” yaptığı nokta belirlenmelidir. Bu nokta eps değeri
+olarak seçilmelidir. Çeşitli denemelerden sonra en uygun değerin 0,6
+olduğuna karar verilmiştir.
+
+MinPts ve eps değerlerine de karar verdiğimize göre şimdi Yoğunluk Bazlı
+Kümeleme yapabiliriz:
+
+``` r
+db <- fpc::dbscan(df, eps = 0.6, MinPts = 10)
+print(db)
+```
+
+    ## dbscan Pts=569 MinPts=10 eps=0.6
+    ##         0   1   2
+    ## border 96  58  27
+    ## seed    0  49 339
+    ## total  96 107 366
+
+Çıktıyı analiz edersek, aşağıdaki yorumları yapabiliriz:
+
+Yoğunluk tabanlı kümeleme veri setini iki kümeye ayırmıştır.
+
+Çıktı, herhangi bir kümeye atanamayan toplam 96 gürültü değeri
+göstermektedir.
+
+Birinci kümede 58, ikinci kümede ise 27 sınır noktası bulunmaktadır.
+
+Birinci kümede 49, ikinci kümede 339 çekirdek noktası bulunmaktadır.
+
+Önceki kümeleme algoritmalarında yaptığımız gibi, `factoextra`
+paketindeki `fviz_cluster` fonksiyonu ile küme grafiğini de
+görselleştirebiliriz:
+
+``` r
+fviz_cluster(db, data = df, stand = FALSE,
+             ellipse = FALSE, show.clust.cent = FALSE,
+             geom = "point",palette = "jco", ggtheme = theme_classic())
+```
+
+![](index_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+
+Grafik incelendiğinde, kümeler arasındaki gözlem farkının küçük olduğu
+görülebilir. Gürültü değerlerinin fazlalığı da (siyah noktalar) dikkat
+çekicidir.
+
+**References for Chapter**
+
+\[1\] Kriegel, H. P., Kröger, P., Sander, J., & Zimek, A. (2011).
+Density‐based clustering. Wiley interdisciplinary reviews: data mining
+and knowledge discovery, 1(3), 231–240.
+
+\[2\] Bäcklund, H., Hedblom, A., & Neijman, N. (2011). A density-based
+spatial clustering of application with noise. Data Mining TNM033, 33,
+11–30.
+
+\[3\] <https://ml-explained.com/blog/dbscan-explained>

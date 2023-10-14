@@ -476,15 +476,15 @@ Hiyerarşik Kümeleme, nesnelerin dendrogram adı verilen, kümelerin ağaç ben
 
 Tek bağlantı: En yakın komşu yöntemi olarak da bilinen bu yöntem, birleştirilen/ayrıştırılan iki kümenin en yakın noktaları arasındaki mesafeyi hesaplar[4]. Aşağıdaki illüstrasyon bunu açıklamak için faydalı olabilir:
 
-![](images/ScreenShot Tool -20231013135226.png)
+![](images/ScreenShot%20Tool%20-20231013135226.png)
 
 Tam bağlantı: En uzak komşu yöntemi olarak da bilinen bu yöntem, birleştirilen/ayrıştırılan iki kümenin en uzak noktaları arasındaki mesafeyi hesaplar[5].
 
-![](images/ScreenShot Tool -20231013135433.png)
+![](images/ScreenShot%20Tool%20-20231013135433.png)
 
 Ortalama bağlantı: Bu yöntem, birleştirilen iki kümedeki tüm nokta çiftleri arasındaki ortalama mesafeyi hesaplar. [6]
 
-![](images/ScreenShot Tool -20231013135623.png)
+![](images/ScreenShot%20Tool%20-20231013135623.png)
 
 Ward'ın Minimum Varyans bağlantısı: Bu yöntem, aynı küme içindeki noktalar arasındaki uzaklıkların varyansını en aza indirir. Her bir küme içindeki karesel uzaklıkların toplamında en küçük artışa neden olan kümeleri birleştirir [7].
 
@@ -499,6 +499,7 @@ Daha önceki bölümlerde uzaklık metrikleri uygulamalarında genellikle Öklit
 `stats` paketindeki cophenetic fonksiyonu R'da kojenetik mesafetyi hesaplamamıza olanak sağlamaktadır. Ancak ik önce, karşılaştıracağımız iki uzaklık metriğinin(bu uygulama özelinde Öklid ve Manhattan) uzaklık matrislerini hesaplamamız gerekmektedir. Bunun için yine `stats` paketinde yer alan `dist` fonksiyonunu kullanacağız.
 
 \
+
 ```{r}
 dist_euc <- dist(df, method="euclidean") # veri, uzaklık metriği
 dist_man <- dist(df, method="manhattan") # veri, uzaklık metriği
@@ -524,6 +525,7 @@ cor(dist_euc,coph_e)
 coph_m <- cophenetic(hc_m)
 cor(dist_man,coph_m)
 ```
+
 Genel olarak, daha yüksek bir korelasyon katsayısı, dendrogramın orijinal veri noktaları arasındaki ikili mesafelerin daha doğru bir temsili olduğunu gösterir. Kofenetik korelasyon katsayısı 0 ile 1 arasında değişebilir ve 1 değeri dendrogram ile ikili mesafeler arasında mükemmel bir uyum olduğunu gösterir.
 
 Bu durumda, Cophenetic ve mesafe matrisi arasındaki korelasyon incelendiğinde, Öklid mesafesi ile hiyerarşik kümelemenin daha iyi sonuçlar verdiği söylenebilir. Bu yüzden analize Öklid uzaklık metriği ile devam edeceğiz.
@@ -540,7 +542,6 @@ Hiyerarşik kümelemeden oluşturduğunuz nesne ile hiyerarşik kümelemenin den
 hc_e <- hclust(d=dist_euc, method="ward.D2")
 fviz_dend(hc_e,cex=.5) 
 ```
-
 
 Oldukça karışık görünmesiyle birlikte, dendogramı kesmek için en iyi yükseklik değerinin 35-40 aralığında olduğu söylenebilir. Bu aynı zamanda 2 kümeyi ifade eder. Veri kümesini 2 küme ile hiyerarşik olarak kümeleyelim. Bunu yapmak için `stats` paketindeki `cutree` fonksiyonu kullanılabiliriz.
 
@@ -580,7 +581,6 @@ hc_e2 <- hclust(d=dist_euc, method="average")
 fviz_dend(hc_e2,cex=.5) 
 ```
 
-
 Dendogramı ilk bakışımızda bile Ward'ın sonucunda oldukça ayrıştığı fark edilmektedir. Kümelerin Ward'a göre oldukça dengesiz olduğu görülmektedir. Bu durum küme analizi için sorun yaratabilir. Bununla birlikte, bağlantı yönteminin veri setine büyük ölçüde bağlı olduğunu göstermek için faydalı bir örnektir. Veriler için en iyi bağlantı yöntemine karar vermek çok önemlidir. Bağlantıya karar vermenin bir yolu, aykırı değerlerin olup olmadığını görmek için veri setinin tanımlayıcı istatistiklerini kontrol etmektir. Başka bir yol da hangi dendogramın iyi göründüğünü görmek için tüm bağlantı yöntemlerini denemektir.
 
 Tıpkı diğer yöntemlerde olduğu gibi iki küme sayısı ile devam edelim:
@@ -599,7 +599,6 @@ fviz_dend(hc_e2, k = 2,
           color_labels_by_k = TRUE, 
           rect = TRUE )
 ```
-
 
 Küme grafiğine bakalım:
 
@@ -628,31 +627,74 @@ fviz_cluster(list(data = pcadata, cluster = grupav2),
 
 [8] Triayudi, A., & Fitri, I. (2018). Comparison of parameter-free agglomerative hierarchical clustering methods. ICIC Express Letters, 12(10), 973--980.
 
+# 6. Yoğunluk Bazlı Kümeleme
 
+Güzel bir hava, iş/okul yok, arkadaşlarınızla/ailenizle birlikte arabanızı yeşillik alana doğru sürmüşsünüz. Güzel havayı ciğerlerinize doğru çekerken hafif açlığınızın olduğunu hissediyorsunuz. Ev yapımı çilek reçeli ve yer fıstığı ezmesini ekmekle birlikte çantanızdan çıkarıyorsunuz. Ancak maalesef reçelin bir kısmı yere dökülüyor. Karşılaşabileceğiniz olası durumlar ne olurdu? Büyük ihtimalle bir karınca sürüsü seçele doğru yol yapar, hatta reçelin döküldüğü noktadaki karınca sayısında bir yoğunluk olurdu.Yoğunluk tabanlı kümeleme, belirli bir yarı çaplı daire içerisinde birbirine daha yakın olan karıncaları bir araya getirip henüz reçele ulaşamayan, reçele doğru yaklaşmakta olan yani daha seyrek olan karıcaları ise ayıran bir kümeleme algoritmasıdır. Yoğunluk tabanlı kümelemenin arkasındaki ana fikir, özellik uzayında veri noktalarının yoğun olduğu bölgeleri belirlemek ve ardından bu bölgelere dayalı kümeler çıkarmaktır[1]. Yoğunluk bazlı kümeleme, kümeleri diğer yoğun bölgelerden daha düşük nokta yoğunluğuna sahip bölgelerle ayrılan yoğun nokta bölgeleri olarak tanımlars[2]. Diğer bütün kümeleme algoritmalarıyla arasındaki fark, diğer bütün algoritmalar bütün gözlemleri bir kümeye atarken yoğunluk bazlı kümelemede bazı gözlemler bir kümeye atanmayabilir.
 
+Yoğunluk tabanlı kümelemenin bu kitapta anlatılan diğer algoritmalardan bir diğer farkı ise, küme sayısının önceden belirlenmesine gerek olmamasıdır. Ancak MinPts ve eps değerlerinin belirlenmesi gerekmektedir. *eps* parametresi bir gözlem etrafında dolaşacak olan çemberin yarıçapını tanımlar. Buna gözlemin epsilon komşuluğu da denir. MinPts parametresi "eps" yarıçapı içindeki minimum komşu sayısıdır. Yani çemberin içine kaç gözlem alınacağının belirlenmesidir. Bu değerleri belirlemek için KNN distplot kullanılabilir. Uygulama kısmında KNN distplot'la bu değerlere nasıl karar verildiğini göreceğiz.
 
+Yoğunluk bazlı kümeleme algoritması sonucunda gözlemler kümelenir veya kümelenmezken üç farklı gözlem türü (çekirdek noktaları, sınır noktaları ve gürültü noktaları) oluşur. Çekirdek nokta, epsilon komşuluğu içinde en az MinPts olan noktadır. Başka bir deyişle, bir çekirdek noktanın bir kümenin parçası olarak kabul edilmesi için yeterli sayıda yakın komşusu vardır. Sınır noktası, çekirdek nokta olmayan ancak bir çekirdek noktanın epsilon komşuluğu içinde yer alan bir noktadır. Sınır noktaları bir kümenin parçası olarak kabul edilebilir, ancak kümeye çekirdek noktalar kadar güçlü bir şekilde bağlı değildirler. Gürültü noktası, epsilon komşuluğu içinde herhangi bir çekirdek noktası bulunmayan bir noktadır. Gürültü noktaları genellikle aykırı değerler olarak kabul edilir ve herhangi bir kümenin parçası değildir. Tam olarak da gürültü noktaları oluşumuyla Yoğunluk Bazlı Kümeleme diğer kümeleme algoritmalarından ayrılır.
 
+Aşağıdaki adımlar Yoğunluk Bazlı Kümelemenin anlaşılması için daha faydalı olabilir:
 
+1.  MinPts ve epsilon değerleri belirlenir.
+2.  Sınır noktaları tanımlanır.
+3.  Bir çekirdek noktadan başlayarak epsilon komşuluğu içindeki tüm gözlemler bulunur ve aynı kümeye atanır. Bu işlem her bir çekirdek nokta için tekrarlar ve kümedeki başka bir gözlemle epsilon mesafesi içinde oldukları sürece aynı kümeye gözlem eklenmeye devam edilir.
+4.  Algoritma, tanımlanan kümelerin çıktısını verir.
 
+Tüm bu işlemler aşağıdaki küçük animasyon[3] gibi gerçekleşir:
 
+![](https://cdn-images-1.medium.com/max/800/1*GxaDEsIpj-xbElZVPZH0Hg.gif)
 
+Özetlemek gerekirse, Yoğunluk Bazlı Kümeleme algoritması özellikle farklı yoğunlaşmış veri setleri için oldukça faydalıdır. Hiyerarşik ve bölümlemeye dayalı(k-ortalamalar, k-medoidler) gibi algoritmalar kümeleri yalnızca eliptik şekilde kümelerken, Yoğunluk Bazlı Kümelemenin böyle bir kısıtlamasının olmaması bir artı olarak dikkat çeker. Ancak diğer kümeleme algoritmalarına kıyasla boyutu yüksek verilerde de daha başarısız olduğu söylenebilir.
 
+## 6.1. R'da Yoğunluk Bazlı Kümeleme
 
+Diğer kümeleme algoritmaları gibi, Yoğunluk Bazlı Kümeleme de R aracılığıyla oldukça basit bir şekilde yapılabilir. `fpc` paketinde yer alan `dbscan` fonksiyonu ile rahatlıkla bu işlemi yapabiliriz. Ancak daha önce de söylediğim gibi, MinPts ve eps değerlerinin önceden belirlenmesi gerekmektedir. Bu nedenle, ilk adım olarak bu parametrelere karar vermek için bir kNN distplot çizeceğiz.
 
+```{r message=FALSE, warning=FALSE}
+library(fpc)
+library(dbscan)
+kNNdistplot(df, # veri seti 
+            k = 10 # minpts
+            )
+abline(h = 1, lty = 2) # yatay çizgi
+abline(h = 0.6, lty = 2)# yatay çizgi 2
+```
 
+kNNdisplot analiz edilirken, tıpkı Dirsek Yönteminde olduğu gibi, doğrunun "dirsek" yaptığı nokta belirlenmelidir. Bu nokta eps değeri olarak seçilmelidir. Çeşitli denemelerden sonra en uygun değerin 0,6 olduğuna karar verilmiştir.
 
+MinPts ve eps değerlerine de karar verdiğimize göre şimdi Yoğunluk Bazlı Kümeleme yapabiliriz:
 
+```{r}
+db <- fpc::dbscan(df, eps = 0.6, MinPts = 10)
+print(db)
+```
 
+Çıktıyı analiz edersek, aşağıdaki yorumları yapabiliriz:
 
+Yoğunluk tabanlı kümeleme veri setini iki kümeye ayırmıştır.
 
+Çıktı, herhangi bir kümeye atanamayan toplam 96 gürültü değeri göstermektedir.
 
+Birinci kümede 58, ikinci kümede ise 27 sınır noktası bulunmaktadır.
 
+Birinci kümede 49, ikinci kümede 339 çekirdek noktası bulunmaktadır.
 
+Önceki kümeleme algoritmalarında yaptığımız gibi, `factoextra` paketindeki `fviz_cluster` fonksiyonu ile küme grafiğini de görselleştirebiliriz:
 
+```{r}
+fviz_cluster(db, data = df, stand = FALSE,
+             ellipse = FALSE, show.clust.cent = FALSE,
+             geom = "point",palette = "jco", ggtheme = theme_classic())
+```
 
+Grafik incelendiğinde, kümeler arasındaki gözlem farkının küçük olduğu görülebilir. Gürültü değerlerinin fazlalığı da (siyah noktalar) dikkat çekicidir.
 
+**References for Chapter**
 
+[1] Kriegel, H. P., Kröger, P., Sander, J., & Zimek, A. (2011). Density‐based clustering. Wiley interdisciplinary reviews: data mining and knowledge discovery, 1(3), 231–240.
 
+[2] Bäcklund, H., Hedblom, A., & Neijman, N. (2011). A density-based spatial clustering of application with noise. Data Mining TNM033, 33, 11–30.
 
-
-
+[3] https://ml-explained.com/blog/dbscan-explained
