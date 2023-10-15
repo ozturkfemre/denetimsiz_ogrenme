@@ -1,8 +1,4 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
+
 
 [![](images/denetimsiz_ogrenme_feo.png)](https://ozturkfemre.github.io/denetimsiz_ogrenme/)
 
