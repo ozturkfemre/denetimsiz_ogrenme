@@ -14,7 +14,7 @@ Denetimsiz öğrenme, veri dünyasında saklı olan sırları keşfetme sanatıd
 
 Denetimsiz öğrenmenin merkezinde iki ana konu bulunmaktadır: kümeleme ve boyut indirgeme. Kümeleme, bir veri setinde bulunan gözlemleri benzerliklerine göre gruplara ayırma işlemidir. Eve yeni bir kitaplık aldığınızı hayal edin. Önceden çalışma masanızın üzerine, evdeki sehpalara yığmanız gereken kitapları, şimdi, yeni aldığınız kitaplığa yerleştirebilirsiniz. Fakat kitapların her birinin hangi rafta olacağını ve hatta raftaki sıralamasını nasıl belirlerdiniz? Örneğim Asimov, Philip Dick ve Frank Herbert'in kitaplarına ek olarak James Joyce, Tolstoy ve Albert Camus gibi yazarlara ait kitaplarınız da var. Bu kitaplar arasındaki benzerlik nedir? Asimov ve Herbert gibi yazarlar bilim-kurgu temalı kitaplar kaleme aldıkları için bir benzerlikleri olduğunu söyleyebiliriz. Fakat diğer taraftan Joyce ve Camus gibi yazarları ise dünya klasikleri çatısı altında birleştirebiliriz. Yani temelde iki küme oluşturmuş oluruz; dünya klasikleri ve bilim-kurgu kitapları. Yani kitaplığımızda bulunan kitapları kümelemiş oluruz. Örneğini vermiş olduğum bu teknik, yani kümemele, pazarlamada müşteri segmentasyonundan sağlık hizmetlerinde hastalık alt tiplerinin belirlenmesine kadar çeşitli alanlarda son derece kullanışlıdır.
 
-Boyut indirgeme, özelliklerin veya boyutların sayısını azaltarak karmaşık verileri basitleştirmekle ilgilidir. Ayrıntılı bir resim düşünün; boyut indirgeme orijinalin özünü koruyan daha basit, soyut bir temsil oluşturmaya yardımcı olur. Unutulmamalıdır ki makinelerle yaptığımız her işlemin arka planda makineye bir maliyeti vardır. Tıpkı iş yerinde size verilen bir görev, ya da okulda yapmanız gereken bir ödev gibi. Bu tarz görevlerin yerine getirilmesi için vakit, emek ve belki çok daha fazlasını harcamanız gerekir. Ancak size verilen görev ne kadar basitse, yapacağınız harcamalar da aynı nicelikte azalacaktır. Boyut indirgeme de tam olarak bunu yapmaktadır. Boyutunu indirgediğimiz bir veri seti, makinenin daha az yorulmasına ve maliyetinin szalmasına olanak sağlayacaktır. Üstelik tek artısının bu olduğunu da söyleyemeyiz. Bu kitaba ulaşabilen bir çoğunuzun da bilebileceği gibi veri setlerinin görselleştirilmesi üç boyutla sınırlıdır. Üçüncü boyut, yani bir başka deyişle üç değişkenli, veri setleri dışında, daha fazla değişkene sahip veri setlerini görselleştirmek mümkün değildir. Fakat örneğin on beş değişkenli bir setinin boyutunu iki değişkene düşürürsek, sizin de tahmin edebileceğimiz gibi veri seti görselleştirilebilir bir hale gelecektir. Tüm bunlar hesaba katıldığında ise boyut indirgemenin bizi boyutu büyük bir lanetten kurtaran, tonton algoritma büyücüsü olduğunu söyleyebiliriz.
+Boyut indirgeme, özelliklerin veya boyutların sayısını azaltarak karmaşık verileri basitleştirmekle ilgilidir. Ayrıntılı bir resim düşünün; boyut indirgeme orijinalin özünü koruyan daha basit, soyut bir temsil oluşturmaya yardımcı olur. Unutulmamalıdır ki makinelerle yaptığımız her işlemin arka planda makineye bir maliyeti vardır. Tıpkı iş yerinde size verilen bir görev, ya da okulda yapmanız gereken bir ödev gibi. Bu tarz görevlerin yerine getirilmesi için vakit, emek ve belki çok daha fazlasını harcamanız gerekir. Ancak size verilen görev ne kadar basitse, yapacağınız harcamalar da aynı nicelikte azalacaktır. Boyut indirgeme de tam olarak bunu yapmaktadır. Boyutunu indirgediğimiz bir veri seti, makinenin daha az yorulmasına ve maliyetinin azalmasına olanak sağlayacaktır. Üstelik tek artısının bu olduğunu da söyleyemeyiz. Bu kitaba ulaşabilen bir çoğunuzun da bilebileceği gibi veri setlerinin görselleştirilmesi üç boyutla sınırlıdır. Üçüncü boyut, yani bir başka deyişle üç değişkenli, veri setleri dışında, daha fazla değişkene sahip veri setlerini görselleştirmek mümkün değildir. Fakat örneğin on beş değişkenli bir setinin boyutunu iki değişkene düşürürsek, sizin de tahmin edebileceğimiz gibi veri seti görselleştirilebilir bir hale gelecektir. Tüm bunlar hesaba katıldığında ise boyut indirgemenin bizi boyutu büyük bir lanetten kurtaran, tonton algoritma büyücüsü olduğunu söyleyebiliriz.
 
 Bu kitabın kalan kısmında çeşitli kümeleme algoritmalarıyla birlikte boyut indirgeme tekniklerinden Temel Bileşen Analizinin nasıl çalıştığını, adım adım nasıl hesaplandığını ve R'da nasıl uygulanacağını göreceğiz. Ayrıca kitabın en sonunda yer alan Alıştırma bölümüyle öğrendiklerinizi sınayabilir, hatta pekiştirebilirsiniz. Unutmayın ki makine öğrenmesi bir buz dağı ise öğretmek görünen, öğrenmek ise buz dağının görünmeyen kısmıdır. Eğer birçok veri seti ile öğrendiğiniz şeyleri tekrar tekrar denemezseniz aslında hiçbir şey öğrenmemiş olacaksınız. Tüm bunlar düşünüldüğünde umarım bu kitap sizin için faydalı olacaktır.
 
@@ -69,7 +69,7 @@ pcadata <- predict(data.pca)[,1:2]
 df <- pcadata
 ```
 
-```{r echo=TRUE}
+```{r message=FALSE, warning=FALSE}
 fviz_nbclust(df, # veri seti  
              kmeans, # kümeleme algoritması 
              nstart = 25, # kümeleme algoritması ile ilgili seçenek 1
@@ -99,7 +99,7 @@ Yukarıdaki adımlarla veri setinde yer alan her bir gözlem için Silhouette de
 
 Yine `fviz_nbclust` fonksiyonu optimum küme sayısına karar vermek için ortalama silhoutte grafiğini görmenin bir yoludur:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 fviz_nbclust(df, # veri
              kmeans, # kümeleme algoritması
              method = "silhouette") # silhouette grafiği için 
@@ -154,7 +154,7 @@ Varyans Oranı Kriteri olarak da bilinen Calinski-Harabasz, tıpkı diğer yönt
 
 Calinski-Harabasz indeksi 0 ile sonsuz arasında değerler alır ve daha yüksek bir değer daha iyi bir kümelemeye işaret eder. Calinski - Harabasz yöntemi için R'da daha önce bahsettiğim yöntemlerde olduğu gibi bir görselleştirme fonksiyonu bulunmamaktadır. Bu nedenle, `fpc` paketindeki `calinhara` fonksiyonunu kullanarak 2 ila 10 arasındaki kümeler için Calinski - Harabasz değerlerini hesaplayan ve görselleştiren bir fonksiyon yazalım.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(fpc) # calinhara fonksiyonu için kütüphanenin çağırılması
 
 fviz_ch <- function(data) { # fonksiyonun oluşturulması: tek girdisi veri seti
@@ -201,7 +201,7 @@ Davies-Bouldin indeksi 0 ile sonsuz arasında değerler alır ve daha düşük b
 
 Tıpkı Calinski-Harabasz yönteminde olduğu gibi Davies-Bouldin yöntemi için de R'da bir görselleştirme fonksiyonu bulunmamaktadır. Bu nedenle, `NbClust` paketindeki `NbClust` fonksiyonunu kullanarak 2 ila 10 arasındaki kümeler için Davies Bouldin değerini hesaplayan ve görselleştiren bir fonksiyon yazalım.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(NbClust)
 
 fviz_db <- function(data) {
@@ -348,7 +348,7 @@ R'da k-ortalamalar kümeleme algoritmasını birçok paket ve fonksiyon ile yapa
 
 \
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 km_data <- kmeans(df, # kümelenecek veri seti
                   2, # k, küme sayısı
                   nstart=25 # beşinci adımdaki iterasyon sayısı
@@ -360,7 +360,7 @@ print(km_data) # sonuçların çıktısı
 
 Elbette bu çıktı üzerinde daha detaylı bir yorum yapmak oldukça mümkün; ancak tek seçeneğimiz bu değil. Kümeleme sonucunu `factoextra` paketindeki `fviz_cluster` fonksiyonu ile görselleştirebiliriz. `factoextra` paketi tüm görselleştirmeler için `ggplot2` paketini kullandığından, `ggplot2` fonksiyonu ile çizdiğiniz grafiklerde yapabileceğiniz değişikliklerin aynısını `fviz_cluster` grafiklerinde de uygulayabilirsiniz.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(factoextra)
 fviz_cluster(km_data,# clustering result 
              data = pcadata, # data 
@@ -381,7 +381,7 @@ Bu grafik ise aşağıdaki maddelerle yorumlanabilir:
 
 Verileri `factoextra` paketinden `eclust` fonksiyonu ile de kümelemek mümkündür.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 k2m_data <- factoextra::eclust(df, # veri seti
                                "kmeans", # kümeleme algoritması
                                k = 2, # küme sayısı
@@ -444,7 +444,7 @@ Küme atamaları artık değişmeyene veya maksimum iterasyon sayısına ulaşan
 
 R'da k-medoidler algoritmasını uygulamak için birçok paket ve fonksiyon mevcuttur. Bu kitap özelinde `cluster` paketinde yer alan `pam` fonksiyonunu kullanacağız. Tıpkı k-ortalamalar fonksiyonunda olduğu gibi, kümeleme sonuçlarını yorumlayabilmek için sonucu bir nesneye kaydedip print fonksiyonu ile bu nesnenin çıktısını yazdırmamız gerekmektedir. Tüm bu işlemlerin uygulanması için aşağıdaki kodları yazmamız gerekmektedir:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(cluster)
 pam_data <- pam(df,2)
 print(pam_data)
@@ -490,37 +490,37 @@ Ward'ın Minimum Varyans bağlantısı: Bu yöntem, aynı küme içindeki noktal
 
 Her yöntemin kendine has güçlü ve zayıf yönleri olduğundan, bağlantı yönteminin seçimi ortaya çıkan kümeler üzerinde önemli bir etkiye sahip olabilir. Bu nedenle, veriler ve ele alınan spesifik problem için hangi bağlantı yönteminin en uygun olduğunu dikkatlice değerlendirmek önemlidir. Tıpkı küme sayısı belirleme methodlarında olduğu gibi; birden çok bağlantıyı kullanarak kümeleme yaptıktan sonra sonuçları analiz etmek çok daha faydalı olacaktır. Bu kitaptaki R uygulamarında yalnızca Ward'ın Minimum Varyans Yöntemi ile Ortalama bağlantı yöntemi olmak üzere iki metrik kullanılmıştır.
 
-## 5.2. Kojenetik Mesafe
+## 5.1. Kojenetik Mesafe
 
 Daha önceki bölümlerde uzaklık metrikleri uygulamalarında genellikle Öklit metriğinin kullanıldığından bahsetmiştik. Hiyerarşik kümeleme özelinde uzaklık metriğine karar vermek Kojenetik mesafe ile de karar verebiliriz. Kojenetik mesafe, kümeleme algoritması tarafından üretilen dendrogramdaki iki gözlem arasındaki benzerliği değerlendirmek için hiyerarşik kümelemede kullanılan bir ölçüdür. Orijinal veri uzayında, dendrogramda aynı kümede ilk kez birleştikleri seviyede iki gözlem arasındaki mesafe olarak tanımlanır[8]. Kojenetik mesafe ile veri uzayındaki gözlemler arasındaki orijinal mesafe arasındaki yüksek korelasyon, kümeleme çözümünün verinin yapısını iyi koruduğunu gösterir.
 
-### 5.2.1. R'de Kojenetik Mesafe
+### 5.1.1. R'de Kojenetik Mesafe
 
 `stats` paketindeki cophenetic fonksiyonu R'da kojenetik mesafetyi hesaplamamıza olanak sağlamaktadır. Ancak ik önce, karşılaştıracağımız iki uzaklık metriğinin(bu uygulama özelinde Öklid ve Manhattan) uzaklık matrislerini hesaplamamız gerekmektedir. Bunun için yine `stats` paketinde yer alan `dist` fonksiyonunu kullanacağız.
 
 \
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 dist_euc <- dist(df, method="euclidean") # veri, uzaklık metriği
 dist_man <- dist(df, method="manhattan") # veri, uzaklık metriği
 ```
 
 Ardından veri setimizi her iki uzaklık metriği ile hiyerarşik kümeleme algoritmasını uygulamamız gerekmektedir. Bu bölümde özelinde Ward bağlantıyı kullanalım:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 hc_e <- hclust(d=dist_euc, method="ward.D2")
 hc_m <- hclust(d=dist_man, method="ward.D2")
 ```
 
 Son olarak, her iki kümeleme için de kojenetik mesafeyi hesaplamamız ve mesafe metriği ile kojenetik mesafe arasındaki korelasyon katsayısını kontrol etmemiz gerekir.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # öklid için
 coph_e <- cophenetic(hc_e)
 cor(dist_euc,coph_e)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # manhattan için
 coph_m <- cophenetic(hc_m)
 cor(dist_man,coph_m)
@@ -530,7 +530,7 @@ Genel olarak, daha yüksek bir korelasyon katsayısı, dendrogramın orijinal ve
 
 Bu durumda, Cophenetic ve mesafe matrisi arasındaki korelasyon incelendiğinde, Öklid mesafesi ile hiyerarşik kümelemenin daha iyi sonuçlar verdiği söylenebilir. Bu yüzden analize Öklid uzaklık metriği ile devam edeceğiz.
 
-## 5.3. R'da Ward'ın Minimum Varyans Bağlantısı
+## 5.2. R'da Ward'ın Minimum Varyans Bağlantısı
 
 Hiyerarşik kümelemede küme sayısını belirlemek için, tıpkı k-ortalamalar ve k-medoidlerde yaptığımız gibi, en uygun küme sayısını belirleme yöntemlerini kullanabiliriz. Bu konuyu Bölüm 2'de ele aldığımız için bu bölümde değinilmeyecektir. Ancak, tüm yöntemlerin en uygun küme sayısı olarak 2'yi önerdiğini hatırlatmak faydalı olabilir.
 
@@ -545,7 +545,7 @@ fviz_dend(hc_e,cex=.5)
 
 Oldukça karışık görünmesiyle birlikte, dendogramı kesmek için en iyi yükseklik değerinin 35-40 aralığında olduğu söylenebilir. Bu aynı zamanda 2 kümeyi ifade eder. Veri kümesini 2 küme ile hiyerarşik olarak kümeleyelim. Bunu yapmak için `stats` paketindeki `cutree` fonksiyonu kullanılabiliriz.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 grupward2 <- cutree(hc_e, k = 2)
 table(grupward2) # her kümedeki eleman sayısını verir
 grupward2 # kümeleme vektörünün çıktısı
@@ -553,7 +553,7 @@ grupward2 # kümeleme vektörünün çıktısı
 
 Küme atamaları sonrası dendogramı görmek için `factoextra` paketinde yer alan `fviz_dend` fonksiyonunu kullanabiliriz.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 fviz_dend(hc_e, # kümeleme sonucu
           k = 2, # küme sayısı
           cex = 0.5, 
@@ -563,7 +563,7 @@ fviz_dend(hc_e, # kümeleme sonucu
 
 Tıpkı diğer kümeleme yöntemlerinde olduğu gibi küme grafiğini `fviz_cluster` fonksiyonu ile çizebiliriz:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 fviz_cluster(list(data = pcadata, cluster = grupward2),
              ellipse.type = "convex", 
              repel = F, 
@@ -572,7 +572,7 @@ fviz_cluster(list(data = pcadata, cluster = grupward2),
 
 Küme grafiği incelendiğinde örtüşme olduğunu gözlemleyebiliriz. Ayrışmanın sadece PC1 boyutunda gerçekleştiği görülebilir. Kırmızı ile gösterilen ilk kümedeki varyans yüksek iken, yeşil ile gösterilen ikinci kümedeki varyans düşüktür.
 
-## 5.4. R'da Ortalama Bağlantı Yöntemi
+## 5.3. R'da Ortalama Bağlantı Yöntemi
 
 Kojenetik uzaklık Ward'ın Minimum Varyans Yönteminde ele alındığı için bu bölümde sizlerle paylaşılmayacaktır. Ancak Öklid uzaklığının yine daha iyi sonuçlar verdiğini belirtmek gerekir. Yine `stats` paketindeki `hclust` fonksiyonu ile hiyerarşik kümelemeden oluşturduğunuz nesne ile hiyerarşik kümelemenin dendogramını görselleştirmek için `factoextra` paketindeki `fviz_dend` fonksiyonunu kullanabilirsiniz.
 
@@ -593,7 +593,7 @@ table(grupav2)
 
 Çıktıdan da görebileceğimiz gibi, kümeler oldukça dengesiz -ki bunu dendogramdan da kolaylıkla tahmin etmiştik. Küme atamalarıyla dendogramı renklendirmek bu bağlantı yöntemi için de geçerli:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 fviz_dend(hc_e2, k = 2, 
           cex = 0.5, 
           color_labels_by_k = TRUE, 
@@ -602,7 +602,7 @@ fviz_dend(hc_e2, k = 2,
 
 Küme grafiğine bakalım:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 fviz_cluster(list(data = pcadata, cluster = grupav2),
              ellipse.type = "convex", 
              repel = F, 
@@ -666,7 +666,7 @@ kNNdisplot analiz edilirken, tıpkı Dirsek Yönteminde olduğu gibi, doğrunun 
 
 MinPts ve eps değerlerine de karar verdiğimize göre şimdi Yoğunluk Bazlı Kümeleme yapabiliriz:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 db <- fpc::dbscan(df, eps = 0.6, MinPts = 10)
 print(db)
 ```
@@ -683,7 +683,7 @@ Birinci kümede 49, ikinci kümede 339 çekirdek noktası bulunmaktadır.
 
 Önceki kümeleme algoritmalarında yaptığımız gibi, `factoextra` paketindeki `fviz_cluster` fonksiyonu ile küme grafiğini de görselleştirebiliriz:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 fviz_cluster(db, data = df, stand = FALSE,
              ellipse = FALSE, show.clust.cent = FALSE,
              geom = "point",palette = "jco", ggtheme = theme_classic())
@@ -693,29 +693,29 @@ Grafik incelendiğinde, kümeler arasındaki gözlem farkının küçük olduğu
 
 **References for Chapter**
 
-[1] Kriegel, H. P., Kröger, P., Sander, J., & Zimek, A. (2011). Density‐based clustering. Wiley interdisciplinary reviews: data mining and knowledge discovery, 1(3), 231–240.
+[1] Kriegel, H. P., Kröger, P., Sander, J., & Zimek, A. (2011). Density‐based clustering. Wiley interdisciplinary reviews: data mining and knowledge discovery, 1(3), 231--240.
 
-[2] Bäcklund, H., Hedblom, A., & Neijman, N. (2011). A density-based spatial clustering of application with noise. Data Mining TNM033, 33, 11–30.
+[2] Bäcklund, H., Hedblom, A., & Neijman, N. (2011). A density-based spatial clustering of application with noise. Data Mining TNM033, 33, 11--30.
 
-[3] https://ml-explained.com/blog/dbscan-explained
+[3] <https://ml-explained.com/blog/dbscan-explained>
 
 # 7. Küme Geçerliliği
 
-Şimdiye kadar dört farklı kümeleme algoritmasının nasıl çalıştığını, arkalarında yatan ana fikirleri ve R programlama dili ile bu algoritmaların nasıl uygulandığını gördük. Peki kümeleme analizi kümelemenin yapılmasıyla sonlanan, yüzeysel bir analiz olabilir mi? Kaggle, Github ve benzeri birçok platforma bakarsanız, evet. Çoğu analizde küme geçerlili metriklerinin değerlendirildiğini görmek oldukça zor. Ancak bu oldukça sorunlu bir durum. Bu tıpkı R^2 bakılmayan bir regresyon analizi, hatta daha da ötesi varsayımların kontrol edilmediği bir regresyon analizi yapmak kadar vahim bir durumdur. Bu sebeple küme geçerliliği oldukça önemlidir.
+Şimdiye kadar dört farklı kümeleme algoritmasının nasıl çalıştığını, arkalarında yatan ana fikirleri ve R programlama dili ile bu algoritmaların nasıl uygulandığını gördük. Peki kümeleme analizi kümelemenin yapılmasıyla sonlanan, yüzeysel bir analiz olabilir mi? Kaggle, Github ve benzeri birçok platforma bakarsanız, evet. Çoğu analizde küme geçerlili metriklerinin değerlendirildiğini görmek oldukça zor. Ancak bu oldukça sorunlu bir durum. Bu tıpkı R\^2 bakılmayan bir regresyon analizi, hatta daha da ötesi varsayımların kontrol edilmediği bir regresyon analizi yapmak kadar vahim bir durumdur. Bu sebeple küme geçerliliği oldukça önemlidir.
 
 Küme geçerliliği metrikleri kabaca iki kategoriye(Dahili Küme Geçerliliği ve Harici Küme Geçerliliği) ayrılır. Dahili küme geçerliliği, bir kümenin kendi içinde ne kadar homojen olduğunu ölçer. Dahili küme doğrulama ölçütleri kümeleme algoritmasının kendisiyle ilgili olduğu için küme sayısına, küme boyutuna, gözlem sayısına ve veri boyutuna(değişken sayısı) göre değişebilir. Dahili Küme geçerliliği metriklerinden bazılarını(Silhouette, Calinski-Harabasz, Davies-Bouldin, Dunn) zaten ikinci bölümde görmüştük. Bu sebeple onların nasıl çalıştığı ile ile detaylı bir açıklama burada tekrar yapılmayacak. Fakat bir başka dahili küme geçerliliği metiriği olan Connectivity'nin nasıl çalıştığına bakacağız.
 
-Harici küme geçerliliği, kümeleme sonuçlarının harici verilerle karşılaştırılmasıyla ölçülür. Aynısı bir sınıflandırma probleminde de sınıflandırma sonuçlarının gerçek sınıflarla karşılaştırılmasıyla yapılmaktadır. Bu sebeple harici küme geçerliliği metriklerinin uygulanabilmesi için etiketlere yine ihtiyaç duyarız. Birçok harici küme geçerlili metriği olmakla birlikte bu kitapta Düzeltilmiş Rand Indeksi ve Meila's Variation of Information metriklerini inceleyeceğiz. 
+Harici küme geçerliliği, kümeleme sonuçlarının harici verilerle karşılaştırılmasıyla ölçülür. Aynısı bir sınıflandırma probleminde de sınıflandırma sonuçlarının gerçek sınıflarla karşılaştırılmasıyla yapılmaktadır. Bu sebeple harici küme geçerliliği metriklerinin uygulanabilmesi için etiketlere yine ihtiyaç duyarız. Birçok harici küme geçerlili metriği olmakla birlikte bu kitapta Düzeltilmiş Rand Indeksi ve Meila's Variation of Information metriklerini inceleyeceğiz.
 
 Tüm analizlerde yine aynı veri seti kullanılacaktır.
 
-## 7.1. Connectivity 
+## 7.1. Connectivity
 
 Connectivity kümedeki her bir gözlem ile o gözlemin dahil olduğu küme içindeki diğer tüm gözlemler arasındaki uzaklıkların ortalaması alınarak hesaplanır. Kümenin bir bütün olarak ne kadar homojen olduğunu ve kümeleme yönteminin başarısını belirlemek için kullanılır. Düşük Connectivity değeri, bir kümenin homojen olduğunu ve iyi bir kümeleme sonucu verdiğini gösterir[1].
 
 ### 7.1.1. R'da Connectivity
 
-Connectivity `clValid` paketinde yer alan `connectivity` fonksiyonu ile kolaylıkla hesaplanabilir. Fonksiyonun girdileri küme vektörü, veri seti, komşu sayısı(deneysel olarak değiştirilebilir) ve uzaklık metriğidir: 
+Connectivity `clValid` paketinde yer alan `connectivity` fonksiyonu ile kolaylıkla hesaplanabilir. Fonksiyonun girdileri küme vektörü, veri seti, komşu sayısı(deneysel olarak değiştirilebilir) ve uzaklık metriğidir:
 
 ```{r message=FALSE, warning=FALSE}
 library(clValid)
@@ -728,13 +728,13 @@ connectivity(distance = NULL, k2m_data$cluster, Data = df, neighbSize = 20,
 
 ## 7.2. Düzeltilmiş Rand Indeksi
 
-Düzeltilmiş Rand endeksi (DRI), iki farklı küme bilgisini karşılaştıran bir geçerlilik metriğidir. Her iki kümeleme çözümünde de doğru sınıflandırılmış gözlemlerin oranını ölçen Rand endeksinin değiştirilmiş bir versiyonudur. Düzeltilmiş Rand endeksi -1 ile 1 arasında değişir ve 1'e ne kadar yakınsa o kadar başarılı bir sonucu işaret eder. 
+Düzeltilmiş Rand endeksi (DRI), iki farklı küme bilgisini karşılaştıran bir geçerlilik metriğidir. Her iki kümeleme çözümünde de doğru sınıflandırılmış gözlemlerin oranını ölçen Rand endeksinin değiştirilmiş bir versiyonudur. Düzeltilmiş Rand endeksi -1 ile 1 arasında değişir ve 1'e ne kadar yakınsa o kadar başarılı bir sonucu işaret eder.
 
 ### 7.2.1. R'da Düzeltilmiş Rand Indeksi
 
-`fpc` paketinde yer alan `cluster.stats` fonksiyonu ile Düzeltilmiş Rand Indeksi kolaylıkla hesaplanabilir. Daha önceden de bahsedildiği gibi R, kümeleme sonucu oluşan kümeleri sırasıyla 1,2,3 olarak isimlendirmektedir. Veri setindeki etiket(bu kitapta örnek olarak kullanılan veri setinde M ve B şeklinde iki etiket vardır) ne olursa olsun, o etiketin de aynı şekilde dönüştürülmesi gerekmektedir. Aşağıdaki kod çerçevesinde ilk satırda bu dönüşüm yapılmıştır. Ayrıca `cluster.stats` fonksiyonu birçok değer hesaplayan bir fonksiyondur. Özellikle Düzeltilmiş Rand indeksine ulaşmak istiyorsak "$" işareti ile `corrected.rand` ifadesini eklememiz gerekmektedir. 
+`fpc` paketinde yer alan `cluster.stats` fonksiyonu ile Düzeltilmiş Rand Indeksi kolaylıkla hesaplanabilir. Daha önceden de bahsedildiği gibi R, kümeleme sonucu oluşan kümeleri sırasıyla 1,2,3 olarak isimlendirmektedir. Veri setindeki etiket(bu kitapta örnek olarak kullanılan veri setinde M ve B şeklinde iki etiket vardır) ne olursa olsun, o etiketin de aynı şekilde dönüştürülmesi gerekmektedir. Aşağıdaki kod çerçevesinde ilk satırda bu dönüşüm yapılmıştır. Ayrıca `cluster.stats` fonksiyonu birçok değer hesaplayan bir fonksiyondur. Özellikle Düzeltilmiş Rand indeksine ulaşmak istiyorsak "\$" işareti ile `corrected.rand` ifadesini eklememiz gerekmektedir.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 diagnosis <- ifelse(wdbc$Diagnosis == "M",1,2 )# it is necessary to make labels numerical
 cluster.stats(d = dist(df),diagnosis, k2m_data$cluster)$corrected.rand
 ```
@@ -747,9 +747,201 @@ cluster.stats(d = dist(df),diagnosis, k2m_data$cluster)$corrected.rand
 
 Tıpkı Düzeltilmiş Rand Indeksi gibi, MVI da aynı `cluster.stats` fonksiyonu ile hesaplanmaktadır. Düzeltilmiş Rand Indeksi için geçerli olan her şey, MVI hesaplanmasında da geçerlidir.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 cluster.stats(d = dist(df),diagnosis, k2m_data$cluster)$vi
 ```
 
-## 7.4. R'da Küme Geçerliği İçin Silhouette 
+## 7.4. R'da Küme Geçerliği İçin Silhouette
+
+Bu kısımda ikinci bölümde nasıl hesaplandığı anlatılan Silhouette için küme geçerliliği analizinde yazılması gereken kodlar paylaşılacaktır. Her bir gözlem için silüet değerini hesaplamak için birçok fonksiyon ve paket olmasına rağmen `factoextra` paketinde yer alan `fviz_silhouette` fonksiyonunu kullanarak her bir gözlem için silüet değerlerinin grafiğinin çizdiriliyor olması analizi daha kolaylaştırmaktadır. Çünkü birçok gözlemin silhouette değerine bakmak oldukça zor olabilir.
+
+```{r message=FALSE, warning=FALSE}
+k2m_data <- eclust(pcadata, "kmeans", k = 2, nstart = 25, graph = F) # veri setinin kümelenmesi/ yalnızca eclust fonksiyonu ile yapılırsa fviz_silhouette fonksiyonu çalışır
+fviz_silhouette(k2m_data, # kümeleme sonucunu içeren nesne
+                palette = "jco", # kümelere renk vermesi için palet
+                ggtheme = theme_classic() # grafik teması
+                )
+```
+
+Grafikte mavi renkli olan 1. kümede görülebilen negatif siluet değerine sahip gözlemler, yanlış kümelenmiş olabilecek gözlemlerdir. Bu durumda, bu gözlemlerin indeks numaralarına ulaşmak ve onlarla ilgili sorunu analiz etmek isteyebilirsiniz. Aşağıdaki kod, indeks numaralarını elde etmenize yardımcı olabilir:
+
+```{r message=FALSE, warning=FALSE}
+sil <- k2m_data$silinfo$widths[, 1:3] # silhouette değerlerinin bir nesneye kaydedilmesi
+neg_sil_index <- which(sil[, 'sil_width']<0) # negatif silhouette değerine sahip gözlemlerin indeksine ulaşılması
+sil[neg_sil_index, , drop = FALSE] # negatif silhouette değerine sahip gözlemlerin gösterilmesi
+```
+
+## 7.5. Dunn Indeksi
+
+CRI ve MVI gibi Dunn Endeksini de `fpc` paketindeki `cluster.stats` fonksiyonu ile kolayca hesaplayabilirsiniz. Aşağıda Dunn Endeksi hesaplamasına ilişkin kodu bulabilirsiniz.
+
+```{r message=FALSE, warning=FALSE}
+cluster.stats(dist(df), k2m_data$cluster)$dunn
+```
+
+**References for Chapter**
+
+[1] Kassambara, Alboukadel. Practical guide to cluster analysis in R: Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+[2] Warrens, M. J., & van der Hoef, H. Understanding the rand index. In Advanced Studies in Classification and Data Science (pp. 301-313). Springer, Singapore. 2020
+
+[3] Meilă M. "Comparing clusterings -an information based distance." J.Multivariate Analysis, 98(5), 873-895, 2007.
+
+# 8. Temel Bileşen Analizi
+
+Bir veri setindeki örüntüleri tanımlamak için kullanılan bir teknik olan Temel Bileşen Analizi(TBA), verilerde en fazla varyasyonu açıklayan yönleri (veya "bileşenleri") arar. İlk bileşen, verideki en fazla varyasyonu oluşturan yön, ikinci bileşen ise verideki ikinci en fazla varyasyonu oluşturan yön olacak şekilde veriyi bileşenlerine ayırır [1], [2]. Temel bileşen analizi özellikle büyük veya bir başka deyişle çok değişkenli veri setlerinde faydalıdır ve sayesinde veri setindeki karmaşık ilişkiler daha az değişken kullanılarak açıklığa kavuşturulabilir. Bu da veri setinin daha kolay yorumlanabilmesini sağlarken daha az değişken kullanımıyla da doğabilecek olası hatalı sonuçların önlenmesini sağlar.
+
+Daha önceki kısımlarda veri setini kümelemeden önce TBA uygulandığından bahsedilmişti. Peki bu neden yapıldı? Bir veri setine kümeleme algoritmalarına sokulmadan önce TBA uygulanmasının bazı faydaları vardır. Örneğin Yoğunluk Bazlı Kümeleme kısmında algoritmanın yüksek boyutlu veri setlerinde iyi sonuçlar vermediğinden bahsetmiştik. Diğer algoritmalar bu konuda biraz daha başarılı olsalar da boyut yüksekliği makine öğrenmesi ile ilgili neredeyse her algoritma için büyük bir problemdir. TBA yüksek boyutlu bir veri setindeki değişken sayısını azaltmak için kullanılabildiği için kümeleme algoritmasının performansını artırmaya yardımcı olabilmektedir. Boyut azaltmaya ek olarak, gürültüyü azaltmaya ve verilerdeki çoklu doğrusallığı ortadan kaldırmaya da yardımcı olabilmesi sebebiyle hem kümeleme algoritmasının başarısını arttırabilir, hem de yorumlanmasını kolaylaştırabilir[3],[4].
+
+Tüm bu faydaları bir örnekle pekiştirebiliriz. Ünlü Iris veri setini hatırlayalım. Zambak çiçekleri ile ilgili çeşitli bilgileri içeren veri setinde 3 farklı etiket bulunmaktadır. Aşağıda taç yaprağı ve çanak yapraklarının dağılım grafiğini sol tarafta görürken; sağ kısımda ise TBA uygulanmış Iris veri setinin dağılım grafiğini görebilirsiniz. TBA uygulanmamış Iris veri setinde, yeşil ve kırmızı ile gösterilen iki türün kesiştiğini fark edebilirsiniz. Aksine, TBA uygulanmış veri setinde diğerine kıyasla bariz olmasa da daha ayrık olduğunu ve verideki üç etiketin daha ayrıştırılabilir olduğunu gözlemleyebilirsiniz(Dağılım grafiklerindeki gözlemlerin her bir rengi bir etiketi temsil etmektedir).
+
+![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*TJ1jTwiqGdOxIg8tfPQhRw.jpeg)
+
+Aşağıda birinci adımın opsiyonel olmasıyla birlikte TBA'nın adım adım nasıl hesaplandığı bilgisine ulaşabilirsiniz:
+
+**Adım 1**
+
+Veriler, her değişkenin ortalaması sıfır ve standart sapması bir olacak şekilde dönüştürülür. Bu, tüm değişkenlerin aynı ölçekte olmasını sağlamak için yapılır.
+
+**Adım 2**
+
+Veri setindeki değişkenler arasındaki ilişkiyi belirlemek için kovaryans matrisi hesaplanır.
+
+**Adım 3**
+
+Kovaryans matrisinin özvektörleri(eigenvector) ve özdeğerleri(eigenvalue) hesaplanır. Özvektörler, verilerde en fazla varyasyonu açıklayan yönleri temsil eder ve özdeğerler, her bir özvektör tarafından açıklanan varyasyon miktarını temsil eder.
+
+**Adım 4**
+
+En yüksek özdeğerlere sahip özvektörler veri kümesinin temel bileşenleri olarak seçilir.
+
+**Adım 5**
+
+Orijinal veri kümesi, temel bileşenlere yansıtılarak dönüştürülür ve böylece boyutluluğu azaltılmış yeni bir veri kümesi elde edilir.
+
+```{r include=FALSE}
+library(readr)
+library(factoextra)
+# data set
+wdbc <- read_csv("datasets/wdbc.data", col_names = FALSE)
+
+wdbc <- wdbc[1:12]
+
+# changing colnames
+colnames <- c("ID", "Diagnosis", "radius", "texture", "perimeter", "area", "smoothness", "compactness", "concavity", "concave.points", "symmetry", "fractal.dimension" )
+names(wdbc) <- colnames
+
+df2 <- wdbc[2:12]
+#removing ID and label column
+df <- wdbc[3:12]
+```
+
+
+## 8.1. R'da Temel Bileşenler Analizi
+
+Temel bileşen analizi `stats` paketinde yer alan `prcomp` adlı fonksiyon ile aşağıdaki gibi yapılır:
+
+
+
+```{r message=FALSE, warning=FALSE}
+data.pca <- prcomp(df, # TBA uygulanacak veri seti
+                   scale. = TRUE # TBA hesaplamasındaki birinci adımın uygulanıp uygulanmayacağı
+)
+summary(data.pca) # sonuçları görmek için
+```
+
+Temel bileşen analizinden elde edilen sonuçları içeren bu çıktıda her bir bileşen için standart sapma(standard deviation), varyans oranı(proportion of variance) ve kümülatif oran(cumulative proportion) değerleri bulunmaktadır. Bu değerlerden standart sapma, her bir bileşenin varyansının kareköküdür. Bu değer, bileşenin veri setindeki değişkenliği ne kadar iyi açıkladığını gösterir. Örneğin, PC1 bileşeninin standart sapması 2,3406'dır. Bu PC1'in veri setindeki değişkenliğin çoğunluğunu açıkladığını gösterir. Varyans Oranı, her bir bileşenin toplam varyans içindeki payını gösterir. Örneğin, PC1 bileşeni veri setindeki varyansın %54,79'unu açıklarken PC2 bileşeni %25,19'unu açıklamaktadır. Kümülatif Oran ise her bir bileşenin varyans oranının toplamıdır. Bu değer, o bileşene kadar olan tüm bileşenlerin toplam varyans içindeki payını gösterir. Örneğin, PC1 veri setindeki toplam varyansın %54,79'unu açıklarken ilk iki bileşen veri setindeki varyansın %79,97'sini açıklamaktadır.
+
+Bu noktada analizi yapan kişi olarak dikket etmemiz gereken nokta veri setini kaç bileşenle açıklamayı planladığımızdır. Bileşen sayısı veri setinin büyüklüğüne ve analizin amacına bağlı olarak değişebilir. Ancak, bileşenlerin kümülatif varyansının %70-80'ini açıklayacak kadar bileşen seçmek yaygındır. Bu örnekte, ilk iki bileşen toplam varyansın %79,97'sini açıkladığı için iki bileşen seçmek iyi bir başlangıç noktası olabilir. 
+
+Bileşen sayısına karar vermenin bir diğer yolu da Scree grafiğidir. Scree grafiği, her bir boyut için açıklanan varyans yüzdesinin çizilmesiyle oluşturulur. Tıpkı dirsek yönteminde olduğu gibi, Scree grafiğinde de bir dirsek aranır. Dirseğin oluştuğu bileşen en uygun bileşen sayısı olarak seçilir. `factoextra` paketinden `fviz_eig` fonksiyonu yardımıyla Scree grafiğini çizebiliriz:
+
+```{r}
+library(factoextra)
+fviz_eig(data.pca)
+```
+
+
+Scree grafiği incelendiğinde, dirseğin üçüncü bileşende göründüğünü fark ederiz. Bu özet çıktıda vardığımız sonuçla çelişiyor. Bu da bir analiz yapılması gerektiğini işaret ediyor -ki bu da TBA'nın açıklandığı bir kitap için veri setini mükemmel bir örnek haline getiriyor. Şimdi TBA'nın derinliklerine inelim.
+
+`summary` fonksiyonu ile özetini çıkarttığımız TBA sonuçlarını içeren `data.pca` nesnesi birçok farklı bilgiyi de içerisinde saklamaktadır. Bu bilgilerden biri de rotasyon özelliğidir. Rotasyon özelliği, bileşenlerin orijinal değişkenlerle olan ilişkisini gösterir. Örneğin, bileşen 3'ün rotasyon özelliği, orijinal değişkenlerin her biri ile bileşen 3 arasındaki ilişkiyi gösteren bir vektördür. Bu vektör, orijinal değişkenlerin temel bileşenlerle ilişkisini anlamamıza yardımcı olur. Bu örnekte 2 ve 3 bileşen arasında kaldığımız için ilk üç bileşenin rotasyon değerlerine bakmak faydalı olabilir. `data.pca` nesnesi üzerindeki "rotation" özelliğine erişmek için `data.pca$rotation` komutunu kullanabiliriz.
+
+```{r message=FALSE, warning=FALSE}
+data.pca$rotation[,1:3]
+```
+
+
+Yukarıdaki çıktıda, her sütun temel bileşenin orijinal değişkenlerle ilişkisini gösteren bir vektör içerir. Örneğin, PC1 sütunu her bir orijinal değişkenin PC1 ile ilişkisini gösteren bir vektördür. Bu ilişki, her bir orijinal değişkenin temel bileşenlere ne kadar katkıda bulunduğunu gösterir. Örneğin, PC1 sütununda bütün değişkenlerin negatif katkısı daha yüksektir.  PC3 bileşenine ve bu bileşene katkıda bulunan değişkenlere bakıldığında, sadece "texture" değişkeninin bileşene katkıda bulunduğunu bu sayede fark edebiliriz. Tek bir değişken için bileşen eklemek çok maliyetli ve mantıksız olacağından, bu veri setinde iki temel bileşen seçmenin daha uygun olacağını düşünebiliriz.
+
+Bileşenler ve değişkenleri teker teker incelemek yorucu bir işlem olabileceği için rotasyonların grafiğini çizdirmek bizim için daha faydalı olabilir. `factoextra` paketindeki `fviz_contrib` fonksiyonu ile her bir bileşen için değişkenlerin katkısının grafiğini çizebiliriz:
+
+```{r message=FALSE, warning=FALSE}
+fviz_contrib(data.pca,# TBA nesnesi
+             choice = "var", # değişken için "var" , gözlem katkısına bakmak için "ind" 
+             axes = 1 # 1. Bileşen için 1
+)
+```
+
+
+```{r message=FALSE, warning=FALSE}
+fviz_contrib(data.pca,# TBA nesnesi
+             choice = "var", # değişken için "var" , gözlem katkısına bakmak için "ind" 
+             axes = 2 # 2. Bileşen için 2
+)
+```
+
+
+```{r message=FALSE, warning=FALSE}
+fviz_contrib(data.pca,# TBA nesnesi
+             choice = "var", # değişken için "var" , gözlem katkısına bakmak için "ind" 
+             axes = 3 # 3. Bileşen için 3
+)
+```
+
+
+`factoextra` paketi içerisinde yer alan `fviz_pca_ind` fonksiyonu ile veri setindeki her bir gözlemin bileşenlere katkısı görselleştirilebilmektedir:
+
+```{r}
+fviz_pca_ind(data.pca,# TBA nesnesi
+             col.ind = "cos2",  # gözlemler için renkler, temsil nitelikleri ("cos2") tarafından otomatik olarak kontrol edilir,
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), # n-renk geçiş için kullanılacak renklerin vektörü.
+             repel = F #  Metin etiketlerinin fazla çizilmesini önlemek için ggrepel kullanılıp kullanılmayacağı.   
+)
+```
+
+PC1 ve PC2 boyutlarındaki gözlemlerin katkıları incelendiğinde sağ üst ve sağ altta bir kümelenme gözlenmektedir. Bu gözlemlerin benzer özellikler ifade ettiği söylenebilir. Örneğin sol alttaki 79. gözlemin değerleri incelendiğinde Radius ve Texture dışındaki tüm değişkenler için maksimuma yakın değerlere sahip olduğu görülebilir. Karşı eksendeki 569. gözlem değerleri incelendiğinde ise Smoothness ve Concavity'nin minimum değerlere sahip olduğu, Texture'ın ise 3. çeyreğin üzerinde bir değere sahip olduğu görülebilir.
+
+**References for Chapter**
+
+[1] Bryant, F. B., & Yarnold, P. R. (1995). Principal-components analysis and exploratory and confirmatory factor analysis.
+
+[2] James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An introduction to statistical learning (Vol. 112, p. 18). New York: springer.
+
+[3] Ben-Hur, Asa, and Isabelle Guyon. Detecting stable clusters using principal component analysis. Functional genomics. Humana press, 159–182, 2003.
+
+[4] Ding, Chris, and Xiaofeng He. K-means clustering via principal component analysis. Proceedings of the twenty-first international conference on Machine learning. 2004.
+
+# Alıştırmalar
+
+Alıştırmalar için öncelikle [Breast Tissue](http://archive.ics.uci.edu/ml/datasets/breast+tissue) veri setini indirmeniz gerekmektedir. Veri seti, göğüs doku örneklerinin elektriksel empedans ölçümlerinden oluşmaktadır. 106 gözlem ve 10 değişken bulunmaktadır. Ancak Class isimli bir değişken sınıflandırma projeleri için etiket bilgisi ile ilgilidir. Veri setini kümeleyeceğiniz için bu değişken veri setinden çıkarılmalıdır. Ancak kümeleme sonuçlarının geçerliliğini değerlendirmek için bu değişkeni kullanmanız gerekebilir. Değişkenler hakkında detaylı bilgi [UCI Machine Learning Repository website](http://archive.ics.uci.edu/ml/datasets/breast+tissue) adresinde yer almaktadır. Alıştırmalar kısmı için aşağıdaki adımları tamamlamanız gerekmektedir:
+
+1.  Veri setinin tanımlayıcı istatistiklerini analiz edin ve yorumlayın.
+
+2.  Veri setinin korelasyonunu analiz edin.
+
+3.  Veri setine Temel Bileşen Analizi uygulayınız.
+
+4.  Veri setine k-ortalamalar uygulayın.
+
+5.  Veri setine k-medoidleri uygulayın.
+
+6.  Veri kümesine hiyerarşik kümeleme uygulayın.
+
+7.  Veri setine yoğunluk bazlı kümeleme uygulayın.
+
+8.  Tüm kümeleme algoritmaları için küme geçerliliği metriklerini karşılaştırın ve en iyi algoritmaya karar verin.
+
+9.  En iyi algoritma sonucu oluşan kümeleri birbiri ile kıyaslayıp analiz edin.
+
+
 

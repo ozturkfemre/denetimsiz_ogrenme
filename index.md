@@ -15,12 +15,12 @@
 - [4. k-medoidler](#4-k-medoidler)
   - [4.1. R’da k-medoidler](#41-rda-k-medoidler)
 - [5. Hiyerarşik Kümeleme](#5-hiyerarşik-kümeleme)
-  - [5.2. Kojenetik Mesafe](#52-kojenetik-mesafe)
-    - [5.2.1. R’de Kojenetik Mesafe](#521-rde-kojenetik-mesafe)
-  - [5.3. R’da Ward’ın Minimum Varyans
-    Bağlantısı](#53-rda-wardın-minimum-varyans-bağlantısı)
-  - [5.4. R’da Ortalama Bağlantı
-    Yöntemi](#54-rda-ortalama-bağlantı-yöntemi)
+  - [5.1. Kojenetik Mesafe](#51-kojenetik-mesafe)
+    - [5.1.1. R’de Kojenetik Mesafe](#511-rde-kojenetik-mesafe)
+  - [5.2. R’da Ward’ın Minimum Varyans
+    Bağlantısı](#52-rda-wardın-minimum-varyans-bağlantısı)
+  - [5.3. R’da Ortalama Bağlantı
+    Yöntemi](#53-rda-ortalama-bağlantı-yöntemi)
 - [6. Yoğunluk Bazlı Kümeleme](#6-yoğunluk-bazlı-kümeleme)
   - [6.1. R’da Yoğunluk Bazlı Kümeleme](#61-rda-yoğunluk-bazlı-kümeleme)
 - [7. Küme Geçerliliği](#7-küme-geçerliliği)
@@ -35,6 +35,11 @@
       Information](#731-rda-meilas-variation-of-information)
   - [7.4. R’da Küme Geçerliği İçin
     Silhouette](#74-rda-küme-geçerliği-i̇çin-silhouette)
+  - [7.5. Dunn Indeksi](#75-dunn-indeksi)
+- [8. Temel Bileşen Analizi](#8-temel-bileşen-analizi)
+  - [8.1. R’da Temel Bileşenler
+    Analizi](#81-rda-temel-bileşenler-analizi)
+- [Alıştırmalar](#alıştırmalar)
 
 # 1. Denetimsiz Öğrenme Nedir?
 
@@ -88,7 +93,7 @@ iş yerinde size verilen bir görev, ya da okulda yapmanız gereken bir
 belki çok daha fazlasını harcamanız gerekir. Ancak size verilen görev ne
 kadar basitse, yapacağınız harcamalar da aynı nicelikte azalacaktır.
 Boyut indirgeme de tam olarak bunu yapmaktadır. Boyutunu indirgediğimiz
-bir veri seti, makinenin daha az yorulmasına ve maliyetinin szalmasına
+bir veri seti, makinenin daha az yorulmasına ve maliyetinin azalmasına
 olanak sağlayacaktır. Üstelik tek artısının bu olduğunu da söyleyemeyiz.
 Bu kitaba ulaşabilen bir çoğunuzun da bilebileceği gibi veri setlerinin
 görselleştirilmesi üç boyutla sınırlıdır. Üçüncü boyut, yani bir başka
@@ -995,7 +1000,7 @@ etmek çok daha faydalı olacaktır. Bu kitaptaki R uygulamarında yalnızca
 Ward’ın Minimum Varyans Yöntemi ile Ortalama bağlantı yöntemi olmak
 üzere iki metrik kullanılmıştır.
 
-## 5.2. Kojenetik Mesafe
+## 5.1. Kojenetik Mesafe
 
 Daha önceki bölümlerde uzaklık metrikleri uygulamalarında genellikle
 Öklit metriğinin kullanıldığından bahsetmiştik. Hiyerarşik kümeleme
@@ -1008,7 +1013,7 @@ arasındaki mesafe olarak tanımlanır\[8\]. Kojenetik mesafe ile veri
 uzayındaki gözlemler arasındaki orijinal mesafe arasındaki yüksek
 korelasyon, kümeleme çözümünün verinin yapısını iyi koruduğunu gösterir.
 
-### 5.2.1. R’de Kojenetik Mesafe
+### 5.1.1. R’de Kojenetik Mesafe
 
 `stats` paketindeki cophenetic fonksiyonu R’da kojenetik mesafetyi
 hesaplamamıza olanak sağlamaktadır. Ancak ik önce, karşılaştıracağımız
@@ -1063,7 +1068,7 @@ incelendiğinde, Öklid mesafesi ile hiyerarşik kümelemenin daha iyi
 sonuçlar verdiği söylenebilir. Bu yüzden analize Öklid uzaklık metriği
 ile devam edeceğiz.
 
-## 5.3. R’da Ward’ın Minimum Varyans Bağlantısı
+## 5.2. R’da Ward’ın Minimum Varyans Bağlantısı
 
 Hiyerarşik kümelemede küme sayısını belirlemek için, tıpkı k-ortalamalar
 ve k-medoidlerde yaptığımız gibi, en uygun küme sayısını belirleme
@@ -1154,7 +1159,7 @@ Ayrışmanın sadece PC1 boyutunda gerçekleştiği görülebilir. Kırmızı il
 gösterilen ilk kümedeki varyans yüksek iken, yeşil ile gösterilen ikinci
 kümedeki varyans düşüktür.
 
-## 5.4. R’da Ortalama Bağlantı Yöntemi
+## 5.3. R’da Ortalama Bağlantı Yöntemi
 
 Kojenetik uzaklık Ward’ın Minimum Varyans Yönteminde ele alındığı için
 bu bölümde sizlerle paylaşılmayacaktır. Ancak Öklid uzaklığının yine
@@ -1527,3 +1532,360 @@ cluster.stats(d = dist(df),diagnosis, k2m_data$cluster)$vi
     ## [1] 0.5687046
 
 ## 7.4. R’da Küme Geçerliği İçin Silhouette
+
+Bu kısımda ikinci bölümde nasıl hesaplandığı anlatılan Silhouette için
+küme geçerliliği analizinde yazılması gereken kodlar paylaşılacaktır.
+Her bir gözlem için silüet değerini hesaplamak için birçok fonksiyon ve
+paket olmasına rağmen `factoextra` paketinde yer alan `fviz_silhouette`
+fonksiyonunu kullanarak her bir gözlem için silüet değerlerinin
+grafiğinin çizdiriliyor olması analizi daha kolaylaştırmaktadır. Çünkü
+birçok gözlemin silhouette değerine bakmak oldukça zor olabilir.
+
+``` r
+k2m_data <- eclust(pcadata, "kmeans", k = 2, nstart = 25, graph = F) # veri setinin kümelenmesi/ yalnızca eclust fonksiyonu ile yapılırsa fviz_silhouette fonksiyonu çalışır
+fviz_silhouette(k2m_data, # kümeleme sonucunu içeren nesne
+                palette = "jco", # kümelere renk vermesi için palet
+                ggtheme = theme_classic() # grafik teması
+                )
+```
+
+    ##   cluster size ave.sil.width
+    ## 1       1  171          0.32
+    ## 2       2  398          0.57
+
+![](index_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+
+Grafikte mavi renkli olan 1. kümede görülebilen negatif siluet değerine
+sahip gözlemler, yanlış kümelenmiş olabilecek gözlemlerdir. Bu durumda,
+bu gözlemlerin indeks numaralarına ulaşmak ve onlarla ilgili sorunu
+analiz etmek isteyebilirsiniz. Aşağıdaki kod, indeks numaralarını elde
+etmenize yardımcı olabilir:
+
+``` r
+sil <- k2m_data$silinfo$widths[, 1:3] # silhouette değerlerinin bir nesneye kaydedilmesi
+neg_sil_index <- which(sil[, 'sil_width']<0) # negatif silhouette değerine sahip gözlemlerin indeksine ulaşılması
+sil[neg_sil_index, , drop = FALSE] # negatif silhouette değerine sahip gözlemlerin gösterilmesi
+```
+
+    ##     cluster neighbor   sil_width
+    ## 505       1        2 -0.01334316
+    ## 224       1        2 -0.02627560
+    ## 198       1        2 -0.04503110
+    ## 442       1        2 -0.04567814
+    ## 197       1        2 -0.06567648
+    ## 331       1        2 -0.07905193
+    ## 90        1        2 -0.08708848
+    ## 215       1        2 -0.11522042
+    ## 12        1        2 -0.13105913
+    ## 376       1        2 -0.13159631
+
+## 7.5. Dunn Indeksi
+
+CRI ve MVI gibi Dunn Endeksini de `fpc` paketindeki `cluster.stats`
+fonksiyonu ile kolayca hesaplayabilirsiniz. Aşağıda Dunn Endeksi
+hesaplamasına ilişkin kodu bulabilirsiniz.
+
+``` r
+cluster.stats(dist(df), k2m_data$cluster)$dunn
+```
+
+    ## [1] 0.005768501
+
+**References for Chapter**
+
+\[1\] Kassambara, Alboukadel. Practical guide to cluster analysis in R:
+Unsupervised machine learning. Vol. 1. Sthda, 2017.
+
+\[2\] Warrens, M. J., & van der Hoef, H. Understanding the rand index.
+In Advanced Studies in Classification and Data Science (pp. 301-313).
+Springer, Singapore. 2020
+
+\[3\] Meilă M. “Comparing clusterings -an information based distance.”
+J.Multivariate Analysis, 98(5), 873-895, 2007.
+
+# 8. Temel Bileşen Analizi
+
+Bir veri setindeki örüntüleri tanımlamak için kullanılan bir teknik olan
+Temel Bileşen Analizi(TBA), verilerde en fazla varyasyonu açıklayan
+yönleri (veya “bileşenleri”) arar. İlk bileşen, verideki en fazla
+varyasyonu oluşturan yön, ikinci bileşen ise verideki ikinci en fazla
+varyasyonu oluşturan yön olacak şekilde veriyi bileşenlerine ayırır
+\[1\], \[2\]. Temel bileşen analizi özellikle büyük veya bir başka
+deyişle çok değişkenli veri setlerinde faydalıdır ve sayesinde veri
+setindeki karmaşık ilişkiler daha az değişken kullanılarak açıklığa
+kavuşturulabilir. Bu da veri setinin daha kolay yorumlanabilmesini
+sağlarken daha az değişken kullanımıyla da doğabilecek olası hatalı
+sonuçların önlenmesini sağlar.
+
+Daha önceki kısımlarda veri setini kümelemeden önce TBA uygulandığından
+bahsedilmişti. Peki bu neden yapıldı? Bir veri setine kümeleme
+algoritmalarına sokulmadan önce TBA uygulanmasının bazı faydaları
+vardır. Örneğin Yoğunluk Bazlı Kümeleme kısmında algoritmanın yüksek
+boyutlu veri setlerinde iyi sonuçlar vermediğinden bahsetmiştik. Diğer
+algoritmalar bu konuda biraz daha başarılı olsalar da boyut yüksekliği
+makine öğrenmesi ile ilgili neredeyse her algoritma için büyük bir
+problemdir. TBA yüksek boyutlu bir veri setindeki değişken sayısını
+azaltmak için kullanılabildiği için kümeleme algoritmasının
+performansını artırmaya yardımcı olabilmektedir. Boyut azaltmaya ek
+olarak, gürültüyü azaltmaya ve verilerdeki çoklu doğrusallığı ortadan
+kaldırmaya da yardımcı olabilmesi sebebiyle hem kümeleme algoritmasının
+başarısını arttırabilir, hem de yorumlanmasını
+kolaylaştırabilir\[3\],\[4\].
+
+Tüm bu faydaları bir örnekle pekiştirebiliriz. Ünlü Iris veri setini
+hatırlayalım. Zambak çiçekleri ile ilgili çeşitli bilgileri içeren veri
+setinde 3 farklı etiket bulunmaktadır. Aşağıda taç yaprağı ve çanak
+yapraklarının dağılım grafiğini sol tarafta görürken; sağ kısımda ise
+TBA uygulanmış Iris veri setinin dağılım grafiğini görebilirsiniz. TBA
+uygulanmamış Iris veri setinde, yeşil ve kırmızı ile gösterilen iki
+türün kesiştiğini fark edebilirsiniz. Aksine, TBA uygulanmış veri
+setinde diğerine kıyasla bariz olmasa da daha ayrık olduğunu ve verideki
+üç etiketin daha ayrıştırılabilir olduğunu gözlemleyebilirsiniz(Dağılım
+grafiklerindeki gözlemlerin her bir rengi bir etiketi temsil
+etmektedir).
+
+![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*TJ1jTwiqGdOxIg8tfPQhRw.jpeg)
+
+Aşağıda birinci adımın opsiyonel olmasıyla birlikte TBA’nın adım adım
+nasıl hesaplandığı bilgisine ulaşabilirsiniz:
+
+**Adım 1**
+
+Veriler, her değişkenin ortalaması sıfır ve standart sapması bir olacak
+şekilde dönüştürülür. Bu, tüm değişkenlerin aynı ölçekte olmasını
+sağlamak için yapılır.
+
+**Adım 2**
+
+Veri setindeki değişkenler arasındaki ilişkiyi belirlemek için kovaryans
+matrisi hesaplanır.
+
+**Adım 3**
+
+Kovaryans matrisinin özvektörleri(eigenvector) ve
+özdeğerleri(eigenvalue) hesaplanır. Özvektörler, verilerde en fazla
+varyasyonu açıklayan yönleri temsil eder ve özdeğerler, her bir özvektör
+tarafından açıklanan varyasyon miktarını temsil eder.
+
+**Adım 4**
+
+En yüksek özdeğerlere sahip özvektörler veri kümesinin temel bileşenleri
+olarak seçilir.
+
+**Adım 5**
+
+Orijinal veri kümesi, temel bileşenlere yansıtılarak dönüştürülür ve
+böylece boyutluluğu azaltılmış yeni bir veri kümesi elde edilir.
+
+## 8.1. R’da Temel Bileşenler Analizi
+
+Temel bileşen analizi `stats` paketinde yer alan `prcomp` adlı fonksiyon
+ile aşağıdaki gibi yapılır:
+
+``` r
+data.pca <- prcomp(df, # TBA uygulanacak veri seti
+                   scale. = TRUE # TBA hesaplamasındaki birinci adımın uygulanıp uygulanmayacağı
+)
+summary(data.pca) # sonuçları görmek için
+```
+
+    ## Importance of components:
+    ##                           PC1    PC2     PC3    PC4     PC5     PC6     PC7
+    ## Standard deviation     2.3406 1.5870 0.93841 0.7064 0.61036 0.35234 0.28299
+    ## Proportion of Variance 0.5479 0.2519 0.08806 0.0499 0.03725 0.01241 0.00801
+    ## Cumulative Proportion  0.5479 0.7997 0.88779 0.9377 0.97495 0.98736 0.99537
+    ##                            PC8     PC9    PC10
+    ## Standard deviation     0.18679 0.10552 0.01680
+    ## Proportion of Variance 0.00349 0.00111 0.00003
+    ## Cumulative Proportion  0.99886 0.99997 1.00000
+
+Temel bileşen analizinden elde edilen sonuçları içeren bu çıktıda her
+bir bileşen için standart sapma(standard deviation), varyans
+oranı(proportion of variance) ve kümülatif oran(cumulative proportion)
+değerleri bulunmaktadır. Bu değerlerden standart sapma, her bir
+bileşenin varyansının kareköküdür. Bu değer, bileşenin veri setindeki
+değişkenliği ne kadar iyi açıkladığını gösterir. Örneğin, PC1
+bileşeninin standart sapması 2,3406’dır. Bu PC1’in veri setindeki
+değişkenliğin çoğunluğunu açıkladığını gösterir. Varyans Oranı, her bir
+bileşenin toplam varyans içindeki payını gösterir. Örneğin, PC1 bileşeni
+veri setindeki varyansın %54,79’unu açıklarken PC2 bileşeni %25,19’unu
+açıklamaktadır. Kümülatif Oran ise her bir bileşenin varyans oranının
+toplamıdır. Bu değer, o bileşene kadar olan tüm bileşenlerin toplam
+varyans içindeki payını gösterir. Örneğin, PC1 veri setindeki toplam
+varyansın %54,79’unu açıklarken ilk iki bileşen veri setindeki varyansın
+%79,97’sini açıklamaktadır.
+
+Bu noktada analizi yapan kişi olarak dikket etmemiz gereken nokta veri
+setini kaç bileşenle açıklamayı planladığımızdır. Bileşen sayısı veri
+setinin büyüklüğüne ve analizin amacına bağlı olarak değişebilir. Ancak,
+bileşenlerin kümülatif varyansının %70-80’ini açıklayacak kadar bileşen
+seçmek yaygındır. Bu örnekte, ilk iki bileşen toplam varyansın
+%79,97’sini açıkladığı için iki bileşen seçmek iyi bir başlangıç noktası
+olabilir.
+
+Bileşen sayısına karar vermenin bir diğer yolu da Scree grafiğidir.
+Scree grafiği, her bir boyut için açıklanan varyans yüzdesinin
+çizilmesiyle oluşturulur. Tıpkı dirsek yönteminde olduğu gibi, Scree
+grafiğinde de bir dirsek aranır. Dirseğin oluştuğu bileşen en uygun
+bileşen sayısı olarak seçilir. `factoextra` paketinden `fviz_eig`
+fonksiyonu yardımıyla Scree grafiğini çizebiliriz:
+
+``` r
+library(factoextra)
+fviz_eig(data.pca)
+```
+
+![](index_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+
+Scree grafiği incelendiğinde, dirseğin üçüncü bileşende göründüğünü fark
+ederiz. Bu özet çıktıda vardığımız sonuçla çelişiyor. Bu da bir analiz
+yapılması gerektiğini işaret ediyor -ki bu da TBA’nın açıklandığı bir
+kitap için veri setini mükemmel bir örnek haline getiriyor. Şimdi
+TBA’nın derinliklerine inelim.
+
+`summary` fonksiyonu ile özetini çıkarttığımız TBA sonuçlarını içeren
+`data.pca` nesnesi birçok farklı bilgiyi de içerisinde saklamaktadır. Bu
+bilgilerden biri de rotasyon özelliğidir. Rotasyon özelliği,
+bileşenlerin orijinal değişkenlerle olan ilişkisini gösterir. Örneğin,
+bileşen 3’ün rotasyon özelliği, orijinal değişkenlerin her biri ile
+bileşen 3 arasındaki ilişkiyi gösteren bir vektördür. Bu vektör,
+orijinal değişkenlerin temel bileşenlerle ilişkisini anlamamıza yardımcı
+olur. Bu örnekte 2 ve 3 bileşen arasında kaldığımız için ilk üç
+bileşenin rotasyon değerlerine bakmak faydalı olabilir. `data.pca`
+nesnesi üzerindeki “rotation” özelliğine erişmek için
+`data.pca$rotation` komutunu kullanabiliriz.
+
+``` r
+data.pca$rotation[,1:3]
+```
+
+    ##                           PC1          PC2         PC3
+    ## radius            -0.36393793  0.313929073 -0.12442759
+    ## texture           -0.15445113  0.147180909  0.95105659
+    ## perimeter         -0.37604434  0.284657885 -0.11408360
+    ## area              -0.36408585  0.304841714 -0.12337786
+    ## smoothness        -0.23248053 -0.401962324 -0.16653247
+    ## compactness       -0.36444206 -0.266013147  0.05827786
+    ## concavity         -0.39574849 -0.104285968  0.04114649
+    ## concave.points    -0.41803840 -0.007183605 -0.06855383
+    ## symmetry          -0.21523797 -0.368300910  0.03672364
+    ## fractal.dimension -0.07183744 -0.571767700  0.11358395
+
+Yukarıdaki çıktıda, her sütun temel bileşenin orijinal değişkenlerle
+ilişkisini gösteren bir vektör içerir. Örneğin, PC1 sütunu her bir
+orijinal değişkenin PC1 ile ilişkisini gösteren bir vektördür. Bu
+ilişki, her bir orijinal değişkenin temel bileşenlere ne kadar katkıda
+bulunduğunu gösterir. Örneğin, PC1 sütununda bütün değişkenlerin negatif
+katkısı daha yüksektir. PC3 bileşenine ve bu bileşene katkıda bulunan
+değişkenlere bakıldığında, sadece “texture” değişkeninin bileşene
+katkıda bulunduğunu bu sayede fark edebiliriz. Tek bir değişken için
+bileşen eklemek çok maliyetli ve mantıksız olacağından, bu veri setinde
+iki temel bileşen seçmenin daha uygun olacağını düşünebiliriz.
+
+Bileşenler ve değişkenleri teker teker incelemek yorucu bir işlem
+olabileceği için rotasyonların grafiğini çizdirmek bizim için daha
+faydalı olabilir. `factoextra` paketindeki `fviz_contrib` fonksiyonu ile
+her bir bileşen için değişkenlerin katkısının grafiğini çizebiliriz:
+
+``` r
+fviz_contrib(data.pca,# TBA nesnesi
+             choice = "var", # değişken için "var" , gözlem katkısına bakmak için "ind" 
+             axes = 1 # 1. Bileşen için 1
+)
+```
+
+![](index_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+
+``` r
+fviz_contrib(data.pca,# TBA nesnesi
+             choice = "var", # değişken için "var" , gözlem katkısına bakmak için "ind" 
+             axes = 2 # 2. Bileşen için 2
+)
+```
+
+![](index_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+
+``` r
+fviz_contrib(data.pca,# TBA nesnesi
+             choice = "var", # değişken için "var" , gözlem katkısına bakmak için "ind" 
+             axes = 3 # 3. Bileşen için 3
+)
+```
+
+![](index_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+
+`factoextra` paketi içerisinde yer alan `fviz_pca_ind` fonksiyonu ile
+veri setindeki her bir gözlemin bileşenlere katkısı
+görselleştirilebilmektedir:
+
+``` r
+fviz_pca_ind(data.pca,# TBA nesnesi
+             col.ind = "cos2",  # gözlemler için renkler, temsil nitelikleri ("cos2") tarafından otomatik olarak kontrol edilir,
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), # n-renk geçiş için kullanılacak renklerin vektörü.
+             repel = F #  Metin etiketlerinin fazla çizilmesini önlemek için ggrepel kullanılıp kullanılmayacağı.   
+)
+```
+
+![](index_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
+
+PC1 ve PC2 boyutlarındaki gözlemlerin katkıları incelendiğinde sağ üst
+ve sağ altta bir kümelenme gözlenmektedir. Bu gözlemlerin benzer
+özellikler ifade ettiği söylenebilir. Örneğin sol alttaki 79. gözlemin
+değerleri incelendiğinde Radius ve Texture dışındaki tüm değişkenler
+için maksimuma yakın değerlere sahip olduğu görülebilir. Karşı eksendeki
+569. gözlem değerleri incelendiğinde ise Smoothness ve Concavity’nin
+minimum değerlere sahip olduğu, Texture’ın ise 3. çeyreğin üzerinde bir
+değere sahip olduğu görülebilir.
+
+**References for Chapter**
+
+\[1\] Bryant, F. B., & Yarnold, P. R. (1995). Principal-components
+analysis and exploratory and confirmatory factor analysis.
+
+\[2\] James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An
+introduction to statistical learning (Vol. 112, p. 18). New York:
+springer.
+
+\[3\] Ben-Hur, Asa, and Isabelle Guyon. Detecting stable clusters using
+principal component analysis. Functional genomics. Humana press,
+159–182, 2003.
+
+\[4\] Ding, Chris, and Xiaofeng He. K-means clustering via principal
+component analysis. Proceedings of the twenty-first international
+conference on Machine learning. 2004.
+
+# Alıştırmalar
+
+Alıştırmalar için öncelikle [Breast
+Tissue](http://archive.ics.uci.edu/ml/datasets/breast+tissue) veri
+setini indirmeniz gerekmektedir. Veri seti, göğüs doku örneklerinin
+elektriksel empedans ölçümlerinden oluşmaktadır. 106 gözlem ve 10
+değişken bulunmaktadır. Ancak Class isimli bir değişken sınıflandırma
+projeleri için etiket bilgisi ile ilgilidir. Veri setini kümeleyeceğiniz
+için bu değişken veri setinden çıkarılmalıdır. Ancak kümeleme
+sonuçlarının geçerliliğini değerlendirmek için bu değişkeni kullanmanız
+gerekebilir. Değişkenler hakkında detaylı bilgi [UCI Machine Learning
+Repository
+website](http://archive.ics.uci.edu/ml/datasets/breast+tissue) adresinde
+yer almaktadır. Alıştırmalar kısmı için aşağıdaki adımları tamamlamanız
+gerekmektedir:
+
+1.  Veri setinin tanımlayıcı istatistiklerini analiz edin ve yorumlayın.
+
+2.  Veri setinin korelasyonunu analiz edin.
+
+3.  Veri setine Temel Bileşen Analizi uygulayınız.
+
+4.  Veri setine k-ortalamalar uygulayın.
+
+5.  Veri setine k-medoidleri uygulayın.
+
+6.  Veri kümesine hiyerarşik kümeleme uygulayın.
+
+7.  Veri setine yoğunluk bazlı kümeleme uygulayın.
+
+8.  Tüm kümeleme algoritmaları için küme geçerliliği metriklerini
+    karşılaştırın ve en iyi algoritmaya karar verin.
+
+9.  En iyi algoritma sonucu oluşan kümeleri birbiri ile kıyaslayıp
+    analiz edin.
