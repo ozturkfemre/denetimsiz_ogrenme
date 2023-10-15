@@ -1,8 +1,4 @@
 
-
-![](images/denetimsiz_ogrenme_feo.png)
-
-
 - [1. Denetimsiz Öğrenme Nedir?](#1-denetimsiz-öğrenme-nedir)
 - [2. Optimum Küme Sayısının
   Seçilmesi](#2-optimum-küme-sayısının-seçilmesi)
@@ -38,6 +34,8 @@
   - [8.1. R’da Temel Bileşenler
     Analizi](#81-rda-temel-bileşenler-analizi)
 - [Alıştırmalar](#alıştırmalar)
+
+![](images/denetimsiz_ogrenme_feo.png)
 
 # 1. Denetimsiz Öğrenme Nedir?
 
