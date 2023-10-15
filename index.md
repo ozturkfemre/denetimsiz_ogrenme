@@ -16,7 +16,6 @@
   - [4.1. R’da k-medoidler](#41-rda-k-medoidler)
 - [5. Hiyerarşik Kümeleme](#5-hiyerarşik-kümeleme)
   - [5.1. Kojenetik Mesafe](#51-kojenetik-mesafe)
-    - [5.1.1. R’de Kojenetik Mesafe](#511-rde-kojenetik-mesafe)
   - [5.2. R’da Ward’ın Minimum Varyans
     Bağlantısı](#52-rda-wardın-minimum-varyans-bağlantısı)
   - [5.3. R’da Ortalama Bağlantı
@@ -25,14 +24,9 @@
   - [6.1. R’da Yoğunluk Bazlı Kümeleme](#61-rda-yoğunluk-bazlı-kümeleme)
 - [7. Küme Geçerliliği](#7-küme-geçerliliği)
   - [7.1. Connectivity](#71-connectivity)
-    - [7.1.1. R’da Connectivity](#711-rda-connectivity)
   - [7.2. Düzeltilmiş Rand Indeksi](#72-düzeltilmiş-rand-indeksi)
-    - [7.2.1. R’da Düzeltilmiş Rand
-      Indeksi](#721-rda-düzeltilmiş-rand-indeksi)
   - [7.3. Meila’s Variation of
     Information](#73-meilas-variation-of-information)
-    - [7.3.1. R’da Meila’s Variation of
-      Information](#731-rda-meilas-variation-of-information)
   - [7.4. R’da Küme Geçerliği İçin
     Silhouette](#74-rda-küme-geçerliği-i̇çin-silhouette)
   - [7.5. Dunn Indeksi](#75-dunn-indeksi)
@@ -40,6 +34,8 @@
   - [8.1. R’da Temel Bileşenler
     Analizi](#81-rda-temel-bileşenler-analizi)
 - [Alıştırmalar](#alıştırmalar)
+
+![](images/denetimsiz_ogrenme_feo.png)
 
 # 1. Denetimsiz Öğrenme Nedir?
 

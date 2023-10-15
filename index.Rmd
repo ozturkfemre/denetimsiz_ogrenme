@@ -3,8 +3,10 @@ title: ""
 output:
   github_document:
     toc: true
-    toc_depth: 3
+    toc_depth: 2
 ---
+
+![](images/denetimsiz_ogrenme_feo.png)
 
 # 1. Denetimsiz Öğrenme Nedir?
 
@@ -836,12 +838,9 @@ df2 <- wdbc[2:12]
 df <- wdbc[3:12]
 ```
 
-
 ## 8.1. R'da Temel Bileşenler Analizi
 
 Temel bileşen analizi `stats` paketinde yer alan `prcomp` adlı fonksiyon ile aşağıdaki gibi yapılır:
-
-
 
 ```{r message=FALSE, warning=FALSE}
 data.pca <- prcomp(df, # TBA uygulanacak veri seti
@@ -852,7 +851,7 @@ summary(data.pca) # sonuçları görmek için
 
 Temel bileşen analizinden elde edilen sonuçları içeren bu çıktıda her bir bileşen için standart sapma(standard deviation), varyans oranı(proportion of variance) ve kümülatif oran(cumulative proportion) değerleri bulunmaktadır. Bu değerlerden standart sapma, her bir bileşenin varyansının kareköküdür. Bu değer, bileşenin veri setindeki değişkenliği ne kadar iyi açıkladığını gösterir. Örneğin, PC1 bileşeninin standart sapması 2,3406'dır. Bu PC1'in veri setindeki değişkenliğin çoğunluğunu açıkladığını gösterir. Varyans Oranı, her bir bileşenin toplam varyans içindeki payını gösterir. Örneğin, PC1 bileşeni veri setindeki varyansın %54,79'unu açıklarken PC2 bileşeni %25,19'unu açıklamaktadır. Kümülatif Oran ise her bir bileşenin varyans oranının toplamıdır. Bu değer, o bileşene kadar olan tüm bileşenlerin toplam varyans içindeki payını gösterir. Örneğin, PC1 veri setindeki toplam varyansın %54,79'unu açıklarken ilk iki bileşen veri setindeki varyansın %79,97'sini açıklamaktadır.
 
-Bu noktada analizi yapan kişi olarak dikket etmemiz gereken nokta veri setini kaç bileşenle açıklamayı planladığımızdır. Bileşen sayısı veri setinin büyüklüğüne ve analizin amacına bağlı olarak değişebilir. Ancak, bileşenlerin kümülatif varyansının %70-80'ini açıklayacak kadar bileşen seçmek yaygındır. Bu örnekte, ilk iki bileşen toplam varyansın %79,97'sini açıkladığı için iki bileşen seçmek iyi bir başlangıç noktası olabilir. 
+Bu noktada analizi yapan kişi olarak dikket etmemiz gereken nokta veri setini kaç bileşenle açıklamayı planladığımızdır. Bileşen sayısı veri setinin büyüklüğüne ve analizin amacına bağlı olarak değişebilir. Ancak, bileşenlerin kümülatif varyansının %70-80'ini açıklayacak kadar bileşen seçmek yaygındır. Bu örnekte, ilk iki bileşen toplam varyansın %79,97'sini açıkladığı için iki bileşen seçmek iyi bir başlangıç noktası olabilir.
 
 Bileşen sayısına karar vermenin bir diğer yolu da Scree grafiğidir. Scree grafiği, her bir boyut için açıklanan varyans yüzdesinin çizilmesiyle oluşturulur. Tıpkı dirsek yönteminde olduğu gibi, Scree grafiğinde de bir dirsek aranır. Dirseğin oluştuğu bileşen en uygun bileşen sayısı olarak seçilir. `factoextra` paketinden `fviz_eig` fonksiyonu yardımıyla Scree grafiğini çizebiliriz:
 
@@ -860,7 +859,6 @@ Bileşen sayısına karar vermenin bir diğer yolu da Scree grafiğidir. Scree g
 library(factoextra)
 fviz_eig(data.pca)
 ```
-
 
 Scree grafiği incelendiğinde, dirseğin üçüncü bileşende göründüğünü fark ederiz. Bu özet çıktıda vardığımız sonuçla çelişiyor. Bu da bir analiz yapılması gerektiğini işaret ediyor -ki bu da TBA'nın açıklandığı bir kitap için veri setini mükemmel bir örnek haline getiriyor. Şimdi TBA'nın derinliklerine inelim.
 
@@ -870,8 +868,7 @@ Scree grafiği incelendiğinde, dirseğin üçüncü bileşende göründüğün�
 data.pca$rotation[,1:3]
 ```
 
-
-Yukarıdaki çıktıda, her sütun temel bileşenin orijinal değişkenlerle ilişkisini gösteren bir vektör içerir. Örneğin, PC1 sütunu her bir orijinal değişkenin PC1 ile ilişkisini gösteren bir vektördür. Bu ilişki, her bir orijinal değişkenin temel bileşenlere ne kadar katkıda bulunduğunu gösterir. Örneğin, PC1 sütununda bütün değişkenlerin negatif katkısı daha yüksektir.  PC3 bileşenine ve bu bileşene katkıda bulunan değişkenlere bakıldığında, sadece "texture" değişkeninin bileşene katkıda bulunduğunu bu sayede fark edebiliriz. Tek bir değişken için bileşen eklemek çok maliyetli ve mantıksız olacağından, bu veri setinde iki temel bileşen seçmenin daha uygun olacağını düşünebiliriz.
+Yukarıdaki çıktıda, her sütun temel bileşenin orijinal değişkenlerle ilişkisini gösteren bir vektör içerir. Örneğin, PC1 sütunu her bir orijinal değişkenin PC1 ile ilişkisini gösteren bir vektördür. Bu ilişki, her bir orijinal değişkenin temel bileşenlere ne kadar katkıda bulunduğunu gösterir. Örneğin, PC1 sütununda bütün değişkenlerin negatif katkısı daha yüksektir. PC3 bileşenine ve bu bileşene katkıda bulunan değişkenlere bakıldığında, sadece "texture" değişkeninin bileşene katkıda bulunduğunu bu sayede fark edebiliriz. Tek bir değişken için bileşen eklemek çok maliyetli ve mantıksız olacağından, bu veri setinde iki temel bileşen seçmenin daha uygun olacağını düşünebiliriz.
 
 Bileşenler ve değişkenleri teker teker incelemek yorucu bir işlem olabileceği için rotasyonların grafiğini çizdirmek bizim için daha faydalı olabilir. `factoextra` paketindeki `fviz_contrib` fonksiyonu ile her bir bileşen için değişkenlerin katkısının grafiğini çizebiliriz:
 
@@ -882,7 +879,6 @@ fviz_contrib(data.pca,# TBA nesnesi
 )
 ```
 
-
 ```{r message=FALSE, warning=FALSE}
 fviz_contrib(data.pca,# TBA nesnesi
              choice = "var", # değişken için "var" , gözlem katkısına bakmak için "ind" 
@@ -890,14 +886,12 @@ fviz_contrib(data.pca,# TBA nesnesi
 )
 ```
 
-
 ```{r message=FALSE, warning=FALSE}
 fviz_contrib(data.pca,# TBA nesnesi
              choice = "var", # değişken için "var" , gözlem katkısına bakmak için "ind" 
              axes = 3 # 3. Bileşen için 3
 )
 ```
-
 
 `factoextra` paketi içerisinde yer alan `fviz_pca_ind` fonksiyonu ile veri setindeki her bir gözlemin bileşenlere katkısı görselleştirilebilmektedir:
 
@@ -917,7 +911,7 @@ PC1 ve PC2 boyutlarındaki gözlemlerin katkıları incelendiğinde sağ üst ve
 
 [2] James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An introduction to statistical learning (Vol. 112, p. 18). New York: springer.
 
-[3] Ben-Hur, Asa, and Isabelle Guyon. Detecting stable clusters using principal component analysis. Functional genomics. Humana press, 159–182, 2003.
+[3] Ben-Hur, Asa, and Isabelle Guyon. Detecting stable clusters using principal component analysis. Functional genomics. Humana press, 159--182, 2003.
 
 [4] Ding, Chris, and Xiaofeng He. K-means clustering via principal component analysis. Proceedings of the twenty-first international conference on Machine learning. 2004.
 
@@ -942,6 +936,3 @@ Alıştırmalar için öncelikle [Breast Tissue](http://archive.ics.uci.edu/ml/d
 8.  Tüm kümeleme algoritmaları için küme geçerliliği metriklerini karşılaştırın ve en iyi algoritmaya karar verin.
 
 9.  En iyi algoritma sonucu oluşan kümeleri birbiri ile kıyaslayıp analiz edin.
-
-
-
