@@ -12,27 +12,31 @@
   - [3.1. Kümelemede Veri Önişleme](#31-kümelemede-veri-önişleme)
   - [3.2. R’da k-ortalamalar
     Uygulaması](#32-rda-k-ortalamalar-uygulaması)
+  - [3.3. Python’da k-ortalamalar](#33-pythonda-k-ortalamalar)
 - [4. k-medoidler](#4-k-medoidler)
   - [4.1. R’da k-medoidler](#41-rda-k-medoidler)
 - [5. Hiyerarşik Kümeleme](#5-hiyerarşik-kümeleme)
   - [5.1. Kojenetik Mesafe](#51-kojenetik-mesafe)
-  - [5.2. R’da Ward’ın Minimum Varyans
-    Bağlantısı](#52-rda-wardın-minimum-varyans-bağlantısı)
-  - [5.3. R’da Ortalama Bağlantı
-    Yöntemi](#53-rda-ortalama-bağlantı-yöntemi)
+  - [5.2. Ward’ın Minimum Varyans
+    Bağlantısı](#52-wardın-minimum-varyans-bağlantısı)
+  - [5.3. Ortalama Bağlantı Yöntemi](#53-ortalama-bağlantı-yöntemi)
 - [6. Yoğunluk Bazlı Kümeleme](#6-yoğunluk-bazlı-kümeleme)
   - [6.1. R’da Yoğunluk Bazlı Kümeleme](#61-rda-yoğunluk-bazlı-kümeleme)
+  - [6.2. Python’da Yoğunluk Bazlı
+    Kümeleme](#62-pythonda-yoğunluk-bazlı-kümeleme)
 - [7. Küme Geçerliliği](#7-küme-geçerliliği)
   - [7.1. Connectivity](#71-connectivity)
   - [7.2. Düzeltilmiş Rand Indeksi](#72-düzeltilmiş-rand-indeksi)
   - [7.3. Meila’s Variation of
     Information](#73-meilas-variation-of-information)
-  - [7.4. R’da Küme Geçerliği İçin
-    Silhouette](#74-rda-küme-geçerliği-i̇çin-silhouette)
+  - [7.4. Küme Geçerliği İçin
+    Silhouette](#74-küme-geçerliği-i̇çin-silhouette)
   - [7.5. Dunn Indeksi](#75-dunn-indeksi)
 - [8. Temel Bileşen Analizi](#8-temel-bileşen-analizi)
   - [8.1. R’da Temel Bileşenler
     Analizi](#81-rda-temel-bileşenler-analizi)
+  - [8.2. Python’da Temel Bileşen
+    Analizi](#82-pythonda-temel-bileşen-analizi)
 - [Alıştırmalar](#alıştırmalar)
 
 ![](images/denetimsiz_ogrenme_feo.png)
@@ -196,6 +200,33 @@ fviz_nbclust(df, # veri seti
 nedenle yoruma açık bir sonuç olarak dikkat çekmektedir. Bu dirseğe
 dayalı bir yorum bu nedenle yanlış sonuçlara yol açabilir.
 
+Python’da, sklearn.cluster ve matplotlib.pyplot kullanarak dirsek
+grafiğini çizdirebiliriz..
+
+``` python
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+
+Sum_of_squared_distances = []
+K = range(1,10)
+
+# dirsek yöntemi için KUT'un hesaplanması
+for num_clusters in K :
+ kmeans = KMeans(n_clusters=num_clusters, n_init=25)
+ kmeans.fit(pcadf)
+ Sum_of_squared_distances.append(kmeans.inertia_)
+
+# drawing elbow plot
+plt.figure(figsize=(10,7))
+plt.plot(K,Sum_of_squared_distances, 'x-')
+plt.xlabel('cluster number') 
+plt.ylabel('Total Within Cluster Sum of Squares') 
+plt.title('Elbow Plot')
+plt.show()
+```
+
+![](images/py/1.png)
+
 ## 2.2. Ortalama Silhouette Yöntemi
 
 Ortalama silhouette yöntemi, belirli bir gözlemin dahil olduğu kümeyi ne
@@ -263,6 +294,35 @@ güvenilmemelidir. Veri setini 2 ve 3 küme sayısı için kümeleyip;
 kümelerin genel yapısını analiz etmek her yöntemden daha güvenilir
 olacaktır.
 
+Python’da, sklearn.metrics kütüphanesinden silhouette_score fonksiyonunu
+kullanarak belirli bir kümeleme sonucunun ortalama siluet puanını
+hesaplayabiliriz. Dirsek yöntemine benzer şekilde, matplotlib kullanarak
+ise grafik çizebiliriz:
+
+    from sklearn.metrics import silhouette_score
+
+    K = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    silhouette_avg = []
+    for num_clusters in K:
+     
+     # initialise kmeans
+     km = KMeans(n_clusters=num_clusters, n_init=25)
+     km.fit(pcadf)
+     cluster_labels = km.labels_
+     
+     # silhouette score
+     silhouette_avg.append(silhouette_score(pcadf, cluster_labels))
+
+    # drawing plot
+    plt.figure(figsize=(10,7))
+    plt.plot(K,silhouette_avg,'bx-')
+    plt.xlabel('cluster number k') 
+    plt.ylabel('Silhouette score') 
+    plt.title('Average Silhouette Plot')
+    plt.show()
+
+![](images/py/2.png)
+
 ## 2.3. Gap İstatistiği
 
 farklı k değerleri için gözlemlenen küme içi varyansı, verilerin boş bir
@@ -301,6 +361,30 @@ fviz_nbclust(df,
 
 Ortalama Siluet Yöntemi gibi Gap İstatistiği Yöntemi de optimum küme
 sayısı olarak 2’yi önermektedir.
+
+    from sklearn.metrics import davies_bouldin_score
+
+    K = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    db = []
+    for num_clusters in K:
+     
+     # initialise kmeans
+     kmeans = KMeans(n_clusters=num_clusters, n_init=25)
+     kmeans.fit(pcadf)
+     cluster_labels = kmeans.fit_predict(pcadf)
+     
+     # db calculation
+     db.append(davies_bouldin_score(pcadf, cluster_labels))
+
+
+    plt.figure(figsize=(10,7))
+    plt.plot(K,db,'bx-')
+    plt.xlabel('cluster number k') 
+    plt.ylabel('Davies Bouldin score') 
+    plt.title('Davies Bouldin Plot')
+    plt.show()
+
+![](images/py/3.png)
 
 ## 2.4. Calinski-Harabasz Yöntemi
 
@@ -367,6 +451,14 @@ fviz_ch(df) # grafiğin çizdirilmesi
 
 Tıpkı diğer yöntemler gibi Calinski - Harabasz da 2 küme önermektedir.
 
+Python’da Calinksi-Harabasz hesaplaması için aşağıdaki kodları
+kullanabilirsiniz:
+
+    from sklearn.metrics import calinski_harabasz_score
+    calinski_harabasz_score(df, # dataset
+                            kmeans2.labels_ # cluster assignments
+                            )
+
 ## 2.5. Davies-Bouldin Yöntemi
 
 Davies-Bouldin kümeler arasındaki benzerliği ölçen bir küme geçerliliği
@@ -429,6 +521,32 @@ Diğer yöntemlerden farklı olarak Davies-Bouldin’in küme sayısı için
 de diğer veri setlerinde daha güvenilir sonuçlar verebilir. Bu nedenle
 her kümeleme analizinde Davies-Bouldin yöntemine yer verilmesi faydalı
 olacaktır.
+
+Python’da aşağıdaki kodları kullanarak DB değerini hesaplayabilirsiniz:
+
+    from sklearn.metrics import davies_bouldin_score
+
+    K = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    db = []
+    for num_clusters in K:
+     
+     # initialise kmeans
+     kmeans = KMeans(n_clusters=num_clusters, n_init=25)
+     kmeans.fit(pcadf)
+     cluster_labels = kmeans.fit_predict(pcadf)
+     
+     # db calculation
+     db.append(davies_bouldin_score(pcadf, cluster_labels))
+
+
+    plt.figure(figsize=(10,7))
+    plt.plot(K,db,'bx-')
+    plt.xlabel('cluster number k') 
+    plt.ylabel('Davies Bouldin score') 
+    plt.title('Davies Bouldin Plot')
+    plt.show()
+
+![](images/py/3.png)
 
 ## 2.6. Dunn Endeksi
 
@@ -494,6 +612,17 @@ Davies-Bouldin yöntemleri gibi Dunn da farklı küme sayıları önermiştir.
 Daha önce de söylediğim gibi, her yöntem her veri seti için farklı
 sonuçlar verebilir. Bu nedenle her kümeleme analizinde tüm yöntemlerin
 karşılaştırılmasında fayda vardır.
+
+Python’da, Dunn indeksini hesaplamak için validclust kütüphanesinden
+dunn fonksiyonunu aşağıdaki gibi kullanabilirsiniz:
+
+    from sklearn.metrics import pairwise_distances
+    from validclust import dunn
+
+    dist = pairwise_distances(df) # pairwise distance calculation
+    dunn(dist, # distance matrix
+         k_means(df, n_clusters=2).labels # clustering assignments
+         )
 
 ***References for Chapter***
 
@@ -789,6 +918,107 @@ k2m_data # çıktı
     ##  [6] "betweenss"    "size"         "iter"         "ifault"       "silinfo"     
     ## [11] "nbclust"      "data"
 
+## 3.3. Python’da k-ortalamalar
+
+Python’da k-ortalamalar algoritmasını uygulamak için sklearn.cluster
+kütüphanesini kullanabilirsiniz.
+
+    from sklearn.cluster import KMeans
+
+    kmeans2 = KMeans(n_clusters=2, # the number of clusters to form
+                     random_state=0, # determines random number generation for centroid initialization.
+                     n_init=25, # number of times the k-means algorithm is run with different centroid seeds
+                     algorithm='lloyd' # k-means algorithm to use.
+                     ) 
+
+    kmeans2.fit(df)
+
+Ancak, Python’da R gibi bir çıktı almak mümkün olmayacaktır. Bunu
+aşağıdaki kodlarla yapabilirsiniz:
+
+    # for loop to determines each object's cluster
+    zero = []
+    one = []
+    for i in kmeans2.labels_:
+        if i == 0:
+            zero.append(i)
+        else:
+            one.append(i)
+
+    # printing output
+    print('\n',
+          "Cluster centers:", '\n',
+          "Cluster 0 :", kmeans2.cluster_centers_[0],'\n',
+           "Cluster 1 :", kmeans2.cluster_centers_[1], '\n','\n',
+            "Clustering vector:" ,'\n', kmeans2.labels_, '\n','\n',
+             "Total Within Cluster Sum of Squares : ", '\n',
+             kmeans2.inertia_ , '\n',
+              "Observation numbers :", '\n',
+              "Cluster 0 :", len(zero), '\n',
+              "Cluster 1 :", len(one))
+
+    Cluster centers: 
+     Cluster 0 : [ 3.00438761 -0.07488982] 
+     Cluster 1 : [-1.29082985  0.03217628] 
+     
+     Clustering vector: 
+     [0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 0 1 0 0 1 1 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1
+     1 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 0 1 1 0 1 1 1 1 0 1 0 1
+     1 1 1 0 0 1 1 1 0 0 1 0 1 0 1 0 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1
+     1 0 1 1 1 1 0 0 1 1 0 0 1 1 1 1 0 0 0 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 0 1
+     1 1 1 1 0 1 1 1 0 1 1 1 1 0 0 1 0 1 1 1 0 1 1 1 0 1 1 1 1 0 1 1 0 0 1 1 1
+     1 1 1 1 1 0 1 1 1 0 1 0 0 0 1 1 0 0 0 1 1 1 1 1 1 0 1 0 0 0 1 1 1 0 0 1 1
+     1 0 1 1 1 1 1 0 0 1 1 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 1 1 0 1 0 0 0 1 0 0 0
+     0 0 1 0 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1
+     1 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 1 0 0 0 1 1
+     1 1 0 1 0 1 0 1 1 1 0 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 0 0
+     0 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1
+     1 0 1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 0 1 1
+     0 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1
+     1 1 1 1 1 1 0 1 1 1 1 0 1 1 1 1 1 0 0 1 0 1 0 0 1 1 1 1 0 1 1 0 1 1 1 0 0
+     1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+     1 1 1 1 1 1 1 0 0 0 0 1 0 1] 
+     
+     Total Within Cluster Sum of Squares :  
+     2342.4243127486625 
+     Observation numbers : 
+     Cluster 0 : 171 
+     Cluster 1 : 398
+
+Bildiğim kadarıyla Python’da küme grafikleri çizmek için factoextra gibi
+bir kütüphane yok. Ancak kümeleme sonucunuzu bir grafikte görmek
+isterseniz aşağıdaki kodları kullanabilirsiniz:
+
+    import seaborn as sns
+    from scipy.spatial import ConvexHull
+    from matplotlib.colors import to_rgba
+
+    sns.set_style("whitegrid")
+    data = pcadf
+    xcol = "PC1"
+    ycol = "PC2"
+    hues = [0,1]
+    colors = sns.color_palette("Paired", len(hues))
+    palette = {hue_val: color for hue_val, color in zip(hues, colors)}
+    plt.figure(figsize=(15,10))
+
+    g = sns.relplot(data=pcadf, x=xcol, y=ycol, hue=kmeans2.labels_, style=kmeans2.labels_, col=kmeans2.labels_, palette=palette, kind="scatter")
+    # function for borders
+    def overlay_cv_hull_dataframe(x, y, color, data, hue):
+        for hue_val, group in pcadf.groupby(hue):
+            hue_color = palette[hue_val]
+            points = group[[x, y]].values
+            hull = ConvexHull(points)
+            plt.fill(points[hull.vertices, 0], points[hull.vertices, 1],
+                     facecolor=to_rgba(hue_color, 0.2),
+                     edgecolor=hue_color)
+    g.map_dataframe(overlay_cv_hull_dataframe, x=xcol, y=ycol, hue=kmeans2.labels_)
+    g.set_axis_labels(xcol, ycol)
+
+    plt.show()
+
+![](images/py/4.png)
+
 ***References for Chapter***
 
 \[1\] Hartigan, John A., Manchek A. Wong. Algorithm AS 136: A k-means
@@ -939,6 +1169,89 @@ fviz_cluster(pam_data,# clustering result
 
 ![](index_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
+### 4.2. Python’da k-medoids
+
+Python’da sklearn_extra.cluster paketindeki KMedoids fonksiyonunu
+kullanarak k-medoids kümelemesi oluşturabilirsiniz. Ancak KMeans
+fonksiyonunda olduğu gibi R benzeri bir çıktı elde etmek mümkün
+değildir. Yine kendi kodumuzla benzer bir çıktı elde edebiliriz.
+
+    from sklearn_extra.cluster import KMedoids
+
+    # clustering
+    kmedoids2 = KMedoids(n_clusters=2)
+    kmedoids2.fit(df)
+
+    # output
+    zero = []
+    one = []
+    for i in kmedoids2.labels_:
+        if i == 0:
+            zero.append(i)
+        else:
+            one.append(i)
+
+
+    print('\n',
+          "Cluster medoids:", '\n',
+          "Cluster 0 :", kmedoids2.cluster_centers_[0],'\n',
+           "Cluster 1 :", kmedoids2.cluster_centers_[1], '\n','\n',
+            "Clustering vector:" ,'\n', kmedoids2.labels_, '\n','\n',
+             "Total Within Cluster Sum of Squares : ", '\n',
+             kmedoids2.inertia_ , '\n',
+              "Observation numbers :", '\n',
+              "Cluster 0 :", len(zero), '\n',
+              "Cluster 1 :", len(one))
+
+     Cluster medoids: 
+     Cluster 0 : [ 2.35928485 -0.30157828] 
+     Cluster 1 : [-1.35986794 -0.03765549] 
+     
+     Clustering vector: 
+     [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 1 1 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1
+     1 1 1 1 1 0 1 1 0 1 0 1 1 1 1 1 0 1 1 0 0 1 1 1 1 0 1 1 0 1 1 1 1 0 1 0 1
+     1 0 1 0 0 1 1 0 0 0 1 0 1 0 1 0 1 0 1 1 0 0 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1
+     1 0 1 1 1 1 0 0 0 1 0 0 1 1 1 1 0 0 0 1 0 0 1 0 1 1 1 0 1 1 0 1 1 1 1 0 1
+     1 1 1 1 0 1 1 1 0 1 1 1 1 0 0 1 0 1 1 0 0 1 1 1 0 1 1 1 1 0 1 1 0 0 1 1 1
+     1 0 1 1 1 0 1 1 1 0 1 0 0 0 0 1 0 0 0 1 1 1 0 1 1 0 1 0 0 0 0 1 1 0 0 1 1
+     1 0 1 1 1 1 1 0 0 1 1 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 1 1 0 1 0 0 0 1 0 0 0
+     0 0 1 0 1 0 0 1 1 1 1 1 1 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1
+     1 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 1 0 0 0 1 1
+     1 1 0 1 0 1 0 1 1 1 0 1 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 1 0 0
+     0 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1
+     1 0 1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 0 1 1
+     0 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1
+     1 1 1 0 1 1 0 1 1 1 1 0 1 1 1 1 1 0 0 1 0 1 0 0 1 1 1 1 0 1 1 0 1 1 1 0 0
+     1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+     1 1 1 1 1 1 1 0 0 0 0 0 0 1] 
+     
+     Total Within Cluster Sum of Squares :  
+     968.3783653743097 
+     Observation numbers : 
+     Cluster 0 : 190 
+     Cluster 1 : 379
+
+Yine tıpkı KMeans gibi aşağıdaki kod ile bir kümeleme grafiği
+çizebilirsiniz.
+
+    sns.set_style("whitegrid")
+    data = pcadf
+    xcol = "PC1"
+    ycol = "PC2"
+    hues = [0,1]
+    colors = sns.color_palette("Paired", len(hues))
+    palette = {hue_val: color for hue_val, color in zip(hues, colors)}
+    plt.figure(figsize=(15,10))
+
+    g = sns.relplot(data=df, x=xcol, y=ycol, hue=kmedoids2.labels_, style=kmedoids2.labels_, col=kmedoids2.labels_, palette=palette, kind="scatter")
+
+    g.map_dataframe(overlay_cv_hull_dataframe, x=xcol, y=ycol, hue=kmedoids2.labels_)
+    g.set_axis_labels(xcol, ycol)
+
+    plt.show()
+
+![](images/py/5.png)
+
 ***References for Chapter***
 
 \[1\] Kaufman, L., & Rousseeuw, P. (1987). Clustering by means of
@@ -1064,7 +1377,9 @@ incelendiğinde, Öklid mesafesi ile hiyerarşik kümelemenin daha iyi
 sonuçlar verdiği söylenebilir. Bu yüzden analize Öklid uzaklık metriği
 ile devam edeceğiz.
 
-## 5.2. R’da Ward’ın Minimum Varyans Bağlantısı
+## 5.2. Ward’ın Minimum Varyans Bağlantısı
+
+### 5.2.1. R
 
 Hiyerarşik kümelemede küme sayısını belirlemek için, tıpkı k-ortalamalar
 ve k-medoidlerde yaptığımız gibi, en uygun küme sayısını belirleme
@@ -1155,7 +1470,68 @@ Ayrışmanın sadece PC1 boyutunda gerçekleştiği görülebilir. Kırmızı il
 gösterilen ilk kümedeki varyans yüksek iken, yeşil ile gösterilen ikinci
 kümedeki varyans düşüktür.
 
-## 5.3. R’da Ortalama Bağlantı Yöntemi
+### 5.2.2. Python
+
+İlk olarak, Python’da aşağıdaki gibi dendogram çizebiliriz:
+
+    import scipy.cluster.hierarchy as sch
+    plt.figure(figsize = (16 ,8))
+
+    dendrogram = sch.dendrogram(sch.linkage(df, method  = "ward"))
+
+    plt.title("Dendrogram")
+    plt.show()
+
+![](images/py/6.png)
+
+Ward bağlantısı için AgglomerativeClustering fonksiyonunu aşağıdaki gibi
+kullanabilirsiniz:
+
+    from sklearn.cluster import AgglomerativeClustering
+
+    hc = AgglomerativeClustering(n_clusters = 2, metric = "euclidean", linkage = "ward")
+
+    ward2 = hc.fit_predict(df)
+
+Yine, R benzeri çıktıyı aşağıdaki gibi oluşturabilirsiniz:
+
+    zero = []
+    one = []
+    for i in ward2:
+        if i == 0:
+            zero.append(i)
+        else:
+            one.append(i)
+
+    print("Observation Numbers :", '\n',
+        "Cluster 0: ", len(zero),'\n',
+        "Cluster 1: ", len(one))
+
+    Observation Numbers : 
+     Cluster 0:  180 
+     Cluster 1:  389
+
+Küme grafiği için ise aşağıdaki kodları kullanabiliriz:
+
+    data = df
+    xcol = "PC1"
+    ycol = "PC2"
+    hues = [0,1]
+    colors = sns.color_palette("Paired", len(hues))
+    palette = {hue_val: color for hue_val, color in zip(hues, colors)}
+    plt.figure(figsize=(15,10))
+    g = sns.relplot(data=df, x=xcol, y=ycol, hue=ward2, style=ward2, col=ward2, palette=palette, kind="scatter")
+
+    g.map_dataframe(overlay_cv_hull_dataframe, x=xcol, y=ycol, hue=ward2)
+    g.set_axis_labels(xcol, ycol)
+
+    plt.show()
+
+![](images/py/8.png)
+
+## 5.3. Ortalama Bağlantı Yöntemi
+
+### 5.3.1. R
 
 Kojenetik uzaklık Ward’ın Minimum Varyans Yönteminde ele alındığı için
 bu bölümde sizlerle paylaşılmayacaktır. Ancak Öklid uzaklığının yine
@@ -1237,6 +1613,26 @@ fviz_cluster(list(data = pcadata, cluster = grupav2),
 ```
 
 ![](index_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+
+### 5.3.2. Python
+
+İlk olarak dendogram çizelim:
+
+    plt.figure(figsize = (16 ,8))
+
+    dendrogram = sch.dendrogram(sch.linkage(pcadf, method  = "average"))
+
+    plt.title("Dendrogram")
+    plt.show()
+
+![](images/py/7.png)
+
+AgglomerativeClustering fonksiyonunda yalnızca linkage argümanını
+değiştirerek ortalama linkage ile hiyerarşik kümeleme modeli
+oluşturabiliriz.
+
+    hc = AgglomerativeClustering(n_clusters = 3, metric = "euclidean", linkage = "average")
+    average3 = hc.fit_predict(pcadf)
 
 ***References for Chapter***
 
@@ -1404,6 +1800,41 @@ Grafik incelendiğinde, kümeler arasındaki gözlem farkının küçük olduğu
 görülebilir. Gürültü değerlerinin fazlalığı da (siyah noktalar) dikkat
 çekicidir.
 
+## 6.2. Python’da Yoğunluk Bazlı Kümeleme
+
+Python’da kNN distplot’u aşağıdaki gibi çizebiliriz:
+
+    from sklearn.neighbors import NearestNeighbors
+
+    nbrs = NearestNeighbors(n_neighbors = 5).fit(pcadf)
+    neigh_dist, neigh_ind = nbrs.kneighbors(pcadf)
+    sort_neigh_dist = np.sort(neigh_dist, axis = 0)
+
+    k_dist = sort_neigh_dist[:, 4]
+    plt.plot(k_dist)
+    plt.ylabel("k-NN distance")
+    plt.xlabel("Sorted observations (4th NN)")
+    plt.show()
+
+R’den farklı olarak, KneeLocator fonksiyonunu kullanarak dirseğin tam
+konumunu alabiliriz.
+
+    from kneed import KneeLocator
+    kneedle = KneeLocator(x = range(1, len(neigh_dist)+1), y = k_dist, S = 1.0, 
+                          curve = "concave", direction = "increasing", online=True)
+
+    # get the estimate of knee point
+    print(kneedle.knee_y)
+
+    1.7367892222137986
+
+Yoğunluk bazlı kümeleme modeli oluşturmak için aşağıdaki kodları takip
+edebilirsiniz:
+
+    from sklearn.cluster import DBSCAN
+
+    dbscan = DBSCAN(eps = 1.73, min_samples = 20).fit(pcadf)
+
 **References for Chapter**
 
 \[1\] Kriegel, H. P., Kröger, P., Sander, J., & Zimek, A. (2011).
@@ -1478,6 +1909,11 @@ connectivity(distance = NULL, k2m_data$cluster, Data = df, neighbSize = 20,
 
     ## [1] 64.96498
 
+7.1.2. Python’da Connectivity
+
+Bildiğin ve araştırdığım kadarıyla Python’da connectivity hesaplayan bir
+fonksiyonu bulunmamakta.
+
 ## 7.2. Düzeltilmiş Rand Indeksi
 
 Düzeltilmiş Rand endeksi (DRI), iki farklı küme bilgisini karşılaştıran
@@ -1506,6 +1942,14 @@ cluster.stats(d = dist(df),diagnosis, k2m_data$cluster)$corrected.rand
 
     ## [1] 0.6465881
 
+### 7.2.2. Python’da Düzeltilmiş Rand Indeksi
+
+Aşağıdaki gibi adjusted_rand_score fonksiyonu ile hesaplayabilirsiniz:
+
+    from sklearn.metrics.cluster import adjusted_rand_score
+
+    adjusted_rand_score(df1['Diagnosis'],kmeans2.labels_)
+
 ## 7.3. Meila’s Variation of Information
 
 İki kümeleme çözümü arasındaki benzerliğin bir kümelemeden diğerine
@@ -1527,7 +1971,14 @@ cluster.stats(d = dist(df),diagnosis, k2m_data$cluster)$vi
 
     ## [1] 0.5687046
 
-## 7.4. R’da Küme Geçerliği İçin Silhouette
+### 7.3.2. Python’da Meila’s Variation of Informationn
+
+Bildiğin ve araştırdığım kadarıyla Python’da Meila’s Variation of
+Informationn hesaplayan bir fonksiyonu bulunmamakta.
+
+## 7.4. Küme Geçerliği İçin Silhouette
+
+### 7.4.1. R
 
 Bu kısımda ikinci bölümde nasıl hesaplandığı anlatılan Silhouette için
 küme geçerliliği analizinde yazılması gereken kodlar paylaşılacaktır.
@@ -1574,6 +2025,16 @@ sil[neg_sil_index, , drop = FALSE] # negatif silhouette değerine sahip gözleml
     ## 215       1        2 -0.11522042
     ## 12        1        2 -0.13105913
     ## 376       1        2 -0.13159631
+
+### 7.4.2. Python
+
+Her bir gözlem için silhouette değerini içerek grafiği Python’da
+aşağıdaki gibi çizdirebilirsiniz:
+
+    from yellowbrick.cluster import silhouette_visualizer
+
+    plt.figure(figsize=(10,7))
+    silhouette_visualizer(kmeans2, pcadf, colors='yellowbrick')
 
 ## 7.5. Dunn Indeksi
 
@@ -1832,6 +2293,20 @@ için maksimuma yakın değerlere sahip olduğu görülebilir. Karşı eksendeki
 569. gözlem değerleri incelendiğinde ise Smoothness ve Concavity’nin
 minimum değerlere sahip olduğu, Texture’ın ise 3. çeyreğin üzerinde bir
 değere sahip olduğu görülebilir.
+
+## 8.2. Python’da Temel Bileşen Analizi
+
+İki bileşenli bir analiz için aşağıdaki kodları takip edebilirsiniz:
+
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+
+    sdf = StandardScaler().fit_transform(df)
+
+    pca = PCA(n_components=2)
+    principalComponents = pca.fit_transform(sdf)
+
+    pcadf = pd.DataFrame(data = principalComponents, columns = ['PC1', 'PC2'])
 
 **References for Chapter**
 
