@@ -7,7 +7,7 @@ Denetimsiz Öğrenme hakkında her veri sihirbazının bilmesi gereken
 konuları giriş seviyesinde ele aldım.
 
 Aşağıdaki içerik tablosu halinde sunulan konuların nasıl çalıştığı, adım
-adım nasıl hesaplandığı ve R programlama dilinde nasıl uygulandığı
+adım nasıl hesaplandığı ve R ve Python programlama dillerinde nasıl uygulandığı
 hakkında bilgiler içeren bu küçük kitapçığın, denetimsiz öğrenme ile
 ilgilenen herkes için faydalı olacağını umuyorum.
 
